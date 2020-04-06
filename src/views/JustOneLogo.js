@@ -1,9 +1,8 @@
-import React from 'react';
-import GameLogo from './views/GameLogo'; // Tell webpack this JS file uses this image
+import React, { Component } from "react";
+import styled from "styled-components";
+import { Image } from 'react-native';
 
-
-function Logo() {
-  // Import result is the URL of your image
-  return <img src={GameLogo} alt="Logo" />;
-}
-export default Logo;
+const GameLogo = () => (
+    <Image source = {require('C:/Users/venus/Documents/GitHub/sopra-fs20-group11-justone-client/src/GameLogo.png')} />
+)
+export default GameLogo;

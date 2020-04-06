@@ -38,7 +38,7 @@ const Header = props => {
   return (
     <Container height={props.height}>
       <Title> Just One Game </Title>
-      <JustOneLogo width={60} height={60} />
+      <GameLogo />
     </Container>
   );
 };
