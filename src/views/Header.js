@@ -37,8 +37,9 @@ const Title = styled.h1`
 const Header = props => {
   return (
     <Container height={props.height}>
+      <img src={GameLogo} alt= "Just One Logo" height={150}/>
       <Title> Just One Game </Title>
-      <img src={GameLogo} alt= "Just One Logo" />
+      <img src={GameLogo} alt= "Just One Logo" height={150}/>
     </Container>
   );
 };
