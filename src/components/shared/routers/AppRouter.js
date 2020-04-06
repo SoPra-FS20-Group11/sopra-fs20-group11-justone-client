@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { GameGuard } from "../routeProtectors/GameGuard";
+import { AppGuard } from "../routeProtectors/AppGuard";
 import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
+import MainScreen from "../../mainscreen/MainScreen";
 
 /**
  * Main router of your application.
@@ -21,11 +22,11 @@ class AppRouter extends React.Component {
         <Switch>
           <div>
             <Route
-              path="/game"
+              path="/main"
               render={() => (
-                <GameGuard>
-                  <GameRouter base={"/game"} />
-                </GameGuard>
+                //<AppGuard>
+                  <MainScreen />
+                //</AppGuard>
               )}
             />
             <Route
@@ -37,7 +38,7 @@ class AppRouter extends React.Component {
                 </LoginGuard>
               )}
             />
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+            <Route path="/" exact render={() => <Redirect to={"/main"} />} />
           </div>
         </Switch>
       </BrowserRouter>

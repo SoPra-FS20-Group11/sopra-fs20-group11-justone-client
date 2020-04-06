@@ -9,6 +9,7 @@ import { ReactLogo } from "./ReactLogo";
  * https://www.styled-components.com/
  */
 const Container = styled.div`
+  margin-top: 2em;
   height: ${props => props.height}px;
   background: ${props => props.background};
   display: flex;
@@ -18,7 +19,10 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-weight: bold;
-  color: white;
+  font-family: system-ui;
+  font-size: 50px;
+  
+  color: rgba(204, 73, 3, 1);
   text-align: center;
 `;
 /**
@@ -32,7 +36,7 @@ const Title = styled.h1`
 const Header = props => {
   return (
     <Container height={props.height}>
-      <Title>Group 11!</Title>
+      <Title> Just One Game </Title>
       <ReactLogo width={60} height={60} />
     </Container>
   );
