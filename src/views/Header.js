@@ -22,7 +22,8 @@ const Title = styled.h1`
   font-weight: bold;
   font-family: system-ui;
   font-size: 50px;
-  
+  text-decoration: underline wavy red overline;
+  text-shadow: 0 0 10px black;
   color: rgba(204, 73, 3, 1);
   text-align: center;
 `;

@@ -5,6 +5,19 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
+import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
+
+// for buttons
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3em;
+`;
+
+// for Inputfields
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -19,90 +32,82 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
+  width: 50%;
+  height: 450px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
   padding-left: 37px;
   padding-right: 37px;
-  border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
+  border-radius: 10px;
+  background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
 const InputField = styled.input`
   &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
+    color: grey4;
   }
   height: 35px;
   padding-left: 15px;
   margin-left: -4px;
-  border: none;
+  border: grey0;
   border-radius: 20px;
+  font-weight: bold;
   margin-bottom: 20px;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: grey0;
 `;
 
 const Label = styled.label`
-  color: white;
+  color: grey0;
   margin-bottom: 10px;
-  text-transform: uppercase;
+  text-transform: none;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+const Label2 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
+
 class Login extends React.Component {
-  /**
-   * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-   * The constructor for a React component is called before it is mounted (rendered).
-   * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-   * These fields are then handled in the onChange() methods in the resp. InputFields
-   */
   constructor() {
     super();
     this.state = {
-      name: null,
-      username: null
+      username: null,
+      password: null
     };
   }
-  /**
-   * HTTP POST request is sent to the backend.
-   * If the request is successful, a new user is returned to the front-end
-   * and its token is stored in the localStorage.
-   */
+
   async login() {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       });
-      const response = await api.post('/users', requestBody);
+
+      const response = await api.put('/users', requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
 
       // Store the token into the local storage.
       localStorage.setItem('token', user.token);
+      localStorage.setItem('id', user.id);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      this.props.history.push(`/game`);
+      this.props.history.push(`/main`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
+  }
+  async register() {
+    this.props.history.push('/registration');
   }
 
   /**
@@ -129,31 +134,41 @@ class Login extends React.Component {
     return (
       <BaseContainer>
         <FormContainer>
+          <Label2>Login</Label2>
           <Form>
             <Label>Username</Label>
-            <InputField
-              placeholder="Enter here.."
+            <InputField 
+              placeholder="Enter here your username..."
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
               }}
             />
-            <Label>Name</Label>
+            <Label>Password</Label>
             <InputField
-              placeholder="Enter here.."
+              placeholder="Enter here your password..."
               onChange={e => {
-                this.handleInputChange('name', e.target.value);
-              }}
+                this.handleInputChange('password', e.target.value);
+              }} 
             />
             <ButtonContainer>
-              <Button
-                disabled={!this.state.username || !this.state.name}
-                width="50%"
+              <MainButton
+                disabled={!this.state.username || !this.state.password}
+                width="10%"
                 onClick={() => {
                   this.login();
                 }}
               >
                 Login
-              </Button>
+              </MainButton>
+              &nbsp;
+              <MainButton
+                width="10%"
+                onClick={() => {
+                  this.register();
+                }}
+              >
+                Sign up
+              </MainButton>
             </ButtonContainer>
           </Form>
         </FormContainer>
