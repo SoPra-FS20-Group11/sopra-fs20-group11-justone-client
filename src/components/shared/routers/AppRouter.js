@@ -49,7 +49,7 @@ class AppRouter extends React.Component {
                 </RegistrationGuard>
               )}
             />
-            <Route path="/" exact render={() => <Redirect to={"/main"} />} />
+            <Route path="/" exact render={() => <Redirect to={"/login"} />} />
           </div>
         </Switch>
       </BrowserRouter>
