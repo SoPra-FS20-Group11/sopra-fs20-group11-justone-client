@@ -25,10 +25,11 @@ const ChangeForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 240px;
-  height: 90px;
-  font-size: 16px;
-  font-weight: 300;
+  width: 50%;
+  height: 550px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
   padding-left: 37px;
   padding-right: 37px;
   border-radius: 10px;
@@ -40,13 +41,14 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
-  height: 70px;
-  font-size: 16px;
-  font-weight: 300;
+  width: 50%;
+  height: 550px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
   padding-left: 37px;
   padding-right: 37px;
-  border-radius: 5px;
+  border-radius: 10px;
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
@@ -75,6 +77,15 @@ const Label = styled.label`
   color: grey0;
   margin-bottom: 10px;
   text-transform: none;
+`;
+
+const Label2 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -147,7 +158,7 @@ class MyProfile extends React.Component {
     render() {
         return (
             <Container>
-                <h2> My profile </h2>
+                <Label2> My profile </Label2>
                 {!this.state.users ? (
                     <Spinner />
                 ) : (

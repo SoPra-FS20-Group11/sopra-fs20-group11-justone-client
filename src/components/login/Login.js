@@ -6,6 +6,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
+import GameLogo from "../../GameLogo.png";
 
 // for buttons
 
@@ -74,6 +75,15 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+const Title = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 50px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
+
 
 class Login extends React.Component {
   constructor() {
@@ -133,6 +143,7 @@ class Login extends React.Component {
   render() {
     return (
       <BaseContainer>
+        <Title> Just One Game </Title>  
         <FormContainer>
           <Label2>Login</Label2>
           <Form>
