@@ -7,6 +7,10 @@ import Login from "../../login/Login";
 import MainScreen from "../../mainscreen/MainScreen";
 import { RegistrationGuard } from "../routeProtectors/RegistrationGuard";
 import Registration from "../../register/Registration";
+import { MyProfileGuard } from "../routeProtectors/MyProfileGuard";
+import MyProfileRouter from "./MyProfileRouter";
+
+
 
 /**
  * Main router of your application.
@@ -26,9 +30,9 @@ class AppRouter extends React.Component {
             <Route
               path="/main"
               render={() => (
-                //<AppGuard>
+                <AppGuard>
                   <MainScreen />
-                //</AppGuard>
+                </AppGuard>
               )}
             />
             <Route
@@ -49,6 +53,14 @@ class AppRouter extends React.Component {
                 </RegistrationGuard>
               )}
             />
+            <Route 
+              path="/profile"
+              render={() => (
+                //<MyProfileGuard>
+                  <MyProfileRouter base={"/profile"} />
+                //</MyProfileGuard>
+              )}
+            /> 
             <Route path="/" exact render={() => <Redirect to={"/main"} />} />
           </div>
         </Switch>

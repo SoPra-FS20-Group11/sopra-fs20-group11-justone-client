@@ -99,7 +99,7 @@ class Registration extends React.Component {
             }
         }
     async back() {
-        this.props.history.push('login');
+        this.props.history.push('/login');
         }
 
     handleInputChange(key, value) {

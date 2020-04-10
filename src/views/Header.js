@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { ReactLogo } from "./ReactLogo";
 import GameLogo from "../GameLogo.png";
+import {Animated} from "react-animated-css";
+
+
 
 /**
  * Using styled-components you can visual HTML primitives and use props with it!
@@ -27,6 +30,7 @@ const Title = styled.h1`
   color: rgba(204, 73, 3, 1);
   text-align: center;
 `;
+
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
  * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
@@ -39,7 +43,7 @@ const Header = props => {
   return (
     <Container height={props.height}>
       <img src={GameLogo} alt= "Just One Logo" height={150}/>
-      <Title> Just One Game </Title>
+      <Title> Just One Game </Title>     
       <img src={GameLogo} alt= "Just One Logo" height={150}/>
     </Container>
   );
