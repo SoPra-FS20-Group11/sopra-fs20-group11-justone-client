@@ -19,6 +19,11 @@ img {
   animation-duration: 2s;
 }
 
+div {
+  animation-name: bounceInUp;
+  animation-duration: 1.5s;
+}
+
 
 @keyframes zoomInUp {
   from {
