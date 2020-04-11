@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import GameLogo from "../../GameLogo.png";
+import JustOneTitle from "../../JustOneTitle.png";
 
 // for buttons
 
@@ -143,8 +144,8 @@ class Login extends React.Component {
   render() {
     return (
       <BaseContainer>
-        <Title> Just One Game </Title>  
         <FormContainer>
+          <img src={JustOneTitle} height={120}/> 
           <Label2>Login</Label2>
           <Form>
             <Label>Username</Label>
