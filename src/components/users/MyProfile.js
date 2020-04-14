@@ -17,7 +17,7 @@ const PlayerContainer = styled.li`
 `;
 
 const Container = styled(BaseContainer)`
-  color: white;
+  color: grey0;
   text-align: center;
 `;
 
@@ -25,8 +25,8 @@ const ChangeForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 550px;
+  width: 200%;
+  height: 120px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -41,8 +41,8 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 550px;
+  width: 200%;
+  height: 100px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -69,7 +69,7 @@ const InputField = styled.input`
 `;
 
 const Users = styled.ul`
-  list-style: square;
+  list-style: none;
   padding-left: 0;
 `;
 
@@ -91,14 +91,35 @@ const Label2 = styled.h1`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 10px;
+`;
+
+const ChangeButton = styled.button`
+&:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 40%;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 200, 153);
+  transition: all 0.3s ease;
 `;
 
 class MyProfile extends React.Component {
     constructor() {
         super();
         this.state = {
-            user: null,
+            users: null,
             updatedUsername: null,
             updatedName: null
         };
@@ -114,7 +135,7 @@ class MyProfile extends React.Component {
             const id = localStorage.getItem('id');
 
             // HTTP PUT Request to update the user information, found by user ID
-            const response = await api.put('/user/' + id, requestBody);
+            await api.put('/users/' + id, requestBody);
 
             // Reload the page
             window.location.reload();
@@ -126,8 +147,13 @@ class MyProfile extends React.Component {
     async componentDidMount() {
         try {
             const currentId = localStorage.getItem('id');
+            const requestBody = JSON.stringify({
+                id: currentId
+              });
         
             const response = await api.get('/users/'+ currentId);
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             this.setState({users: response.data});
     
@@ -167,7 +193,7 @@ class MyProfile extends React.Component {
                             <PlayerContainer>
                                 <Form>
                                     <Label> Rank: </Label>
-                                    {/* this.state.users.rank */}
+                                    {this.state.users.rank}
                                 </Form>
                                 &nbsp;
                                 {this.state.updatedUsername == 'updatedUsername' ? (
@@ -181,17 +207,18 @@ class MyProfile extends React.Component {
                                     ) : (
                                     <ChangeForm>
                                         <Label> Username </Label>
-                                        {this.state.user.username}
+                                        {this.state.users.username}
                                         <ButtonContainer>
-                                            <Button 
+                                            <ChangeButton 
                                                 margin = "0px"
-                                                width = "50%"
-                                                onCLick = {() => {
+                                                height="20px"
+                                                width = "5%"
+                                                onClick = {() => {
                                                     this.changeUsername();
                                                 }}
                                             >
                                             Change
-                                            </Button>
+                                            </ChangeButton>
                                         </ButtonContainer>
                                     </ChangeForm>
                                 )   
@@ -208,35 +235,35 @@ class MyProfile extends React.Component {
                                     ) : (
                                     <ChangeForm>
                                         <Label> Name: </Label>
-                                        {this.state.user.name}
+                                        {this.state.users.name}
                                         <ButtonContainer>
-                                            <Button 
+                                            <ChangeButton 
                                                 margin = "0px"
-                                                width = "50%"
-                                                onCLick = {() => {
+                                                width = "5%"
+                                                onClick = {() => {
                                                     this.changeName();
                                                 }}
                                             >
                                             Change
-                                            </Button>
+                                            </ChangeButton>
                                         </ButtonContainer>
                                     </ChangeForm>
                                 )   
                                 }
                                 &nbsp;
                                 <Form>
-                                    <Label> Creation date: </Label>
-                                    {this.state.users.creationdate}
+                                    <Label> Status: </Label>
+                                    {this.state.users.status}
                                 </Form>
                                 &nbsp;
                                 <Form>
                                     <Label> Total points: </Label>
-                                    {/*this.state.users.points*/}
+                                    {this.state.users.score}
                                 </Form>
                                 &nbsp;
                                 <Form>
                                     <Label> Games played: </Label>
-                                    {/* this.state.users.playedgames */}
+                                    {this.state.users.gamesPlayed}
                                 </Form>
                             </PlayerContainer>
                         </Users>
@@ -250,10 +277,11 @@ class MyProfile extends React.Component {
                                 >
                                 Save
                             </MainButton>
+                            &nbsp;
                             <MainButton
                                 width="20%"
                                 onClick={() => {
-                                    this.return();
+                                    this.back();
                                 }}
                             >
                                 Return

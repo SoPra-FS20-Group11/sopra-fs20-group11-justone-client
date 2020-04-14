@@ -54,11 +54,11 @@ class AppRouter extends React.Component {
               )}
             />
             <Route 
-              path="/profile"
+              path="/myprofile"
               render={() => (
-                //<MyProfileGuard>
-                  <MyProfileRouter base={"/profile"} />
-                //</MyProfileGuard>
+                <MyProfileGuard>
+                  <MyProfileRouter base={"/myprofile"} />
+                </MyProfileGuard>
               )}
             /> 
             <Route path="/" exact render={() => <Redirect to={"/main"} />} />

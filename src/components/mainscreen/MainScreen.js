@@ -37,15 +37,19 @@ class MainScreen extends React.Component {
     };
   }
 
-    logout() {
-      //update the localStorage by removing toke and adding user id
-      const id = localStorage.getItem('ID'); 
-      localStorage.removeItem('token');    
-      //navigate to the route /login 
-      this.props.history.push('/login');
-      //HTTP PUT request is sent to the backend to update the online status.
-      api.put('/logout', id)
-    }
+  async logout() {
+    
+    const currentId = localStorage.getItem('id');
+    localStorage.clear();
+
+    const requestBody = JSON.stringify({
+      id : currentId
+    });
+    this.props.history.push('/login');
+    await api.put('/logout', requestBody);
+
+    
+  }
 
     //navigate to the route /preparation
     startGame() {
