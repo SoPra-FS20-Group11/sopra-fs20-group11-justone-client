@@ -206,7 +206,7 @@ class MyProfile extends React.Component {
                                     </Form>
                                     ) : (
                                     <ChangeForm>
-                                        <Label> Username </Label>
+                                        <Label> Username: </Label>
                                         {this.state.users.username}
                                         <ButtonContainer>
                                             <ChangeButton 

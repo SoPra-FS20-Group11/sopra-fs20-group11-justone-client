@@ -28,6 +28,15 @@ const ButtonContainer = styled.div`
   margin-top: 3em;
 `;
 
+const Label2 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
+
 
 class MainScreen extends React.Component {
   constructor() {
@@ -53,7 +62,7 @@ class MainScreen extends React.Component {
 
     //navigate to the route /preparation
     startGame() {
-        this.props.history.push(`/preparation`);
+        this.props.history.push(`/game`);
     }
 
     scoreboard() {
@@ -72,6 +81,8 @@ class MainScreen extends React.Component {
   render() {
     return (
       <Container>
+        &nbsp;
+        <Label2> Welcome {localStorage.getItem('username')} </Label2>
         <ButtonContainer>
             <MainButton
               width="100%"
