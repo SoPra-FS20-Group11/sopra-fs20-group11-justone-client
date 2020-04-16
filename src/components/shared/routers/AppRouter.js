@@ -10,7 +10,8 @@ import Registration from "../../register/Registration";
 import { MyProfileGuard } from "../routeProtectors/MyProfileGuard";
 import MyProfileRouter from "./MyProfileRouter";
 import Scoreboard from "../../scoreboard/Scoreboard"
-
+import MyProfile from "../../users/MyProfile"
+import Profile from "../../users/Profile"
 
 /**
  * Main router of your application.
@@ -71,11 +72,19 @@ class AppRouter extends React.Component {
               )}
             />
             <Route 
+              path="/profile"
+              render={() => (
+                <AppGuard>
+                  <Profile/>
+                </AppGuard>
+              )}
+            /> 
+            <Route 
               path="/myprofile"
               render={() => (
-                <MyProfileGuard>
-                  <MyProfileRouter base={"/myprofile"} />
-                </MyProfileGuard>
+                <AppGuard>
+                  <MyProfile/>
+                </AppGuard>
               )}
             /> 
             <Route path="/" exact render={() => <Redirect to={"/main"} />} />
