@@ -153,8 +153,6 @@ class MyProfile extends React.Component {
         
             const response = await api.get('/users/'+ currentId);
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
             this.setState({users: response.data});
     
         } catch (error) {
