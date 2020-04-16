@@ -62,6 +62,15 @@ class AppRouter extends React.Component {
               )}
             />
             <Route 
+              path="/scoreboard"
+              exact
+              render={() => (
+                <AppGuard>
+                  <Scoreboard/>
+                </AppGuard>
+              )}
+            />
+            <Route 
               path="/myprofile"
               render={() => (
                 <MyProfileGuard>
