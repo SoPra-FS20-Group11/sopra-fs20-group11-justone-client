@@ -3,29 +3,33 @@ import styled from "styled-components";
 
 const Container = styled.div`
   margin: 6px 0;
-  width: 280px;
+  width: 500px;
   padding: 10px;
   border-radius: 6px;
   display: flex;
   align-items: center;
-  border: 1px solid #ffffff26;
+  border: 0px solid #ffffff2ff;
 `;
 
 const UserName = styled.div`
   font-weight: lighter;
-  margin-left: 5px;
+  margin-right: 50px;
+  margin-left: 50px;
+  justify-content: center;
 `;
 
 const Name = styled.div`
   font-weight: bold;
-  color: #06c4ff;
+  color: grey0;
+  justify-content: center;
 `;
 
 const Id = styled.div`
   margin-left: auto;
-  margin-right: 10px;
+  margin-right: 50px;
   font-weight: bold;
 `;
+
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.

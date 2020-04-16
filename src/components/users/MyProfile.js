@@ -5,7 +5,6 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
 
 
@@ -25,7 +24,7 @@ const ChangeForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 200%;
+  width: 40%;
   height: 120px;
   font-family: system-ui;
   font-size: 20px;
@@ -41,8 +40,8 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 200%;
-  height: 100px;
+  width: 40%;
+  height: 90px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -112,6 +111,27 @@ const ChangeButton = styled.button`
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 200, 153);
+  transition: all 0.3s ease;
+`;
+
+const MainButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 35px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 20%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
   transition: all 0.3s ease;
 `;
 
@@ -268,7 +288,7 @@ class MyProfile extends React.Component {
                         <PlayerContainer>
                             <MainButton
                                 disabled = {!this.state.updatedUsername && !this.state.updatedName}
-                                width = "20%"
+                                width = "10%"
                                 onClick = {() => {
                                     this.update();
                                 }}
@@ -277,7 +297,7 @@ class MyProfile extends React.Component {
                             </MainButton>
                             &nbsp;
                             <MainButton
-                                width="20%"
+                                width="10%"
                                 onClick={() => {
                                     this.back();
                                 }}
