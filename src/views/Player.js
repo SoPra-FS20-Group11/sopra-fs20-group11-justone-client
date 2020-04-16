@@ -3,30 +3,29 @@ import styled from "styled-components";
 
 const Container = styled.div`
   margin: 6px 0;
-  width: 500px;
+  width: 600px;
   padding: 10px;
   border-radius: 6px;
   display: flex;
   align-items: center;
-  border: 0px solid #ffffff2ff;
+  border: 1px solid #ffffff2ff;
 `;
 
 const UserName = styled.div`
   font-weight: lighter;
-  margin-right: 50px;
-  margin-left: 50px;
-  justify-content: center;
+  margin-left: auto;
+  margin-right: 20px;
 `;
 
 const Name = styled.div`
   font-weight: bold;
   color: grey0;
+  margin-left: 60px;
   justify-content: center;
 `;
 
 const Id = styled.div`
-  margin-left: auto;
-  margin-right: 50px;
+  margin-left: 10px;
   font-weight: bold;
 `;
 
@@ -42,8 +41,7 @@ const Id = styled.div`
 const Player = ({ user }) => {
   return (
     <Container>
-      <Name>{user.name}</Name> <UserName>{user.username}</UserName>
-      <Id>Id: {user.id}</Id>
+      <Id>ID: {user.id}</Id> <Name>Name: {user.name}</Name> <UserName>Username: {user.username}</UserName>
     </Container>
   );
 };

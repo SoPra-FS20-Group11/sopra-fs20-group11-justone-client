@@ -47,10 +47,10 @@ const PlayerButton = styled.button`
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 35px;
+  font-size: 25px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 60%;
+  width: 600px;
   height: 90px;
   border: none;
   border-radius: 5px;
