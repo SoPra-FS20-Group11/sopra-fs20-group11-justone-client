@@ -7,7 +7,6 @@ import Login from "../../login/Login";
 import MainScreen from "../../mainscreen/MainScreen";
 import { RegistrationGuard } from "../routeProtectors/RegistrationGuard";
 import Registration from "../../register/Registration";
-import { MyProfileGuard } from "../routeProtectors/MyProfileGuard";
 import MyProfileRouter from "./MyProfileRouter";
 import Scoreboard from "../../scoreboard/Scoreboard"
 import MyProfile from "../../users/MyProfile"
