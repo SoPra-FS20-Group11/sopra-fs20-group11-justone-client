@@ -9,7 +9,7 @@ import { RegistrationGuard } from "../routeProtectors/RegistrationGuard";
 import Registration from "../../register/Registration";
 import { MyProfileGuard } from "../routeProtectors/MyProfileGuard";
 import MyProfileRouter from "./MyProfileRouter";
-
+import Scoreboard from "../../scoreboard/Scoreboard
 
 
 /**
