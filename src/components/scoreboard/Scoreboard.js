@@ -8,7 +8,7 @@ import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 
 const Container = styled(BaseContainer)`
-  color: white;
+  color: grey0;
   text-align: center;
 `;
 
@@ -28,6 +28,57 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+`;
+
+const Label2 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
+
+const PlayerButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 35px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 60%;
+  height: 90px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 210);
+  transition: all 0.3s ease;
+`;
+
+const MainButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 30px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 20%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
 `;
 
 class Scoreboard extends React.Component {
@@ -94,7 +145,7 @@ class Scoreboard extends React.Component {
   render() {
     return (
       <Container>
-        <h2>Scoreboard</h2>
+        <Label2>Scoreboard</Label2>
         {!this.state.users ? (
           <Spinner />
         ) : (
@@ -102,28 +153,26 @@ class Scoreboard extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
-                    <ButtonContainer key={user.id}> 
-                        
-                        <button
-                            width="100%"
-                            onClick={() => {
-                              this.compareIds(user.id);
-                            }}
+                    <ButtonContainer key={user.id}>  
+                      <PlayerButton
+                        width="100%"
+                        onClick={() => {
+                        this.compareIds(user.id);
+                        }}
                         >
-                            <Player user={user} />
-                    </button>
-
+                      <Player user={user} />
+                    </PlayerButton>
                     </ButtonContainer>
                 );
               })}
             </Users>
-            <Button
-            width="100%"
-            onClick={() => {
+            <MainButton
+              width="100%"
+              onClick={() => {
                 this.return();
-            }}>
-                Return
-                </Button>
+              }}>
+              Return
+            </MainButton>
           </div>
         )}
       </Container>

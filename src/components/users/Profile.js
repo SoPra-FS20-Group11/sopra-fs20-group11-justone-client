@@ -5,7 +5,6 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
 
 
@@ -21,28 +20,12 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 
-const ChangeForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 200%;
-  height: 120px;
-  font-family: system-ui;
-  font-size: 20px;
-  font-weight: 1000;
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 10px;
-  background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
-
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 200%;
-  height: 100px;
+  width: 40%;
+  height: 90px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -88,30 +71,24 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-
-const ChangeButton = styled.button`
-&:hover {
+const MainButton = styled.button`
+  &:hover {
     transform: translateY(-2px);
   }
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 35px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 40%;
-  height: 30px;
+  width: 20%;
+  height: 50px;
   border: none;
   border-radius: 5px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(255, 200, 153);
+  background: rgb(255, 229, 153);
   transition: all 0.3s ease;
 `;
 
@@ -188,7 +165,7 @@ class Profile extends React.Component {
                         </Users>
                         <PlayerContainer>
                             <MainButton
-                                width="20%"
+                                width="10%"
                                 onClick={() => {
                                     this.back();
                                 }}
