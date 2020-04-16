@@ -115,7 +115,7 @@ const ChangeButton = styled.button`
   transition: all 0.3s ease;
 `;
 
-class MyProfile extends React.Component {
+class Profile extends React.Component {
     constructor() {
         super();
         this.state = {
