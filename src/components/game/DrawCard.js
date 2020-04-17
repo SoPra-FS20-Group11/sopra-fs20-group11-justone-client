@@ -24,7 +24,7 @@ const RulesButtonContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   margin-top: 1px;
 `;
@@ -44,25 +44,49 @@ const JustOneCard = styled.img`
   margin-left: 22em;
 `;
 
+export const WordButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 20px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 35px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
+`;
 
 class DrawCard extends React.Component {
     constructor() {
         super();
         this.state = {
-            users: null
+            users: null,
+            drawnCardBool: false
         };
     }
 
     drawNewCard() {
-        this.props.history.push(`/wordselection`);
+      this.setState({drawnCardBool: true});
+      this.forceUpdate();
     }
 
     render() {
-        return (
+      const drawnCardBool = this.state.drawnCardBool;
+      let renderRight;   
+      const numbers = [1, 2, 3, 4, 5];
+      if (!drawnCardBool){
+        renderRight =
             <Container>
                 <JustOneCard src={JustOneCards} alt= "Just One Cards" height={400} />
-                <ButtonContainer>
-                    <Label2> Draw a card from the stack! </Label2>
+                  <Label2> Draw a card from the stack! </Label2>
+                  <ButtonContainer>
                     <MainButton
                         width="100%"
                         onClick={() => {
@@ -73,7 +97,32 @@ class DrawCard extends React.Component {
                     </MainButton>
                 </ButtonContainer>
             </Container>
-        );
+      }else{
+        renderRight = 
+            <Container>
+                <JustOneCard src={JustOneCards} alt= "Just One Cards" height={400} />
+                  <Label2> Pick a word from the card! </Label2>
+                  <ButtonContainer>
+                    {numbers.map((number) => {
+                      return (               
+                        <ButtonContainer key={number}> 
+                        <WordButton                     
+                            width="100%"
+                            onClick={() => {
+                                this.props.history.push(`/nextpage`);                   
+                            }}
+                          >                        
+                          <div> {number}</div>             
+                    </WordButton>
+                    </ButtonContainer>);})}
+                </ButtonContainer>
+            </Container>
+      }
+      return (      
+        <Container>
+        {renderRight}
+        </Container>
+      )
     }
 }
 export default withRouter(DrawCard);
