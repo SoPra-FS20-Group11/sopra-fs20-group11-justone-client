@@ -97,21 +97,24 @@ const InputField = styled.input`
 const SearchFieldContainer = styled.li`
   display: flex;
   position: fixed; 
-  margin-right: 30px;
-  right: 20%;
+  margin-left: 50px;
+  right: 10%;
   flex-direction: row;
+  justify-content: center;
 `;
 
 const SearchButton = styled.button`
 height: 35px;
+font-weight: bold;
 padding-left: 15px;
-margin-left: -4px;
+margin-left: 4px;
 border: grey0;
 border-radius: 20px;
 font-weight: bold;
 margin-bottom: 20px;
 background: rgba(255, 255, 255, 0.2);
 color: grey0;
+justify-content: center;
 `;
 
 class Scoreboard extends React.Component {
@@ -193,7 +196,7 @@ class Scoreboard extends React.Component {
         <Label2>Scoreboard</Label2>
         <SearchFieldContainer>
         <InputField
-              placeholder="Search user.."
+              placeholder="Search a user.."
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
               }} 
@@ -202,7 +205,7 @@ class Scoreboard extends React.Component {
           onClick={() => {
             this.searchByUsername(this.state.username);
             }}
-        >
+        > Search
         </SearchButton>
         </SearchFieldContainer>
         {!this.state.users ? (
