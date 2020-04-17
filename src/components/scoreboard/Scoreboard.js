@@ -80,12 +80,46 @@ const MainButton = styled.button`
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
 `;
+const InputField = styled.input`
+  &::placeholder {
+    color: grey4;
+  }
+  height: 35px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: grey0;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: grey0;
+`;
+const SearchFieldContainer = styled.li`
+  display: flex;
+  position: fixed; 
+  margin-right: 30px;
+  right: 20%;
+  flex-direction: row;
+`;
+
+const SearchButton = styled.button`
+height: 35px;
+padding-left: 15px;
+margin-left: -4px;
+border: grey0;
+border-radius: 20px;
+font-weight: bold;
+margin-bottom: 20px;
+background: rgba(255, 255, 255, 0.2);
+color: grey0;
+`;
 
 class Scoreboard extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: null
+      users: null,
+      username: null
     };
   }
 
@@ -102,6 +136,17 @@ class Scoreboard extends React.Component {
     
     localStorage.clear();
     this.props.history.push('/login');
+  }
+
+  searchByUsername(username){
+    const typedUsername = username;
+    this.props.history.push(`/search/${typedUsername}`);
+  }
+
+  handleInputChange(key, value) {
+    // Example: if the key is username, this statement is the equivalent to the following one:
+    // this.setState({'username': value});
+    this.setState({ [key]: value });
   }
 
   compareIds(userId) {
@@ -146,6 +191,20 @@ class Scoreboard extends React.Component {
     return (
       <Container>
         <Label2>Scoreboard</Label2>
+        <SearchFieldContainer>
+        <InputField
+              placeholder="Search user.."
+              onChange={e => {
+                this.handleInputChange('username', e.target.value);
+              }} 
+            />
+        <SearchButton
+          onClick={() => {
+            this.searchByUsername(this.state.username);
+            }}
+        >
+        </SearchButton>
+        </SearchFieldContainer>
         {!this.state.users ? (
           <Spinner />
         ) : (

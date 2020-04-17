@@ -11,6 +11,7 @@ import MyProfileRouter from "./MyProfileRouter";
 import Scoreboard from "../../scoreboard/Scoreboard"
 import MyProfile from "../../users/MyProfile"
 import Profile from "../../users/Profile"
+import SearchRouter from "./SearchRouter";
 
 /**
  * Main router of your application.
@@ -67,6 +68,14 @@ class AppRouter extends React.Component {
               render={() => (
                 <AppGuard>
                   <Scoreboard/>
+                </AppGuard>
+              )}
+            />
+            <Route 
+              path="/search"
+              render={() => (
+                <AppGuard>
+                  <SearchRouter base={"/search"}/>
                 </AppGuard>
               )}
             />
