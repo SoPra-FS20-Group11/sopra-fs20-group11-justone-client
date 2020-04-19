@@ -24,7 +24,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
+  width: 250px;
   height: 90px;
   font-family: system-ui;
   font-size: 20px;
@@ -82,7 +82,7 @@ const MainButton = styled.button`
   font-size: 35px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 20%;
+  width: 60%;
   height: 50px;
   border: none;
   border-radius: 5px;
@@ -104,17 +104,12 @@ class Profile extends React.Component {
 
     async componentDidMount() {
         try {
-            const currentId = localStorage.getItem('id');
-            const requestBody = JSON.stringify({
-                id: currentId
-              });
-        
-            const response = await api.get('/users/'+ currentId);
-
+            const {Key} = this.props.match.params;
+            const response = await api.get('/users/' + Key);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             this.setState({users: response.data});
-    
         } catch (error) {
-            alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
+            alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
         }
     }
     back() {
@@ -125,13 +120,13 @@ class Profile extends React.Component {
     render() {
         return (
             <Container>
-                <Label2> User Profile </Label2>
                 {!this.state.users ? (
                     <Spinner />
                  ) : (
                     <div>
                         <Users>
                             <PlayerContainer>
+                            <Label2> User Profile of {this.state.users.username}</Label2>
                                 <Form>
                                     <Label> Rank: </Label>
                                     {this.state.users.rank}

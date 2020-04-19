@@ -8,6 +8,7 @@ import MainScreen from "../../mainscreen/MainScreen";
 import { RegistrationGuard } from "../routeProtectors/RegistrationGuard";
 import Registration from "../../register/Registration";
 import MyProfileRouter from "./MyProfileRouter";
+import ProfileRouter from "./ProfileRouter";
 import Scoreboard from "../../scoreboard/Scoreboard"
 import MyProfile from "../../users/MyProfile"
 import Profile from "../../users/Profile"
@@ -83,7 +84,7 @@ class AppRouter extends React.Component {
               path="/profile"
               render={() => (
                 <AppGuard>
-                  <Profile/>
+                  <ProfileRouter base={"/profile"}/>
                 </AppGuard>
               )}
             /> 
@@ -91,7 +92,7 @@ class AppRouter extends React.Component {
               path="/myprofile"
               render={() => (
                 <AppGuard>
-                  <MyProfile/>
+                  <MyProfileRouter base={"/myprofile"}/>
                 </AppGuard>
               )}
             /> 

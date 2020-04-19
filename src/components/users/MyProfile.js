@@ -24,7 +24,7 @@ const ChangeForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
+  width: 250px;
   height: 120px;
   font-family: system-ui;
   font-size: 20px;
@@ -40,7 +40,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
+  width: 250px;
   height: 90px;
   font-family: system-ui;
   font-size: 20px;
@@ -104,7 +104,7 @@ const ChangeButton = styled.button`
   font-size: 20px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 40%;
+  width: 80%;
   height: 30px;
   border: none;
   border-radius: 5px;
@@ -125,7 +125,7 @@ const MainButton = styled.button`
   font-size: 35px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 20%;
+  width: 60%;
   height: 50px;
   border: none;
   border-radius: 5px;
