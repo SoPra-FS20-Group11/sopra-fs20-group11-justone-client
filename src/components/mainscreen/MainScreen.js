@@ -62,7 +62,7 @@ class MainScreen extends React.Component {
 
     //navigate to the route /preparation
     async startGame() {        
-        this.props.history.push(`/games`);
+        this.props.history.push(`/games/lobby`);
     }
 
     scoreboard() {

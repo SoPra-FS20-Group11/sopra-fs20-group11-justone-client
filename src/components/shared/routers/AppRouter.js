@@ -14,6 +14,8 @@ import MyProfile from "../../users/MyProfile"
 import Profile from "../../users/Profile"
 import SearchRouter from "./SearchRouter";
 import GameLobby from "../../game/GameLobby";
+import StartGame from "../../game/StartGame";
+import LobbyRouter from "./LobbyRouter";
 
 /**
  * Main router of your application.
@@ -39,19 +41,18 @@ class AppRouter extends React.Component {
               )}
             />
             <Route
-              path="/game"
+              path="/games"
               render={() => (
                 <AppGuard>
-                  <GameRouter base={"/game"} />
+                  <GameRouter base={"/games"} />
                 </AppGuard>
               )}
             />
             <Route
-              path="/games"
-              exact
+              path="/game"
               render={() => (
                 <AppGuard>
-                  <GameLobby />
+                  <LobbyRouter base={"/game"}/>
                 </AppGuard>
               )}
             />

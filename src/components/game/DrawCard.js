@@ -109,7 +109,7 @@ class DrawCard extends React.Component {
                         <WordButton                     
                             width="100%"
                             onClick={() => {
-                                this.props.history.push(`/game/clues`);                   
+                                this.props.history.push(`/games/clues`);                   
                             }}
                           >                        
                           <div> {number}</div>             

@@ -4,6 +4,7 @@ import { Redirect, Route } from "react-router-dom";
 import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
+import StartGame from "../../game/StartGame";
 
 const Container = styled.div`
   display: flex;
@@ -23,19 +24,32 @@ class GameRouter extends React.Component {
           render={() => <GameLobby />}
         />
         <Route
+            exact
+            path={`${this.props.base}`}
+            render={() => <Redirect to={`${this.props.base}/lobby`} />}
+        />
+        <Route
           path={`${this.props.base}/drawphase`}
           render={() => <DrawCard />}
+        />
+        <Route
+            exact
+            path={`${this.props.base}`}
+            render={() => <Redirect to={`${this.props.base}/drawphase`} />}
         />
         <Route
           exact
           path={`${this.props.base}/clues`}
           render={() => <Clues />}
         />
+        <Route
+            exact
+            path={`${this.props.base}`}
+            render={() => <Redirect to={`${this.props.base}/clues`} />}
+        />    
       </Container>
     );
   }
 }
-/*
-* Don't forget to export your component!
- */
+
 export default GameRouter;

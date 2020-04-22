@@ -171,7 +171,7 @@ class Scoreboard extends React.Component {
 
       // Get the returned users and update the state.
       this.setState({ users: response.data });
-
+      
       // This is just some data for you to see what is available.
       // Feel free to remove it.
       console.log('request to:', response.request.responseURL);

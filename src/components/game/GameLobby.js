@@ -132,12 +132,13 @@ class GameLobby extends React.Component {
 
   async joinGame(gameId) {
     try {
+      localStorage.setItem('gameID', gameId);
       const currentId = localStorage.getItem('id');
       const requestBody = JSON.stringify({
         currentUserId: currentId
       });
       const response = await api.put('/games/'+gameId, requestBody);
-      this.props.history.push(`/games/${response.data.id}`);
+      this.props.history.push(`/game/${response.data.id}`);
     } catch (error) {
       alert(`Something went wrong while fetching the game: \n${handleError(error)}`)
     }
@@ -154,7 +155,7 @@ class GameLobby extends React.Component {
       const game = new Game(response.data);
       const gameId = game.id;
       localStorage.setItem('gameID', gameId);
-      this.props.history.push(`/games/${game.id}`)
+      this.props.history.push(`/game/${game.id}`)
     } catch (error) {
       alert(`Something went wrong during the creation of a new Game: \n${handleError(error)}`);
     }
