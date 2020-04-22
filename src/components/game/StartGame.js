@@ -140,16 +140,17 @@ class StartGame extends React.Component {
             const response = await api.get('/games/'+GameID);
             this.setState({users: response.data.usersIds});
 
-            localStorage.setItem('users', this.state.users.length);
-            for (var j = 0; j < this.state.users.length; j++){
+            const uniqueSet = new Set(this.state.users);
+            const uniqueUsers = [...uniqueSet];
+
+            localStorage.setItem('users', uniqueUsers);
+            for (var j = 0; j < uniqueUsers.length; j++){
                 for (var i = 0; i < this.state.allUsers.length; i++) {
-                    if (this.state.users[j] == this.state.allUsers[i].id){
+                    if (uniqueUsers[j] == this.state.allUsers[i].id){
                         this.state.userIds.push(this.state.allUsers[i]);
                     }
                 }
             }
-            localStorage.setItem('us', this.state.userIds.length);
-
         } catch (error) {
             alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
         }
@@ -166,6 +167,11 @@ class StartGame extends React.Component {
         });
         await api.put('/games/start/'+gameId, requestBody);
         this.props.history.push('/games/drawphase')
+    }
+
+    async showUsers() {
+        
+        this.props.history.push('/game/Users')
     }
 
     render () {
@@ -190,9 +196,16 @@ class StartGame extends React.Component {
                         <MainButton
                             width="100%"
                             onClick={() => {
+                                this.showUsers();
+                            }}>
+                        Show Users
+                        </MainButton>
+                        <MainButton
+                            width="100%"
+                            onClick={() => {
                                 this.startGame();
                             }}>
-                        Play!!
+                        Play!
                         </MainButton>
                         <MainButton
                             width="100%"
