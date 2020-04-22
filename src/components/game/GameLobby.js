@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Player from '../../views/Player';
+import Games from '../../views/Games';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
+import DrawCard from './DrawCard';
 
 const Container = styled(BaseContainer)`
   color: grey0;
@@ -17,11 +18,12 @@ const Users = styled.ul`
   padding-left: 0;
 `;
 
-const PlayerContainer = styled.li`
+const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  flex-direction: column;
 `;
 
 const ButtonContainer = styled.div`
@@ -39,7 +41,7 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const PlayerButton = styled.button`
+const GameButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
@@ -70,8 +72,9 @@ const MainButton = styled.button`
   font-weight: 900;
   font-size: 30px;
   text-align: center;
+  margin-left: auto;
   color: rgba(0, 0, 0, 1);
-  width: 20%;
+  width: 50%;
   height: 50px;
   border: none;
   border-radius: 5px;
@@ -80,97 +83,33 @@ const MainButton = styled.button`
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
 `;
-const InputField = styled.input`
-  &::placeholder {
-    color: grey4;
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: grey0;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: grey0;
-`;
-const SearchFieldContainer = styled.li`
-  display: flex;
-  position: fixed; 
-  margin-left: 50px;
-  right: 10%;
-  flex-direction: row;
-  justify-content: center;
-`;
 
-const SearchButton = styled.button`
-height: 35px;
-font-weight: bold;
-padding-left: 15px;
-margin-left: 4px;
-border: grey0;
-border-radius: 20px;
-font-weight: bold;
-margin-bottom: 20px;
-background: rgba(255, 255, 255, 0.2);
-color: grey0;
-justify-content: center;
-`;
-
-class Scoreboard extends React.Component {
+class GameLobby extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: null,
-      username: null
+      games: null,
+      currentUserId: null
     };
   }
 
-  async logout() {
-
-    const currentId = localStorage.getItem('id');
-    const requestBody = JSON.stringify({
-      username: null,
-      password: null,
-      id: currentId
-    });
-    await api.put('/logout', requestBody);
-    // Get the returned user and update a new object.
-    
-    localStorage.clear();
+  /*
+  logout() {
+    localStorage.removeItem('token');
     this.props.history.push('/login');
   }
+  */
 
-  searchByUsername(username){
-    const typedUsername = username;
-    this.props.history.push(`/search/${typedUsername}`);
-  }
-
-  handleInputChange(key, value) {
-    // Example: if the key is username, this statement is the equivalent to the following one:
-    // this.setState({'username': value});
-    this.setState({ [key]: value });
-  }
-
-  compareIds(userId) {
-    const displayedUserId = userId;
-    const currentId = localStorage.getItem('id');
-    if (displayedUserId == currentId){
-      this.props.history.push(`/myprofile`)
-    } else {
-      this.props.history.push(`/profile/${userId}`)
-    }
-  }
   async componentDidMount() {
     try {
-      const response = await api.get('/users');
+      const response = await api.get('/games');
       // delays continuous execution of an async operation for 1 second.
       // This is just a fake async call, so that the spinner can be displayed
       // feel free to remove it :)
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Get the returned users and update the state.
-      this.setState({ users: response.data });
+      this.setState({ games: response.data });
 
       // This is just some data for you to see what is available.
       // Feel free to remove it.
@@ -185,46 +124,57 @@ class Scoreboard extends React.Component {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }
   }
-
   return() {
     this.props.history.push('/main');
+  }
+
+  async joinGame(gameId) {
+    try {
+      const currentId = localStorage.getItem('id');
+      const requestBody = JSON.stringify({
+        currentUserId: currentId
+      });
+      const response = await api.put('/games/'+gameId, requestBody);
+      this.props.history.push(`/games/${response.data.id}`);
+    } catch (error) {
+      alert(`Something went wrong while fetching the game: \n${handleError(error)}`)
+    }
+  }
+
+  async createNewGame() {
+    try {
+      const currentId = localStorage.getItem('id');
+      const requestBody = JSON.stringify({
+        currentUserId: currentId
+      });
+      const response = await api.post('/games', requestBody);
+      this.props.history.push(`/games/${response.data.id}`)
+    } catch (error) {
+      alert(`Something went wrong during the creation of a new Game: \n${handleError(error)}`);
+    }
   }
 
   render() {
     return (
       <Container>
-        <Label2>Scoreboard</Label2>
-        <SearchFieldContainer>
-        <InputField
-              placeholder="Search a user.."
-              onChange={e => {
-                this.handleInputChange('username', e.target.value);
-              }} 
-            />
-        <SearchButton
-          onClick={() => {
-            this.searchByUsername(this.state.username);
-            }}
-        > Search
-        </SearchButton>
-        </SearchFieldContainer>
-        {!this.state.users ? (
+        <Label2> Choose your Game! </Label2>
+        {!this.state.games ? (
           <Spinner />
         ) : (
-          <div>
+          <GameContainer>
             <Users>
-              {this.state.users.map(user => {
+              {this.state.games.map(game => {
                 return (
-                    <ButtonContainer key={user.id}>  
-                      <PlayerButton
-                        width="100%"
-                        onClick={() => {
-                        this.compareIds(user.id);
-                        }}
-                        >
-                      <Player user={user} />
-                    </PlayerButton>
-                    </ButtonContainer>
+                  <ButtonContainer key={game.id}>
+                    <GameButton
+                      width="100%"
+                      onClick={() => {
+                        this.joinGame(game.id);
+                      }}
+                    >
+                      <Games game={game} />
+                    </GameButton>
+                  </ButtonContainer>
                 );
               })}
             </Users>
@@ -232,14 +182,24 @@ class Scoreboard extends React.Component {
               width="100%"
               onClick={() => {
                 this.return();
-              }}>
+              }}
+            >
               Return
             </MainButton>
-          </div>
+            &nbsp;
+            <MainButton
+              width="100%"
+              onClick={() => {
+                this.createNewGame();
+              }}
+            >
+              Create new Game
+            </MainButton>
+          </GameContainer>
         )}
       </Container>
     );
   }
 }
 
-export default withRouter(Scoreboard);
+export default withRouter(GameLobby);
