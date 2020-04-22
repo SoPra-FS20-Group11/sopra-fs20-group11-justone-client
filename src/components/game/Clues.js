@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
+import Game from '../shared/models/Game';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
@@ -13,15 +14,9 @@ const Container = styled(BaseContainer)`
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+  min-width: 1000px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 3em;
-`;
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -91,7 +86,7 @@ class Clues extends React.Component {
     constructor() {
         super();
         this.state = {
-            users: null
+            clue: null
         };
     }
 
@@ -99,24 +94,33 @@ class Clues extends React.Component {
         this.setState({[key]: value});
     }
     
-    redner() {
+    async saveClue(){
+      const gameID = localStorage.getItem('gameID');
+      const requestBody = JSON.stringify({
+        clue: this.state.clue
+        });
+      const response = await api.post(`/clues/${gameID}`, requestBody);
+      this.props.history.push(`/nextPage`);
+    }
+
+    render() {
         return (
-            <BaseContainer>
+            <Container>
                 <FormContainer>
                     <Label2> Give a clue! </Label2>
                     <Form>
                         <InputField
-                            placeholder="Enter your clue..."
+                            placeholder="Enter your clue... "
                             onChange={e => {
                                 this.handleInputChange('clue', e.target.value);
                             }}
                         />
                         <ButtonContainer>
                             <MainButton
-                                disabled={!this.state.users.clue}
+                                disabled={!this.state.clue}
                                 width="10%"
                                 onClick={() => {
-                                    //this.props.history.push('/clues')
+                                    this.saveClue();
                                 }}
                                 >
                                 Submit
@@ -124,7 +128,7 @@ class Clues extends React.Component {
                         </ButtonContainer>
                     </Form>
                 </FormContainer>
-            </BaseContainer>
+            </Container>
         );
     }
 }
