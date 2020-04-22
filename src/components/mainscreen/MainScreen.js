@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
-import Game from '../shared/models/Game';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
@@ -63,17 +62,7 @@ class MainScreen extends React.Component {
 
     //navigate to the route /preparation
     async startGame() {        
-        const ID = localStorage.getItem('id');
-        const requestBody = JSON.stringify({
-        currentUserId: ID,
-        });
-        const response = await api.post('/games', requestBody);
-        const game = new Game(response.data);
-
-        const gameId = game.id;
-        localStorage.setItem('gameID', gameId);
-        await api.put(`/games/start/${gameId}`);
-        this.props.history.push(`/game`);
+        this.props.history.push(`/games`);
     }
 
     scoreboard() {

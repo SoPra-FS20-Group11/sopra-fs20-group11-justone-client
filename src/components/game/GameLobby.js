@@ -7,6 +7,7 @@ import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import DrawCard from './DrawCard';
+import Game from '../shared/models/Game';
 
 const Container = styled(BaseContainer)`
   color: grey0;
@@ -148,7 +149,11 @@ class GameLobby extends React.Component {
         currentUserId: currentId
       });
       const response = await api.post('/games', requestBody);
-      this.props.history.push(`/games/${response.data.id}`)
+
+      const game = new Game(response.data);
+      const gameId = game.id;
+      localStorage.setItem('gameID', gameId);
+      this.props.history.push(`/games/${game.id}`)
     } catch (error) {
       alert(`Something went wrong during the creation of a new Game: \n${handleError(error)}`);
     }
