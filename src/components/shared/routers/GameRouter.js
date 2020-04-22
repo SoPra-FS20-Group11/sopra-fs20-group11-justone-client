@@ -18,14 +18,14 @@ class GameRouter extends React.Component {
       <Container>
         <Route
           exact
-          path={`${this.props.base}/:GameID`}
+          path={`${this.props.base}/lobby`}
           render={() => <GameLobby />}
         />
 
         <Route
           exact
           path={`${this.props.base}`}
-          render={() => <Redirect to={`${this.props.base}/GameID`} />}
+          render={() => <Redirect to={`${this.props.base}/lobby`} />}
         />
       </Container>
     );

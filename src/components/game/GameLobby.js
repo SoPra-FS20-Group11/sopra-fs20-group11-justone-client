@@ -6,6 +6,7 @@ import Games from '../../views/Games';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
+import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 
 const Container = styled(BaseContainer)`
