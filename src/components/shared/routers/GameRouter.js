@@ -21,6 +21,8 @@ class GameRouter extends React.Component {
           exact
           path={`${this.props.base}/lobby`}
           render={() => <GameLobby />}
+        />
+        <Route
           path={`${this.props.base}/drawphase`}
           render={() => <DrawCard />}
         />
@@ -28,12 +30,6 @@ class GameRouter extends React.Component {
           exact
           path={`${this.props.base}/clues`}
           render={() => <Clues />}
-        />
-        <Route
-          exact
-          path={`${this.props.base}`}
-          render={() => <Redirect to={`${this.props.base}/lobby`} />}
-          render={() => <Redirect to={`${this.props.base}/drawphase`} />}
         />
       </Container>
     );
