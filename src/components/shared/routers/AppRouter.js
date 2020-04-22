@@ -13,6 +13,7 @@ import Scoreboard from "../../scoreboard/Scoreboard"
 import MyProfile from "../../users/MyProfile"
 import Profile from "../../users/Profile"
 import SearchRouter from "./SearchRouter";
+import GameLobby from "../../game/GameLobby";
 
 /**
  * Main router of your application.
@@ -42,6 +43,15 @@ class AppRouter extends React.Component {
               render={() => (
                 <AppGuard>
                   <GameRouter base={"/game"} />
+                </AppGuard>
+              )}
+            />
+            <Route
+              path="/games"
+              exact
+              render={() => (
+                <AppGuard>
+                  <GameLobby />
                 </AppGuard>
               )}
             />
