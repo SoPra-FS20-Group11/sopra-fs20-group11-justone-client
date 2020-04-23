@@ -75,6 +75,8 @@ class DrawCard extends React.Component {
     drawNewCard() {
       this.setState({drawnCardBool: true});
       this.forceUpdate();
+      const gameID = localStorage.getItem('gameID');
+      const response = await api.get(`/cards/${gameID}`);
     }
 
     render() {
