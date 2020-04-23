@@ -72,7 +72,7 @@ class DrawCard extends React.Component {
         };
     }
 
-    drawNewCard() {
+    async drawNewCard() {
       this.setState({drawnCardBool: true});
       this.forceUpdate();
       const gameID = localStorage.getItem('gameID');
