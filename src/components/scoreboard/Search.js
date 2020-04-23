@@ -135,21 +135,6 @@ class Search extends React.Component {
     };
   }
 
-  async logout() {
-
-    const currentId = localStorage.getItem('id');
-    const requestBody = JSON.stringify({
-      username: null,
-      password: null,
-      id: currentId
-    });
-    await api.put('/logout', requestBody);
-    // Get the returned user and update a new object.
-    
-    localStorage.clear();
-    this.props.history.push('/login');
-  }
-
   compareIds(userId) {
     const displayedUserId = userId;
     const currentId = localStorage.getItem('id');

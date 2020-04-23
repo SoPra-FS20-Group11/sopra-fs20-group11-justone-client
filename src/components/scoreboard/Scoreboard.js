@@ -126,21 +126,6 @@ class Scoreboard extends React.Component {
     };
   }
 
-  async logout() {
-
-    const currentId = localStorage.getItem('id');
-    const requestBody = JSON.stringify({
-      username: null,
-      password: null,
-      id: currentId
-    });
-    await api.put('/logout', requestBody);
-    // Get the returned user and update a new object.
-    
-    localStorage.clear();
-    this.props.history.push('/login');
-  }
-
   searchByUsername(username){
     const typedUsername = username;
     this.props.history.push(`/search/${typedUsername}`);
@@ -167,9 +152,9 @@ class Scoreboard extends React.Component {
     const user2 = b.score;
 
     let comparison = 0;
-    if (user1 > user2) {
+    if (user1 < user2) {
       comparison = 1;
-    } else if (user1 < user2) {
+    } else if (user1 > user2) {
       comparison = -1;
     }
     return comparison;
@@ -211,7 +196,7 @@ render() {
       <Label2>Scoreboard</Label2>
       <SearchFieldContainer>
       <InputField
-            placeholder="Search a user.."
+            placeholder="Username..."
             onChange={e => {
               this.handleInputChange('username', e.target.value);
             }} 
