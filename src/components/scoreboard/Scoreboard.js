@@ -161,6 +161,20 @@ class Scoreboard extends React.Component {
       this.props.history.push(`/profile/${userId}`)
     }
   }
+
+  sortByScore(a, b) {
+    const user1 = a.score;
+    const user2 = b.score;
+
+    let comparison = 0;
+    if (user1 > user2) {
+      comparison = 1;
+    } else if (user1 < user2) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   async componentDidMount() {
     try {
       const response = await api.get('/users');
@@ -171,7 +185,8 @@ class Scoreboard extends React.Component {
 
       // Get the returned users and update the state.
       this.setState({ users: response.data });
-      
+      this.state.users.sort(this.sortByScore)
+
       // This is just some data for you to see what is available.
       // Feel free to remove it.
       console.log('request to:', response.request.responseURL);
@@ -188,58 +203,58 @@ class Scoreboard extends React.Component {
 
   return() {
     this.props.history.push('/main');
-  }
+}
 
-  render() {
-    return (
-      <Container>
-        <Label2>Scoreboard</Label2>
-        <SearchFieldContainer>
-        <InputField
-              placeholder="Search a user.."
-              onChange={e => {
-                this.handleInputChange('username', e.target.value);
-              }} 
-            />
-        <SearchButton
-          onClick={() => {
-            this.searchByUsername(this.state.username);
-            }}
-        > Search
-        </SearchButton>
-        </SearchFieldContainer>
-        {!this.state.users ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Users>
-              {this.state.users.map(user => {
-                return (
-                    <ButtonContainer key={user.id}>  
-                      <PlayerButton
-                        width="100%"
-                        onClick={() => {
-                        this.compareIds(user.id);
-                        }}
-                        >
-                      <Player user={user} />
-                    </PlayerButton>
-                    </ButtonContainer>
-                );
-              })}
-            </Users>
-            <MainButton
-              width="100%"
-              onClick={() => {
-                this.return();
-              }}>
-              Return
-            </MainButton>
-          </div>
-        )}
-      </Container>
-    );
-  }
+render() {
+  return (
+    <Container>
+      <Label2>Scoreboard</Label2>
+      <SearchFieldContainer>
+      <InputField
+            placeholder="Search a user.."
+            onChange={e => {
+              this.handleInputChange('username', e.target.value);
+            }} 
+          />
+      <SearchButton
+        onClick={() => {
+          this.searchByUsername(this.state.username);
+          }}
+      > Search
+      </SearchButton>
+      </SearchFieldContainer>
+      {!this.state.users ? (
+        <Spinner />
+      ) : (
+        <div>
+          <Users>
+            {this.state.users.map(user => {
+              return (
+                  <ButtonContainer key={user.id}>  
+                    <PlayerButton
+                      width="100%"
+                      onClick={() => {
+                      this.compareIds(user.id);
+                      }}
+                      >
+                    <Player user={user} />
+                  </PlayerButton>
+                  </ButtonContainer>
+              );
+            })}
+          </Users>
+          <MainButton
+            width="100%"
+            onClick={() => {
+              this.return();
+            }}>
+            Return
+          </MainButton>
+        </div>
+      )}
+    </Container>
+  );
+}
 }
 
 export default withRouter(Scoreboard);
