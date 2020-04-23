@@ -198,7 +198,7 @@ class StartGame extends React.Component {
                             onClick={() => {
                                 this.showUsers();
                             }}>
-                        Show Users
+                        Show Players
                         </MainButton>
                         <MainButton
                             width="100%"
