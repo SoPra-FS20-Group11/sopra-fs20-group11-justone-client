@@ -33,6 +33,15 @@ class AppRouter extends React.Component {
         <Switch>
           <div>
             <Route
+              path="/login"
+              exact
+              render={() => (
+                <LoginGuard>
+                  <Login />
+                </LoginGuard>
+              )}
+            />
+            <Route
               path="/main"
               render={() => (
                 <AppGuard>
@@ -54,15 +63,6 @@ class AppRouter extends React.Component {
                 <AppGuard>
                   <LobbyRouter base={"/game"}/>
                 </AppGuard>
-              )}
-            />
-            <Route
-              path="/login"
-              exact
-              render={() => (
-                <LoginGuard>
-                  <Login />
-                </LoginGuard>
               )}
             />
             <Route 
