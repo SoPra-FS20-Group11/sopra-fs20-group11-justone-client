@@ -160,18 +160,23 @@ class StartGame extends React.Component {
     }
 
     async startGame() {
-        const gameId = localStorage.getItem('gameID');
-        const id = localStorage.getItem('id');
-        const requestBody = JSON.stringify({
-            currentUserId: id
-        });
-        await api.put('/games/start/'+gameId, requestBody);
-        this.props.history.push('/games/drawphase')
+
+        if (this.state.userIds.length < 3) {
+            alert(`Not enough Players! Must be atleast 3 Players to start the game!`);
+        } else {
+            const gameId = localStorage.getItem('gameID');
+            const id = localStorage.getItem('id');
+            const requestBody = JSON.stringify({
+                currentUserId: id
+            });
+            await api.put('/games/start/'+gameId, requestBody);
+            this.props.history.push('/games/drawphase')
+        }
     }
 
     async showUsers() {
         
-        this.props.history.push('/game/Users')
+        this.props.history.push('/game/players');
     }
 
     render () {

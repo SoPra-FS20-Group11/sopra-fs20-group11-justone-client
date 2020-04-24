@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
@@ -18,6 +18,7 @@ class GameRouter extends React.Component {
      */
     return (
       <Container>
+        <Switch>
         <Route
           exact
           path={`${this.props.base}/lobby`}
@@ -46,7 +47,8 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}`}
             render={() => <Redirect to={`${this.props.base}/clues`} />}
-        />    
+        /> 
+        </Switch>   
       </Container>
     );
   }
