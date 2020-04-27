@@ -16,7 +16,7 @@ import StartGame from '../../game/StartGame';
 export const CurrentPlayerGuard = props => {
     const currentPlayerID = localStorage.getItem('id');
     const gameID = localStorage.getItem('gameID');
-    const currentPlayer = StartGame.currentPlayer;
+    const currentPlayer = localStorage.getItem('currentPlayer');
 
     if (currentPlayerID == currentPlayer) {
         return props.children;

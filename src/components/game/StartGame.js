@@ -145,7 +145,6 @@ class StartGame extends React.Component {
             const uniqueSet = new Set(this.state.users);
             const uniqueUsers = [...uniqueSet];
 
-            localStorage.setItem('users', uniqueUsers);
             for (var j = 0; j < uniqueUsers.length; j++){
                 for (var i = 0; i < this.state.allUsers.length; i++) {
                     if (uniqueUsers[j] == this.state.allUsers[i].id){
@@ -154,7 +153,11 @@ class StartGame extends React.Component {
                 }
             }
             this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
-            localStorage.setItem('aaa', this.state.users);
+            localStorage.setItem('currentPlayer', this.state.currentPlayer.id);
+            localStorage.setItem('currentPlayerIndex', this.state.currentIndex);
+            localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
+            // this.nextPlayer();
+            
 
         } catch (error) {
             alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
@@ -187,6 +190,7 @@ class StartGame extends React.Component {
     nextPlayer() {
         this.setState({currentIndex: (this.state.currentIndex + 1) % this.state.userIds.length});
         this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
+        localStorage.setItem('currentPlayer', JSON.stringify(this.state.currentPlayer.id));
     }
 
 

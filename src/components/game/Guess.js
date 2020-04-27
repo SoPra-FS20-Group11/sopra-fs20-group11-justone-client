@@ -10,6 +10,7 @@ import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
 
+
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;
@@ -147,17 +148,30 @@ class Guess extends React.Component {
         } catch (error) {
             alert(`Something went wrong during the submit of the guess: \n${handleError(error)}`);
         }
+        this.nextPlayer();
     }
 
     skipGuess() {
         const gameID = localStorage.getItem('gameID');
         // ==> skip to the nextpage
         this.props.history.push(`/nextpage`);
+        this.nextPlayer();
     }
 
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
+
+    // After the current player guessed, the next player will be set to the current Player
+    nextPlayer() {
+        const List = localStorage.getItem('PlayersList');
+        const PlayersList = JSON.parse(List);
+        const index = (localStorage.getItem('currentPlayerIndex') + 1) % PlayersList.length;
+        localStorage.setItem('Length', PlayersList.length);
+        localStorage.setItem('currentPlayerIndex', index);
+        const NextCurrentPlayer = PlayersList[localStorage.getItem('currentPlayerIndex')];
+        localStorage.setItem('currentPlayer', NextCurrentPlayer);
+      }
 
     render() {
         return (

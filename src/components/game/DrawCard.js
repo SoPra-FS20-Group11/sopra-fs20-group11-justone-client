@@ -8,6 +8,7 @@ import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
 
+
 const Container = styled(BaseContainer)`
   color: white;
   text-align: center;

@@ -50,18 +50,18 @@ class AppRouter extends React.Component {
               )}
             />
             <Route
-              path="/games"
+              path="/game"
               render={() => (
                 <AppGuard>
-                  <LobbyRouter base={"/games"} />
+                  <LobbyRouter base={"/game"} />
                 </AppGuard>
               )}
             />
             <Route
-              path="/game"
+              path="/games"
               render={() => (
                 <AppGuard>
-                  <GameRouter base={"/game"}/>
+                  <GameRouter base={"/games"}/>
                 </AppGuard>
               )}
             />
