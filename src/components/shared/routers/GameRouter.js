@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
+import CheckClues from "../../game/CheckClues";
 import StartGame from "../../game/StartGame";
 
 const Container = styled.div`
@@ -20,15 +21,10 @@ class GameRouter extends React.Component {
       <Container>
         <Switch>
         <Route
-          exact
           path={`${this.props.base}/lobby`}
           render={() => <GameLobby />}
         />
-        <Route
-            exact
-            path={`${this.props.base}`}
-            render={() => <Redirect to={`${this.props.base}/lobby`} />}
-        />
+   
         <Route
           path={`${this.props.base}/drawphase`}
           render={() => <DrawCard />}
@@ -37,6 +33,11 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}`}
             render={() => <Redirect to={`${this.props.base}/drawphase`} />}
+                />
+
+        <Route
+          path={`${this.props.base}/checkphase`}
+          render={() => <CheckClues />}
         />
         <Route
           exact
