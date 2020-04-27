@@ -124,7 +124,9 @@ class StartGame extends React.Component {
         this.state = {
             users: null,
             userIds: [],
-            allUsers: null
+            allUsers: null,
+            currentPlayer: null,
+            currentIndex: 0
         };
     }
     async componentDidMount() {
@@ -151,6 +153,9 @@ class StartGame extends React.Component {
                     }
                 }
             }
+            this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
+            localStorage.setItem('aaa', this.state.users);
+
         } catch (error) {
             alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
         }
@@ -178,6 +183,12 @@ class StartGame extends React.Component {
         
         this.props.history.push('/game/players');
     }
+
+    nextPlayer() {
+        this.setState({currentIndex: (this.state.currentIndex + 1) % this.state.userIds.length});
+        this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
+    }
+
 
     render () {
         return (

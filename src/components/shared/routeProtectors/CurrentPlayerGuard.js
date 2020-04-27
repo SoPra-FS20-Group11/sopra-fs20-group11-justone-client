@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
+import StartGame from '../../game/StartGame';
 
 /**
  * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
@@ -13,5 +14,12 @@ import Game from '../shared/models/Game';
  * @param props
  */
 export const CurrentPlayerGuard = props => {
-    
+    const currentPlayerID = localStorage.getItem('id');
+    const gameID = localStorage.getItem('gameID');
+    const currentPlayer = StartGame.currentPlayer;
+
+    if (currentPlayerID == currentPlayer) {
+        return props.children;
+    }
+    return <Redirect to={"/waitingscreen"} />;
 };
