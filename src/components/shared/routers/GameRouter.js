@@ -6,6 +6,8 @@ import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
 import CheckClues from "../../game/CheckClues";
 import StartGame from "../../game/StartGame";
+import Guess from "../../game/Guess";
+import {CurrentPlayerGuard} from "../routeProtectors/CurrentPlayerGuard";
 
 const Container = styled.div`
   display: flex;
@@ -24,17 +26,27 @@ class GameRouter extends React.Component {
           path={`${this.props.base}/lobby`}
           render={() => <GameLobby />}
         />
-   
         <Route
           path={`${this.props.base}/drawphase`}
-          render={() => <DrawCard />}
+          render={() => (
+            <CurrentPlayerGuard>
+              <DrawCard />
+            </CurrentPlayerGuard>
+          )}
         />
         <Route
-            exact
-            path={`${this.props.base}`}
-            render={() => <Redirect to={`${this.props.base}/drawphase`} />}
-                />
-
+          exact
+          path={`${this.props.base}`}
+          render={() => <Redirect to={`${this.props.base}/drawphase`} />}
+        />
+        <Route 
+          path={`${this.props.base}/guessphase`}
+          render={() => (
+            <CurrentPlayerGuard>
+              <Guess />
+            </CurrentPlayerGuard>
+          )}
+        />
         <Route
           path={`${this.props.base}/checkphase`}
           render={() => <CheckClues />}

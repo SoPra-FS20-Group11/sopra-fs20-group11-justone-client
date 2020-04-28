@@ -24,9 +24,10 @@ const Users = styled.ul`
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
+  align-self: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -72,9 +73,11 @@ const MainButton = styled.button`
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
+  align-content: center;
   font-weight: 900;
   font-size: 30px;
   text-align: center;
+  align-self: center;
   margin-left: auto;
   color: rgba(0, 0, 0, 1);
   width: 50%;
@@ -91,8 +94,8 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 450px;
+  width: 60%;
+  height: 100px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -112,6 +115,7 @@ const InputField = styled.input`
   margin-left: -4px;
   border: grey0;
   border-radius: 20px;
+  align-content: center;
   font-weight: bold;
   margin-bottom: 20px;
   background: rgba(255, 255, 255, 0.2);
@@ -135,11 +139,12 @@ class Guess extends React.Component {
             
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({clues: response.data});
+            this.setState({clues: response.data.clues});
 
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
+        localStorage.setItem('clues', JSON.stringify(this.state.clues.clues));
     }
     async submitGuess() {
         try {
@@ -192,12 +197,15 @@ class Guess extends React.Component {
                                 );
                             })}
                         </Users>
+                        <Form>
                         <InputField 
                             placeholder="Enter your guess..."
                             onChange={e => {
                                 this.handleInputChange('guess', e.target.value);
                             }}
                         />
+                        </Form>
+                        &nbsp;
                         <MainButton
                             disabled={!this.state.guess}
                             width="10%"
@@ -206,6 +214,7 @@ class Guess extends React.Component {
                             }}
                         > Submit
                         </MainButton>
+                        &nbsp;
                         <MainButton
                             width="10%"
                             onClick={() => {
@@ -213,7 +222,7 @@ class Guess extends React.Component {
                             }}
                             >
                             Skip guessing
-                            </MainButton>
+                        </MainButton>
                     </GameContainer>
                 )}
             </Container>

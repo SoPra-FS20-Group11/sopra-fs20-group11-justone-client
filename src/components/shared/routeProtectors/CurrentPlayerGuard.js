@@ -1,8 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import DrawCard from './DrawCard';
-import Game from '../shared/models/Game';
-import StartGame from '../../game/StartGame';
+
 
 /**
  * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
