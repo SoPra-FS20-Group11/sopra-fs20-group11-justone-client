@@ -226,4 +226,4 @@ class CheckWord extends React.Component {
         )
     }
 }
-export default withRouter(CheckClues);
+export default withRouter(CheckWord);
