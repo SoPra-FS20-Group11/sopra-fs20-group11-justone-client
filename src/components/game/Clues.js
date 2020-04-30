@@ -86,21 +86,39 @@ class Clues extends React.Component {
     constructor() {
         super();
         this.state = {
-            clue: null
+          gameID: localStorage.getItem('gameID'),
+          clue: null,
+          allCluesBool: null
         };
     }
 
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
-    
+
+    async componentDidMount() {
+  
+      this.intervalID = setInterval(
+          () => this.checkAllClues(),
+          5000
+      );
+    }
+
+    async checkAllClues(){
+      const response = await api.get('/clues/'+this.state.gameID)
+      this.setState({allCluesBool: response.data.allClues});
+      if (this.state.allCluesBool == true){
+        this.props.history.push(`/games/checkphase`);
+      }
+    }
+
     async saveClue(){
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
-        clue: this.state.clue
+        clue: this.state.clue,
+        time: 30
         });
       const response = await api.post(`/clues/${gameID}`, requestBody);
-      this.props.history.push(`/nextPage`);
     }
 
     render() {

@@ -194,7 +194,7 @@ class CheckClues extends React.Component {
 
     checkChosen() {
         if (this.state.numchosen >= this.state.clues.clues.length) {
-            this.props.history.push(`/nextPage`);
+            this.props.history.push(`/games/waiting2`);
         }
     }
 

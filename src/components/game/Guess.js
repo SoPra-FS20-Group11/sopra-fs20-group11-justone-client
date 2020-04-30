@@ -152,7 +152,8 @@ class Guess extends React.Component {
             const gameID = localStorage.getItem('gameID');
             //send a request to guess the mystery word
             const requestBody = JSON.stringify({
-                guess: this.state.guess
+                guess: this.state.guess,
+                
             });
             const response = await api.post(`/guess/${gameID}`, requestBody);
             // ==> skip to the nextpage

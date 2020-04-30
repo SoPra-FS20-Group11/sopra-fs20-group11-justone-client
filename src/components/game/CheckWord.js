@@ -34,7 +34,7 @@ const WordContainer = styled.div`
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 25px;
+  font-size: 50px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
   width: 100%;
@@ -122,15 +122,18 @@ export const CheckButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  margin-top: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 25px;
   text-align: center;
-  width: 10%;
+  width: 30%;
   color: rgba(0, 0, 0, 1);
-  height: 30px;
+  height: 50px;
   border: none;
   border-radius: 5px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
@@ -147,8 +150,7 @@ class CheckWord extends React.Component {
         this.state = {
             chosenWord: null,
             gameId: null,
-            numAccepted: 0,
-            acceptance: true
+            numChosen: 0,
         };
     }
 
@@ -159,7 +161,7 @@ class CheckWord extends React.Component {
             const response = await api.get(`/chosenword/${gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({ chosenWord: response.data });
+            this.setState({ chosenWord: response.data.chosenWord });
 
             this.intervalID = setInterval(
                 () => this.checkChosen(),
@@ -177,20 +179,20 @@ class CheckWord extends React.Component {
     }
 
     async acceptWord(word) {
-        let num = this.state.numAccepted;
+        let num = this.state.numChosen;
         num = num + 1;
-        this.setState({ numAccepted: num });
+        this.setState({ numChosen: num });
     }
 
     async rejectWord(chosenWord) {
-        this.setState({acceptance: false})
-        this.props.history.push('/overview')
+        let num = this.state.numChosen;
+        num = num + 1;
+        this.setState({ numChosen: num });
     }
 
     checkChosen() {
-        const numPlayers = localStorage.getItem('PlayersList'.length)
-        if (this.state.numAccepted === numPlayers) {
-            this.props.history.push(`/nextPage`);
+        if (this.state.numChosen === 1) {
+            this.props.history.push(`/waiting1`);
         }
     }
 
@@ -198,7 +200,7 @@ class CheckWord extends React.Component {
         return (
             <Container>
                 <Label2> Here's the chosen word! Do you accept or reject? </Label2>
-                {!this.state.clues ? (
+                {!this.state.chosenWord ? (
                     <Spinner />
                 ) : (
                         <GameContainer>

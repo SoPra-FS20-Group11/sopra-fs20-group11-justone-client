@@ -69,7 +69,8 @@ class DrawCard extends React.Component {
         super();
         this.state = {
             users: null,
-            drawnCardBool: false
+            drawnCardBool: false,
+            card: null,
         };
     }
 
@@ -78,6 +79,15 @@ class DrawCard extends React.Component {
       this.forceUpdate();
       const gameID = localStorage.getItem('gameID');
       const response = await api.get(`/cards/${gameID}`);
+      this.setState({card: response.data.words});
+    }
+
+    async setChosenWord(wordNum){
+      const gameID = localStorage.getItem('gameID');
+      const requestBody = JSON.stringify({
+        chosenWord: this.state.card[wordNum]
+      });
+      await api.put('/chosenword/'+gameID, requestBody)
     }
 
     render() {
@@ -112,7 +122,8 @@ class DrawCard extends React.Component {
                         <WordButton                     
                             width="100%"
                             onClick={() => {
-                                this.props.history.push(`/games/clues`);                   
+                                this.setChosenWord(number);
+                                this.props.history.push(`/games/waiting0`);                   
                             }}
                           >                        
                           <div> {number}</div>             
