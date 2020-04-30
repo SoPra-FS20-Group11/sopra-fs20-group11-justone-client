@@ -15,15 +15,16 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 
-const Users = styled.ul`
+const Users = styled.div`
+  width: 400px;
   list-style: none;
   padding-left: 0;
 `;
 
-const GameContainer = styled.li`
+const GameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
@@ -31,16 +32,15 @@ const GameContainer = styled.li`
 const WordContainer = styled.div`
   justify-content: center;
   padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
+  box-shadow: 3px 3px 1px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
   width: 100%;
   height: 90px;
   border: none;
-  border-radius: 5px;
   background: rgb(255, 229, 210);
 `;
 
@@ -141,8 +141,11 @@ export const CheckButton = styled.button`
   background: rgb(230, 180, 100);
   transition: all 0.3s ease;
 `
-
-
+const Word = styled.div`
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 40px;
+`
 
 class CheckWord extends React.Component {
     constructor() {
@@ -150,6 +153,7 @@ class CheckWord extends React.Component {
         this.state = {
             chosenWord: null,
             gameId: null,
+            card: null,
             numChosen: 0,
         };
     }
@@ -161,7 +165,10 @@ class CheckWord extends React.Component {
             const response = await api.get(`/chosenword/${gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
+            const responseCard = await api.get(`/cards/${gameID}`);
+            this.setState({card: responseCard.data.words});
             this.setState({ chosenWord: response.data.chosenWord });
+
 
             this.intervalID = setInterval(
                 () => this.checkChosen(),
@@ -205,7 +212,31 @@ class CheckWord extends React.Component {
                 ) : (
                         <GameContainer>
                             <Users>
-                                <WordContainer>{this.state.chosenWord}</WordContainer>
+                                {this.state.card.map(words => {
+                                  if (words==this.state.chosenWord){
+                                    const color = '#03AC13'
+                                    return (
+                                      <WordContainer  key={words}>
+                                          <Container>                                          
+                                            <Word style={{color: color}}>
+                                            {words}
+                                            </Word>
+                                          </Container>                                                                                       
+                                      </WordContainer>
+                                    );                 
+                                  }else{
+                                    const color = '#000000'
+                                    return (
+                                      <WordContainer  key={words}>
+                                          <Container>                                          
+                                            <Word style={{color: color}}>
+                                            {words}
+                                            </Word>
+                                          </Container>                                                                                       
+                                      </WordContainer>
+                                  );
+                                  }})}
+                                    
                                 <CheckButton
                                 width="100%"
                                 onClick={() => {
