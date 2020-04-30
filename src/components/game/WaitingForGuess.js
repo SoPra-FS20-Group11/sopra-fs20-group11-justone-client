@@ -70,17 +70,21 @@ class WaitingForDraw extends React.Component {
     this.setState({activePlayerName: UserList});
 
     this.intervalID = setInterval(
-        () => this.checkChosenWord(),
+        () => this.checkGuess(),
         5000
     );
   }
 
-  async checkChosenWord(){
+  async checkGuess(){
     const GameID = localStorage.getItem('gameID');
-    const responseWord = await api.get('/chosenword/'+GameID);
-    this.setState({wordChosen: responseWord.data.chosenWord});
-    if (this.state.wordChosen != null){
-        this.props.history.push('/games/clues');
+    const responseGuess = await api.get('/guess/'+GameID);
+    this.setState({guess: responseGuess.data});
+    if (this.state.guess.guess != null){
+        if (this.state.guess.guessStatus === "CORRECT"){
+            this.props.history.push('/games/resultwon');
+        }else{
+            this.props.history.push('/games/resultlost');
+        }
     }
   }
 
