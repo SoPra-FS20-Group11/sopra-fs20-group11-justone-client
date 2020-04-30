@@ -176,7 +176,7 @@ class CheckClues extends React.Component {
         this.setState({ [key]: value });
     }
 
-    async acceptClue(clue) {
+    async acceptClue() {
         var num = this.state.numchosen;
         var newNum = num + 1;
         this.setState({ numchosen: newNum });
@@ -216,7 +216,7 @@ class CheckClues extends React.Component {
                                             <CheckButton
                                                 width="100%"
                                                     onClick={() => {
-                                                        this.acceptClue(this.state.clues.clues.id);
+                                                        this.acceptClue();
                                                 }}>
                                                 Accept
                                             </CheckButton>
