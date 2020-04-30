@@ -146,18 +146,28 @@ class Guess extends React.Component {
         }
         localStorage.setItem('clues', JSON.stringify(this.state.clues.clues));
     }
+
     async submitGuess() {
         try {
             const gameID = localStorage.getItem('gameID');
             //send a request to guess the mystery word
+            const requestBody = JSON.stringify({
+                guess: this.state.guess
+            });
+            const response = await api.post(`/guess/${gameID}`, requestBody);
+            // ==> skip to the nextpage
+            this.props.history.push('/nextpage');
         } catch (error) {
             alert(`Something went wrong during the submit of the guess: \n${handleError(error)}`);
         }
         this.nextPlayer();
     }
 
-    skipGuess() {
+    async skipGuess() {
         const gameID = localStorage.getItem('gameID');
+        
+        // ==> put request: skip guess
+        await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
         this.props.history.push(`/nextpage`);
         this.nextPlayer();
