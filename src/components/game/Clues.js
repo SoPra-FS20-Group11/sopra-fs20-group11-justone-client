@@ -81,6 +81,14 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+const Label3 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 50px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
 
 class Clues extends React.Component {
     constructor() {
@@ -88,7 +96,8 @@ class Clues extends React.Component {
         this.state = {
           gameID: localStorage.getItem('gameID'),
           clue: null,
-          allCluesBool: null
+          allCluesBool: null,
+          chosenWord: null
         };
     }
 
@@ -102,6 +111,8 @@ class Clues extends React.Component {
           () => this.checkAllClues(),
           5000
       );
+      const response = await api.get(`/chosenword/${this.state.gameID}`);
+      this.setState({chosenWord: response.data.chosenWord})
     }
 
     async checkAllClues(){
@@ -125,7 +136,8 @@ class Clues extends React.Component {
         return (
             <Container>
                 <FormContainer>
-                    <Label2> Give a clue! </Label2>
+                    <Label2> Give a clue to the following word! </Label2>
+                    <Label3> "{this.state.chosenWord}" </Label3>
                     <Form>
                         <InputField
                             placeholder="Enter your clue... "

@@ -8,6 +8,7 @@ import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
 import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
+import { Spinner } from '../../views/design/Spinner';
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -48,7 +49,8 @@ class WaitingForDraw extends React.Component {
         allUsers: null,
         game: null,
         activePlayerName: null,
-        wordChosen: null
+        wordChosen: null,
+        wordStatus: null
     };
   }
 
@@ -79,7 +81,8 @@ class WaitingForDraw extends React.Component {
     const GameID = localStorage.getItem('gameID');
     const responseWord = await api.get('/chosenword/'+GameID);
     this.setState({wordChosen: responseWord.data.chosenWord});
-    if (this.state.wordChosen != null){
+    this.setState({wordStatus: responseWord.data.wordStatus});
+    if (this.state.wordStatus == "SELECTED"){
         this.props.history.push('/games/clues');
     }
   }
@@ -90,6 +93,7 @@ class WaitingForDraw extends React.Component {
         <LabelContainer>
         &nbsp;
         <Label2> Waiting for {this.state.activePlayerName} to draw a card.. </Label2>
+        <Spinner />
         </LabelContainer>
       </Container>     
     );

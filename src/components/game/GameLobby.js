@@ -9,8 +9,6 @@ import { withRouter } from 'react-router-dom';
 import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
-import {StartingGame} from '../shared/routeProtectors/StartingGame';
-import StartGame from './StartGame';
 
 const Container = styled(BaseContainer)`
   color: grey0;
