@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
+import {StartingGame} from '../shared/routeProtectors/StartingGame';
+import StartGame from './StartGame';
 
 const Container = styled(BaseContainer)`
   color: grey0;
@@ -138,7 +140,37 @@ class GameLobby extends React.Component {
         currentUserId: currentId
       });
       const response = await api.put('/games/join/'+gameId, requestBody);
-      this.props.history.push(`/game/${response.data.id}`);
+      
+      /* These functionalities are for ==> if someone start the game, everyone who
+      enters the lobby will redirected to the actual game
+      */
+
+      const responseStatus = await api.get(`/games/${gameId}`);
+      const status = responseStatus.data.status;
+      const users = responseStatus.data.usersIds;
+
+      //the list usersIds will be transformed into a unique List (no duplicates)
+      const uniqueSet = new Set(users);
+      const uniqueUsers = [...uniqueSet];
+
+      const currentIndex = 0;
+      const currentPlayer = uniqueUsers[currentIndex];
+
+      localStorage.setItem('currentPlayer', currentPlayer);
+      localStorage.setItem('currentPlayerIndex', currentIndex);
+      localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
+
+      // if the game starts ==> everyone who enters the game/lobby, will be redirected to the game.
+      if (status == "RUNNING") {
+        if (currentId == currentPlayer) {
+          this.props.history.push(`/games/drawphase`);
+        } else {
+          this.props.history.push(`/games/waiting`);
+        }
+      } else {
+        this.props.history.push(`/game/${response.data.id}`);
+      }
+      
     } catch (error) {
       alert(`Something went wrong while fetching the game: \n${handleError(error)}`)
     }
