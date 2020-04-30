@@ -137,7 +137,7 @@ class GameLobby extends React.Component {
       const requestBody = JSON.stringify({
         currentUserId: currentId
       });
-      const response = await api.put('/games/'+gameId, requestBody);
+      const response = await api.put('/games/join/'+gameId, requestBody);
       this.props.history.push(`/game/${response.data.id}`);
     } catch (error) {
       alert(`Something went wrong while fetching the game: \n${handleError(error)}`)

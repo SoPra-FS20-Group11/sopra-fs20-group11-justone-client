@@ -5,9 +5,13 @@ import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
 import CheckClues from "../../game/CheckClues";
+import CheckWord from "../../game/CheckWord";
 import StartGame from "../../game/StartGame";
 import Guess from "../../game/Guess";
 import {CurrentPlayerGuard} from "../routeProtectors/CurrentPlayerGuard";
+import Overview from "../../game/Overview";
+import WaitingForDraw from "../../game/WaitingForDraw";
+import WaitingForGuess from "../../game/WaitingForGuess";
 
 const Container = styled.div`
   display: flex;
@@ -29,9 +33,9 @@ class GameRouter extends React.Component {
         <Route
           path={`${this.props.base}/drawphase`}
           render={() => (
-            <CurrentPlayerGuard>
+            //<CurrentPlayerGuard>
               <DrawCard />
-            </CurrentPlayerGuard>
+            //</CurrentPlayerGuard>
           )}
         />
         <Route
@@ -48,6 +52,11 @@ class GameRouter extends React.Component {
           )}
         />
         <Route
+          exact
+          path={`${this.props.base}/checkwordphase`}
+          render={() => <CheckWord />}
+        />
+        <Route
           path={`${this.props.base}/checkphase`}
           render={() => <CheckClues />}
         />
@@ -55,6 +64,23 @@ class GameRouter extends React.Component {
           exact
           path={`${this.props.base}/clues`}
           render={() => <Clues />}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/waiting`}
+          render={() => <WaitingForDraw />}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/waiting2`}
+          render={() => <WaitingForGuess />}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/overview`}
+          render={() => (
+              <Overview />
+          )}
         />
         <Route
             exact
