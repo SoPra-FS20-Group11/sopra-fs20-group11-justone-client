@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
+import JustOneSingle from '../../JustOneSingle.png';
 
 
 const Container = styled(BaseContainer)`
@@ -39,10 +40,21 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const JustOneCard = styled.img`
+const ImgContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const JustOneDeck = styled.img`
   justify-content: center;
   margin-top: 2em;
-  margin-left: 22em;
+  
+`;
+const JustOneNext = styled.img`
+  position: absolute;
+  margin-left: 10em;
 `;
 
 export const WordButton = styled.button`
@@ -97,7 +109,7 @@ class DrawCard extends React.Component {
       if (!drawnCardBool){
         renderRight =
             <Container>
-                <JustOneCard src={JustOneCards} alt= "Just One Cards" height={400} />
+                <JustOneDeck src={JustOneCards} alt= "Just One Cards" height={480} />
                   <Label2> Draw a card from the stack! </Label2>
                   <ButtonContainer>
                     <MainButton
@@ -113,7 +125,10 @@ class DrawCard extends React.Component {
       }else{
         renderRight = 
             <Container>
-                <JustOneCard src={JustOneCards} alt= "Just One Cards" height={400} />
+                <ImgContainer>
+                <JustOneDeck src={JustOneSingle} alt= "Just One Cards" height={450} />
+                <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />       
+                </ImgContainer>        
                   <Label2> Pick a word from the card! </Label2>
                   <ButtonContainer>
                     {numbers.map((number) => {

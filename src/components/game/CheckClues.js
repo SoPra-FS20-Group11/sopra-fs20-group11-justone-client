@@ -25,20 +25,20 @@ const GameContainer = styled.li`
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  flex-direction: column;
 `;
 
 const ClueContainer = styled.div`
-  justify-content: center;
+  margin-top: 20px;
+  flex-direction: row;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 25px;
-  text-align: center;
+  font-size: 35px;
+  text-align: right;
   color: rgba(0, 0, 0, 1);
   width: 100%;
-  height: 90px;
+  height: 100px;
   border: none;
   border-radius: 5px;
   background: rgb(255, 229, 210);
@@ -122,13 +122,16 @@ export const CheckButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  margin-top: 2em;
+  margin-left: 20px;
+  margin-right: 20px;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: bold;
   font-size: 20px;
   text-align: center;
-  width: 10%;
+  width: 15%;
   color: rgba(0, 0, 0, 1);
   height: 30px;
   border: none;
@@ -139,6 +142,15 @@ export const CheckButton = styled.button`
   transition: all 0.3s ease;
 `
 
+const ClueLabel = styled.h1`
+  position: absolute;
+  justify-content: center;
+  text-align: left;
+  font-family: system-ui;
+  font-weight: bold;
+  font-size: 40px;
+  margin-left: 30px;
+`;
 
 
 class CheckClues extends React.Component {
@@ -148,6 +160,11 @@ class CheckClues extends React.Component {
             clues: null,
             gameId: null,
             numchosen: 0,
+            color: null,
+            decidedClues: [],
+            colorAcc: [],
+            colorRej: [],
+            numdecidedClues: 0,
         };
     }
 
@@ -166,6 +183,19 @@ class CheckClues extends React.Component {
                 1000
             );
 
+            const colorArrayAcc = [];
+            const colorArrayRej = [];
+            for (var i = 0; i < this.state.clues.clues.length; i++) {
+                colorArrayAcc.push('#000000')
+                colorArrayRej.push('#000000')}
+            this.setState({ colorAcc: colorArrayAcc });
+            this.setState({ colorRej: colorArrayRej });
+
+            const decidedClueArray = [];
+            for (var i = 0; i < this.state.clues.clues.length; i++) {
+                decidedClueArray.push('0');}
+            this.setState({ decidedClues: decidedClueArray });
+
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
@@ -176,24 +206,42 @@ class CheckClues extends React.Component {
         this.setState({ [key]: value });
     }
 
-    async acceptClue() {
-        var num = this.state.numchosen;
-        var newNum = num + 1;
-        this.setState({ numchosen: newNum });
+    async acceptClue(index) {
+        const colorArrayAcc = this.state.colorAcc;
+        const decidedClueArray = this.state.decidedClues;
+        for (var i = 0; i < this.state.clues.clues.length; i++) {
+            if(i==index){
+                colorArrayAcc[i] = '#03AC13';
+                decidedClueArray[i] = '1';
+            }
+        }
+        
+        this.setState({ decidedClues: decidedClueArray });
+        this.setState({ colorAcc: colorArrayAcc });
+        this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
     }
 
-    async rejectClue(clue) {
+    async rejectClue(clue, index) {
         const requestBody = JSON.stringify({
             clue: clue
         });
         const response = await api.put(`/clues/${this.state.gameId}`, requestBody);
-        var num = this.state.numchosen;
-        var newNum = num + 1;
-        this.setState({ numchosen: newNum });
+
+        const colorArrayRej = this.state.colorRej;
+        const decidedClueArray = this.state.decidedClues;
+        for (var i = 0; i < this.state.clues.clues.length; i++) {
+            if(i==index){
+                colorArrayRej[i] = '#FF0000';
+                decidedClueArray[i] = '1';
+            }
+        }
+        this.setState({ decidedClues: decidedClueArray });
+        this.setState({ colorRej: colorArrayRej });
+        this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
     }
 
     checkChosen() {
-        if (this.state.numchosen >= this.state.clues.clues.length) {
+        if (this.state.numdecidedClues >= this.state.clues.clues.length) {
             this.props.history.push(`/games/waiting2`);
         }
     }
@@ -207,23 +255,28 @@ class CheckClues extends React.Component {
                 ) : (
                         <GameContainer>
                             <Users>
-                                {this.state.clues.clues.map(clues => {
-                                    return (
+                                {this.state.clues.clues.map((clues, i) => {    
+                                                                
+                                    return (                              
                                         <ClueContainer key={clues.id}>
-                                            <Container>
+                                            <ClueLabel >
                                                 {clues}
-                                            </Container>
+                                            </ClueLabel>
                                             <CheckButton
+                                                disabled={this.state.decidedClues[i]==='1'}
+                                                style={{color: this.state.colorAcc[i]}}
                                                 width="100%"
                                                     onClick={() => {
-                                                        this.acceptClue();
+                                                        this.acceptClue(i);
                                                 }}>
                                                 Accept
                                             </CheckButton>
                                             <CheckButton
+                                                disabled={this.state.decidedClues[i]==='1'}
+                                                style={{color: this.state.colorRej[i]}}  
                                                 width="100%"
                                                     onClick={() => {
-                                                    this.rejectClue();
+                                                    this.rejectClue(clues, i);
                                                 }}>
                                                 Reject
                                             </CheckButton>

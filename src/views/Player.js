@@ -21,12 +21,14 @@ const Score = styled.div`
   font-weight: bold;
   color: grey0;
   margin-left: 60px;
+  margin-right: 20px;
   justify-content: center;
 `;
 
 const GamesPlayed = styled.div`
   margin-left: 10px;
   font-weight: bold;
+  margin-right: 20px;
 `;
 
 
@@ -41,7 +43,7 @@ const GamesPlayed = styled.div`
 const Player = ({ user }) => {
   return (
     <Container>
-      <Score>SCORE: {user.score}</Score> <UserName>USERNAME: {user.username}</UserName> <GamesPlayed>GAMES PLAYED: {user.gamesPlayed}</GamesPlayed>
+      <UserName>Username: {user.username}</UserName> <Score>Score: {user.score}</Score> <GamesPlayed>Games Played: {user.gamesPlayed}</GamesPlayed>
     </Container>
   );
 };

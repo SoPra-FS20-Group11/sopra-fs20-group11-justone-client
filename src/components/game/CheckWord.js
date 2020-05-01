@@ -155,6 +155,8 @@ class CheckWord extends React.Component {
             gameId: null,
             card: null,
             numChosen: 0,
+            activePlayername: null,
+            allUsers: null
         };
     }
 
@@ -174,6 +176,16 @@ class CheckWord extends React.Component {
                 () => this.checkChosen(),
                 1000
             );
+            const responseGame = await api.get('/games/'+gameID);
+            const responseUsers = await api.get('/users');
+            this.setState({ allUsers : responseUsers.data});
+            const UserList = [];
+            for (var i = 0; i < this.state.allUsers.length; i++) {
+            if (responseGame.data.currentUserId == this.state.allUsers[i].id){
+                UserList.push(this.state.allUsers[i].username);
+                }
+            }
+            this.setState({activePlayerName: UserList});
 
         } catch (error) {
             alert(`Something went wrong while fetching the chosen word: \n${handleError(error)}`);
@@ -199,14 +211,15 @@ class CheckWord extends React.Component {
 
     checkChosen() {
         if (this.state.numChosen === 1) {
-            this.props.history.push(`/waiting1`);
+            this.props.history.push(`/games/clues`);
         }
     }
 
     render() {
         return (
             <Container>
-                <Label2> Here's the chosen word! Do you accept or reject? </Label2>
+                <Label2> The chosen word is {this.state.chosenWord}! </Label2>
+                <Label2> Do you accept this word or do you want Player "{this.state.activePlayerName}" to randomly choose again? </Label2>
                 {!this.state.chosenWord ? (
                     <Spinner />
                 ) : (

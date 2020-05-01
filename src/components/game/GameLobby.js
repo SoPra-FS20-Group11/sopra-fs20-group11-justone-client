@@ -86,6 +86,28 @@ const MainButton = styled.button`
   transition: all 0.3s ease;
 `;
 
+const CreateGameButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  margin-left: auto;
+  color: rgba(0, 0, 0, 1);
+  width: 50%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
+`;
+
 class GameLobby extends React.Component {
   constructor() {
     super();
@@ -224,14 +246,14 @@ class GameLobby extends React.Component {
               Return
             </MainButton>
             &nbsp;
-            <MainButton
+            <CreateGameButton
               width="100%"
               onClick={() => {
                 this.createNewGame();
               }}
             >
               Create new Game
-            </MainButton>
+            </CreateGameButton>
           </GameContainer>
         )}
       </Container>

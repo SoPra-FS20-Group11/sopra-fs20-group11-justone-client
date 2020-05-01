@@ -45,26 +45,23 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const GameButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
+const ClueContainer = styled.div`
+  margin-top: 20px;
+  flex-direction: row;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 25px;
+  font-size: 35px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
   width: 600px;
   height: 90px;
   border: none;
   border-radius: 5px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 210);
-  transition: all 0.3s ease;
 `;
+
 
 const MainButton = styled.button`
   &:hover {
@@ -200,10 +197,10 @@ class Guess extends React.Component {
                         <Users>
                             {this.state.clues.map(clue => {
                                 return (
-                                    <ButtonContainer key={clue.clues}>
-                                        <GameButton>
+                                    <ButtonContainer  key={clue.clues}>
+                                        <ClueContainer>
                                             {clue}
-                                        </GameButton>
+                                        </ClueContainer>
                                     </ButtonContainer>
                                 );
                             })}

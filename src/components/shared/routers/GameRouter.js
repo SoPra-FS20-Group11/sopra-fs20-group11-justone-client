@@ -46,9 +46,9 @@ class GameRouter extends React.Component {
         <Route 
           path={`${this.props.base}/guessphase`}
           render={() => (
-            <CurrentPlayerGuard>
+            //<CurrentPlayerGuard>
               <Guess />
-            </CurrentPlayerGuard>
+            //</CurrentPlayerGuard>
           )}
         />
         <Route
