@@ -40,6 +40,17 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+const RoundLabel = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  text-decoration: underline;
+  font-size: 50px;
+  margin-top: 40px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
+
 const ImgContainer = styled.div`
   display: flex;
   align-items: flex-end;
@@ -49,7 +60,7 @@ const ImgContainer = styled.div`
 
 const JustOneDeck = styled.img`
   justify-content: center;
-  margin-top: 2em;
+  margin-top: 1em;
   
 `;
 const JustOneNext = styled.img`
@@ -83,7 +94,14 @@ class DrawCard extends React.Component {
             users: null,
             drawnCardBool: false,
             card: null,
+            round: null
         };
+    }
+    async componentDidMount() {
+      const gameID = localStorage.getItem('gameID');
+      const response = await api.get(`/games/${gameID}`);
+
+      this.setState({round: response.data.round});
     }
 
     async drawNewCard() {
@@ -109,6 +127,7 @@ class DrawCard extends React.Component {
       if (!drawnCardBool){
         renderRight =
             <Container>
+              <RoundLabel> Round {this.state.round} </RoundLabel>
                 <JustOneDeck src={JustOneCards} alt= "Just One Cards" height={480} />
                   <Label2> Draw a card from the stack! </Label2>
                   <ButtonContainer>
@@ -125,6 +144,7 @@ class DrawCard extends React.Component {
       }else{
         renderRight = 
             <Container>
+              <RoundLabel> Round {this.state.round} </RoundLabel>
                 <ImgContainer>
                 <JustOneDeck src={JustOneSingle} alt= "Just One Cards" height={450} />
                 <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />       

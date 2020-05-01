@@ -13,6 +13,9 @@ import Overview from "../../game/Overview";
 import WaitingForDraw from "../../game/WaitingForDraw";
 import WaitingForGuess from "../../game/WaitingForGuess";
 import WaitingForClues from "../../game/WaitingForClues";
+import PostGameCorrect from "../../game/PostGameCorrect";
+import PostGameWrong from "../../game/PostGameWrong";
+
 
 const Container = styled.div`
   display: flex;
@@ -86,6 +89,20 @@ class GameRouter extends React.Component {
           path={`${this.props.base}/overview`}
           render={() => (
               <Overview />
+          )}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/resultwon`}
+          render={() => (
+            <PostGameCorrect />
+          )}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/resultlost`}
+          render={() => (
+            <PostGameWrong />
           )}
         />
         <Route

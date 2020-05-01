@@ -144,6 +144,19 @@ class Guess extends React.Component {
         localStorage.setItem('clues', JSON.stringify(this.state.clues.clues));
     }
 
+    async checkGuess(){
+        const GameID = localStorage.getItem('gameID');
+        const responseGuess = await api.get('/guess/'+GameID);
+        this.setState({guess: responseGuess.data});
+        if (this.state.guess.guessStatus != "NOGUESS"){
+            if (this.state.guess.guessStatus === "CORRECT"){
+                this.props.history.push('/games/resultwon');
+            }else{
+                this.props.history.push('/games/resultlost');
+            }
+        }
+      }
+
     async submitGuess() {
         try {
             const gameID = localStorage.getItem('gameID');
@@ -154,7 +167,7 @@ class Guess extends React.Component {
             });
             const response = await api.post(`/guess/${gameID}`, requestBody);
             // ==> skip to the nextpage
-            this.props.history.push('/nextpage');
+            this.checkGuess();
         } catch (error) {
             alert(`Something went wrong during the submit of the guess: \n${handleError(error)}`);
         }
@@ -167,7 +180,7 @@ class Guess extends React.Component {
         // ==> put request: skip guess
         await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
-        this.props.history.push(`/nextpage`);
+        this.props.history.push(`/games/drawphase`);
         this.nextPlayer();
     }
 

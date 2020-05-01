@@ -13,71 +13,15 @@ import Game from '../shared/models/Game';
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;
-`;
-
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
+  align-items: auto;
 `;
 
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-
-const ClueContainer = styled.div`
-  justify-content: center;
-  padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
-  font-family: system-ui;
-  font-weight: 900;
-  font-size: 25px;
-  text-align: center;
-  color: rgba(0, 0, 0, 1);
-  width: 100%;
-  height: 90px;
-  border: none;
-  border-radius: 5px;
-  background: rgb(255, 229, 210);
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const Label2 = styled.h1`
-  font-weight: bold;
-  font-family: system-ui;
-  font-size: 30px;
-  text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
-  text-align: center;
-`;
-
-const GameButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
-  font-family: system-ui;
-  font-weight: 900;
-  font-size: 25px;
-  text-align: center;
-  color: rgba(0, 0, 0, 1);
-  width: 600px;
-  height: 90px;
-  border: none;
-  border-radius: 5px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(255, 229, 210);
-  transition: all 0.3s ease;
 `;
 
 const MainButton = styled.button`
@@ -106,10 +50,12 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 450px;
+  width: 70%;
+  height: 200px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   font-family: system-ui;
-  font-size: 20px;
+  font-size: 40px;
   font-weight: 1000;
   padding-left: 37px;
   padding-right: 37px;
@@ -152,11 +98,11 @@ class PostGameCorrect extends React.Component {
         try {
             const gameID = localStorage.getItem('gameID');
             this.setState({ gameId: gameID });
-            const response = await api.get(`/points/${gameID}`);
+            //const response = await api.get(`/points/${gameID}`);
 
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({ points: response.data });
+            //this.setState({ points: response.data });
 
         } catch (error) {
             alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
@@ -165,21 +111,22 @@ class PostGameCorrect extends React.Component {
     }
 
     next() {
-      this.props.history.push(`/WaitingForDraw`)
+      this.props.history.push(`/games/drawphase`)
     } 
 
 
     render() {
       return (
+        <Container>
         <GameContainer>
-          <Form>Congratulations! {this.state.points} awarded</Form>
+          <Form>Congratulations! point(s) awarded</Form>
           <MainButton onClick={() => {this.next();
           }}> Next Round
           </MainButton>
         </GameContainer>
-
+        </Container>
       );
     }
 }
 
-export default withRouter(PostGameWrong);
+export default withRouter(PostGameCorrect);

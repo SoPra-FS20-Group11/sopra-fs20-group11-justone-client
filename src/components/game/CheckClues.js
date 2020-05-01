@@ -180,7 +180,7 @@ class CheckClues extends React.Component {
 
             this.intervalID = setInterval(
                 () => this.checkChosen(),
-                1000
+                5000
             );
 
             const colorArrayAcc = [];
