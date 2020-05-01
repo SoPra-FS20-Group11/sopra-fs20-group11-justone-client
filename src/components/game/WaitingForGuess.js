@@ -9,6 +9,9 @@ import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
 import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
+//for the Spinner
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from 'react-loader-spinner';
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -95,7 +98,12 @@ class WaitingForDraw extends React.Component {
         <LabelContainer>
         &nbsp;
         <Label2> Waiting for {this.state.activePlayerName} to submit a guess.. </Label2>
-        <Spinner />
+        <Loader
+            type="Triangle"
+            color="rgba(204, 73, 3, 1)"
+            height={200}
+            width={200}
+        />
         </LabelContainer>
       </Container>     
     );

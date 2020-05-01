@@ -123,7 +123,7 @@ class DrawCard extends React.Component {
                             width="100%"
                             onClick={() => {
                                 this.setChosenWord(number);
-                                this.props.history.push(`/games/waiting0`);                   
+                                this.props.history.push(`/games/waiting1`);                   
                             }}
                           >                        
                           <div> {number}</div>             
