@@ -19,5 +19,5 @@ export const CurrentPlayerGuard = props => {
     if (currentPlayerID == currentPlayer) {
         return props.children;
     }
-    return <Redirect to={"/waitingscreen"} />;
+    return <Redirect to={"/games/waiting"} />;
 };
