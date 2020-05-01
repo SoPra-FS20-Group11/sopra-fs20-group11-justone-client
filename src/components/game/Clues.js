@@ -81,33 +81,63 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+const Label3 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 50px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
 
 class Clues extends React.Component {
     constructor() {
         super();
         this.state = {
-            clue: null
+          gameID: localStorage.getItem('gameID'),
+          clue: null,
+          allCluesBool: null,
+          chosenWord: null
         };
     }
 
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
-    
+
+    async componentDidMount() {
+  
+      this.intervalID = setInterval(
+          () => this.checkAllClues(),
+          5000
+      );
+      const response = await api.get(`/chosenword/${this.state.gameID}`);
+      this.setState({chosenWord: response.data.chosenWord})
+    }
+
+    async checkAllClues(){
+      const response = await api.get('/clues/'+this.state.gameID)
+      this.setState({allCluesBool: response.data.allClues});
+      if (this.state.allCluesBool == true){
+        this.props.history.push(`/games/checkphase`);
+      }
+    }
+
     async saveClue(){
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
-        clue: this.state.clue
+        clue: this.state.clue,
+        time: 30
         });
       const response = await api.post(`/clues/${gameID}`, requestBody);
-      this.props.history.push(`/nextPage`);
     }
 
     render() {
         return (
             <Container>
                 <FormContainer>
-                    <Label2> Give a clue! </Label2>
+                    <Label2> Give a clue to the following word! </Label2>
+                    <Label3> "{this.state.chosenWord}" </Label3>
                     <Form>
                         <InputField
                             placeholder="Enter your clue... "

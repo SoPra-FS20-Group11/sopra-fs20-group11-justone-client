@@ -15,15 +15,16 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 
-const Users = styled.ul`
+const Users = styled.div`
+  width: 400px;
   list-style: none;
   padding-left: 0;
 `;
 
-const GameContainer = styled.li`
+const GameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
@@ -31,16 +32,15 @@ const GameContainer = styled.li`
 const WordContainer = styled.div`
   justify-content: center;
   padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
+  box-shadow: 3px 3px 1px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 25px;
+  font-size: 40px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
   width: 100%;
   height: 90px;
   border: none;
-  border-radius: 5px;
   background: rgb(255, 229, 210);
 `;
 
@@ -122,15 +122,18 @@ export const CheckButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  margin-top: 3em;
+  margin-left: 1em;
+  margin-right: 1em;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 25px;
   text-align: center;
-  width: 10%;
+  width: 30%;
   color: rgba(0, 0, 0, 1);
-  height: 30px;
+  height: 50px;
   border: none;
   border-radius: 5px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
@@ -138,8 +141,11 @@ export const CheckButton = styled.button`
   background: rgb(230, 180, 100);
   transition: all 0.3s ease;
 `
-
-
+const Word = styled.div`
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 40px;
+`
 
 class CheckWord extends React.Component {
     constructor() {
@@ -147,8 +153,8 @@ class CheckWord extends React.Component {
         this.state = {
             chosenWord: null,
             gameId: null,
-            numAccepted: 0,
-            acceptance: true
+            card: null,
+            numChosen: 0,
         };
     }
 
@@ -159,7 +165,10 @@ class CheckWord extends React.Component {
             const response = await api.get(`/chosenword/${gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({ chosenWord: response.data });
+            const responseCard = await api.get(`/cards/${gameID}`);
+            this.setState({card: responseCard.data.words});
+            this.setState({ chosenWord: response.data.chosenWord });
+
 
             this.intervalID = setInterval(
                 () => this.checkChosen(),
@@ -177,20 +186,20 @@ class CheckWord extends React.Component {
     }
 
     async acceptWord(word) {
-        let num = this.state.numAccepted;
+        let num = this.state.numChosen;
         num = num + 1;
-        this.setState({ numAccepted: num });
+        this.setState({ numChosen: num });
     }
 
     async rejectWord(chosenWord) {
-        this.setState({acceptance: false})
-        this.props.history.push('/overview')
+        let num = this.state.numChosen;
+        num = num + 1;
+        this.setState({ numChosen: num });
     }
 
     checkChosen() {
-        const numPlayers = localStorage.getItem('PlayersList'.length)
-        if (this.state.numAccepted === numPlayers) {
-            this.props.history.push(`/nextPage`);
+        if (this.state.numChosen === 1) {
+            this.props.history.push(`/waiting1`);
         }
     }
 
@@ -198,12 +207,36 @@ class CheckWord extends React.Component {
         return (
             <Container>
                 <Label2> Here's the chosen word! Do you accept or reject? </Label2>
-                {!this.state.clues ? (
+                {!this.state.chosenWord ? (
                     <Spinner />
                 ) : (
                         <GameContainer>
                             <Users>
-                                <WordContainer>{this.state.chosenWord}</WordContainer>
+                                {this.state.card.map(words => {
+                                  if (words==this.state.chosenWord){
+                                    const color = '#03AC13'
+                                    return (
+                                      <WordContainer  key={words}>
+                                          <Container>                                          
+                                            <Word style={{color: color}}>
+                                            {words}
+                                            </Word>
+                                          </Container>                                                                                       
+                                      </WordContainer>
+                                    );                 
+                                  }else{
+                                    const color = '#000000'
+                                    return (
+                                      <WordContainer  key={words}>
+                                          <Container>                                          
+                                            <Word style={{color: color}}>
+                                            {words}
+                                            </Word>
+                                          </Container>                                                                                       
+                                      </WordContainer>
+                                  );
+                                  }})}
+                                    
                                 <CheckButton
                                 width="100%"
                                 onClick={() => {

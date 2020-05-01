@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactLogo } from "./ReactLogo";
 import GameLogo from "../GameLogo.png";
-import {Animated} from "react-animated-css";
+import {Animated} from "react-animated-css"
 
 
 
