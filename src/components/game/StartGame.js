@@ -165,7 +165,7 @@ class StartGame extends React.Component {
             
             this.intervalID = setInterval(
                 () => this.directPlayers(),
-                7000
+                3000
             );
 
         } catch (error) {
@@ -202,7 +202,9 @@ class StartGame extends React.Component {
     }
 
     async directPlayers(){
-        const status = this.state.game.status;
+        const responseGame = await api.get('/games/'+GameID);
+        this.setState({userIds: responseGame.data.usersIds});
+        const status = responseGame.data.status;
         const currentId = this.state.game.currentUserId;
         const currentPlayer = localStorage.getItem('id')
         if (status == "RUNNING") {
