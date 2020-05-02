@@ -134,15 +134,18 @@ class Guess extends React.Component {
         try {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({allClues: response.data.clues});
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            this.setState({allClues: response.data});
+
+            
 
             const validClueArray = [];
             for(var i=0; i< this.state.allClues.length; i++){
-                if(this.state.allClues[i].valid == "VALID"){
-                validClueArray.push(response.data.clues[i]);}
+                //if(this.state.allClues[i].valid == "VALID"){
+                validClueArray.push(this.state.allClues[i]);
+                //}
             }
             this.setState({clues: validClueArray});
 
@@ -216,23 +219,23 @@ class Guess extends React.Component {
         return (
             <Container>
                 <Label2> Here you see the clues! Try to guess the mysteryword! </Label2>
-                {!this.state.clues ? (
+                {!this.state.allClues ? (
                     <Spinner />
                 ) : (
                     <GameContainer>
                         <Users>
-                            {this.state.clues.map(clue => {
+                            {this.state.allClues.clues.map(clues => {
                                 return (
-                                    <ButtonContainer  key={clue.clues}>
+                                    <ButtonContainer  key={clues.id}>
                                         <ClueContainer>
-                                            {clue}
+                                            {clues}
                                         </ClueContainer>
                                     </ButtonContainer>
                                     
                                 );
                             })}
                         </Users>
-                        {this.state.clues.clues == null &&
+                        {this.state.allClues.clues == null &&
                         <Label2 > No valid clue! </Label2>}
                         <Form>
                         <InputField 
