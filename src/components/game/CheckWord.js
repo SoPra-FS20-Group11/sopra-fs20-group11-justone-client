@@ -203,13 +203,13 @@ class CheckWord extends React.Component {
         this.setState({ [key]: value });
     }
 
-    async acceptWord(word) {
+    async acceptWord() {
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
     }
 
-    async rejectWord(chosenWord) {
+    async rejectWord() {
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
