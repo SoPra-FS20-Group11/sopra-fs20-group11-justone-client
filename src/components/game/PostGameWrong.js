@@ -147,8 +147,7 @@ class PostGameWrong extends React.Component {
 
     async next() {
       const gameID = localStorage.getItem('gameID');
-      await api.put(`/games/finish/${gameID}`);
-      await api.put(`/games/start/${gameID}`);
+      await api.put(`/games/reset/${gameID}`);
     } 
 
 
