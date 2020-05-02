@@ -47,7 +47,7 @@ const Label2 = styled.h1`
 
 class WaitingForClues extends React.Component {
     intervalID;
-    
+
     constructor() {
         super();
         this.state = {
@@ -86,7 +86,7 @@ class WaitingForClues extends React.Component {
     async checkClues() {
         const GameID = localStorage.getItem('gameID');
         const responseClues = await api.get(`/clues/${GameID}`);
-        this.setState({allClues: responseClues.data.allClues});
+        this.setState({allClues: responseClues.data.allAutomaticClues});
         if (this.state.allClues == true) {
             this.props.history.push('/games/guessphase')
         }

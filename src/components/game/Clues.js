@@ -136,7 +136,7 @@ class Clues extends React.Component {
 
     async checkAllClues(){
       const response = await api.get('/clues/'+this.state.gameID)
-      this.setState({allCluesBool: response.data.allClues});
+      this.setState({allCluesBool: response.data.allAutomaticClues});
       if (this.state.allCluesBool == true){
         this.props.history.push(`/games/checkphase`);
       }
