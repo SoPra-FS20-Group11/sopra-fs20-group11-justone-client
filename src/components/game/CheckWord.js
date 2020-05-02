@@ -258,6 +258,7 @@ class CheckWord extends React.Component {
                                     Accept
                                     </CheckButton>
                                     <CheckButton
+                                    disabled
                                     width="100%"
                                     onClick={() => {
                                         this.rejectWord();

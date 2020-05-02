@@ -148,7 +148,7 @@ class GameLobby extends React.Component {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }
   }
-  return() {
+  async return() {
     this.props.history.push('/main');
   }
 

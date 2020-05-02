@@ -44,8 +44,8 @@ const RoundLabel = styled.h1`
   font-weight: bold;
   font-family: system-ui;
   text-decoration: underline;
-  font-size: 50px;
-  margin-top: 40px;
+  font-size: 40px;
+  margin-top: 30px;
   text-shadow: 0 0 10px black;
   color: rgba(204, 73, 3, 1);
   text-align: center;
@@ -60,7 +60,6 @@ const ImgContainer = styled.div`
 
 const JustOneDeck = styled.img`
   justify-content: center;
-  margin-top: 1em;
   
 `;
 const JustOneNext = styled.img`
@@ -113,9 +112,10 @@ class DrawCard extends React.Component {
     }
 
     async setChosenWord(wordNum){
+      const number = wordNum-1;
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
-        chosenWord: this.state.card[wordNum]
+        chosenWord: this.state.card[number]
       });
       await api.put('/chosenword/'+gameID, requestBody)
     }
@@ -128,7 +128,7 @@ class DrawCard extends React.Component {
         renderRight =
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
-                <JustOneDeck src={JustOneCards} alt= "Just One Cards" height={480} />
+                <JustOneDeck src={JustOneCards} alt= "Just One Cards" height={400} />
                   <Label2> Draw a card from the stack! </Label2>
                   <ButtonContainer>
                     <MainButton
@@ -146,7 +146,7 @@ class DrawCard extends React.Component {
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
                 <ImgContainer>
-                <JustOneDeck src={JustOneSingle} alt= "Just One Cards" height={450} />
+                <JustOneDeck src={JustOneSingle} alt= "Just One Cards" height={380} />
                 <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />       
                 </ImgContainer>        
                   <Label2> Pick a word from the card! </Label2>

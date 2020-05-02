@@ -163,7 +163,13 @@ class StartGame extends React.Component {
             alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
         }
     }
-    return () {
+    async return () {
+        const currentId = localStorage.getItem('id');
+        const requestBody = JSON.stringify({
+        currentUserId: currentId
+        });
+        const gameId = localStorage.getItem('gameID');
+        await api.put('/games/leave/'+gameId, requestBody);
         this.props.history.push('/games/lobby');
     }
 

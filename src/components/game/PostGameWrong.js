@@ -90,30 +90,57 @@ class PostGameWrong extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameId: null,
+          points: null,
+          game: null,
+          gameRunning: null,
+          currentUserId: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const gameID = localStorage.getItem('gameID');
-            this.setState({ gameId: gameID });
-            const response = await api.get(`/points/${gameID}`);
+      try {
+          const gameID = localStorage.getItem('gameID');
+          await api.put(`/games/finish/${gameID}`);
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+          const response = await api.get('/games/'+gameID);
+          this.setState({ 
+            game: response.data,
+            currentUserId: response.data.currentUserId
+           });
+          
 
-            this.setState({ points: response.data });
+          
+          //const response = await api.get(`/points/${gameID}`);
 
-
-        } catch (error) {
-            alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
-        }
-
+          //this.setState({ points: response.data });
+          this.intervalID = setInterval(
+            () => this.checkNextRound(),
+            5000
+        );
+      } catch (error) {
+          alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
+      }
     }
 
-    next() {
-      localStorage.setItem('currentPlayer', JSON.stringify(this.state.currentPlayer.id));
-      this.props.history.push(`/games/drawphase`)
+    async checkNextRound(){
+      const GameID = localStorage.getItem('gameID');
+      const localUser = localStorage.getItem('id');
+      
+      const response = await api.get('/games/'+GameID);
+      this.setState({ game: response.data});
+      this.setState({gameRunning: this.state.game.status});
+      if (this.state.gameRunning == "RUNNING"){
+          if (localUser == this.state.game.currentUserId){
+              this.props.history.push('/games/drawphase');
+          }else{
+              this.props.history.push('/games/waiting');
+          }
+      }
+    }
+
+    async next() {
+      const gameID = localStorage.getItem('gameID');
+      await api.put(`/games/start/${gameID}`);
     } 
 
 
@@ -122,9 +149,10 @@ class PostGameWrong extends React.Component {
         <Container>
         <GameContainer>
           <Form>Too bad! Better luck next time...</Form>
+          {localStorage.getItem('id')==this.state.currentUserId &&
           <MainButton onClick={() => {this.next();
           }}> Next Round
-          </MainButton>
+          </MainButton>}
         </GameContainer>
         </Container>
       );
