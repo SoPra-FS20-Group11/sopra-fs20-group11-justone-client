@@ -174,11 +174,6 @@ class CheckWord extends React.Component {
             this.setState({card: responseCard.data.words});
             this.setState({ chosenWord: response.data.chosenWord });
 
-
-            this.intervalID = setTimeout(
-                () => this.checkChosen(),
-                1000
-            );
             const responseGame = await api.get('/games/'+gameID);
             const responseUsers = await api.get('/users');
             this.setState({ allUsers : responseUsers.data});
@@ -189,6 +184,11 @@ class CheckWord extends React.Component {
                 }
             }
             this.setState({activePlayerName: UserList});
+
+            this.intervalID = setTimeout(
+              () => this.checkChosen(),
+              3000
+          );
 
         } catch (error) {
             alert(`Something went wrong while fetching the chosen word: \n${handleError(error)}`);
@@ -203,7 +203,7 @@ class CheckWord extends React.Component {
         this.setState({ [key]: value });
     }
 
-    async acceptWord() {
+    acceptWord() {
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
@@ -216,7 +216,7 @@ class CheckWord extends React.Component {
     }
 
     checkChosen() {
-        if (this.state.numChosen === 1) {
+        if (this.state.numChosen >= 1) {
             this.props.history.push(`/games/clues`);
         }
     }
