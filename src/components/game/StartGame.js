@@ -202,6 +202,7 @@ class StartGame extends React.Component {
     }
 
     async directPlayers(){
+        const GameID = localStorage.getItem('gameID');
         const responseGame = await api.get('/games/'+GameID);
         this.setState({userIds: responseGame.data.usersIds});
         const status = responseGame.data.status;

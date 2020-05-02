@@ -141,7 +141,7 @@ class Guess extends React.Component {
 
             const validClueArray = [];
             for(var i=0; i< this.state.allClues.length; i++){
-                if(this.state.allClues[i].valid ){
+                if(this.state.allClues[i].valid == "VALID"){
                 validClueArray.push(response.data.clues[i]);}
             }
             this.setState({clues: validClueArray});

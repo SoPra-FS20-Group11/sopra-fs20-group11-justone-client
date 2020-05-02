@@ -94,16 +94,17 @@ class PostGameCorrect extends React.Component {
             points: null,
             game: null,
             gameRunning: null,
-            currentUserId: null
+            currentUserId: null,
+            updatedGame: null
         };
     }
 
     async componentDidMount() {
         try {
             const gameID = localStorage.getItem('gameID');
-            await api.put(`/games/finish/${gameID}`);
-
             const response = await api.get('/games/'+gameID);
+
+
             this.setState({ 
               game: response.data,
               currentUserId: response.data.currentUserId
@@ -133,9 +134,9 @@ class PostGameCorrect extends React.Component {
       const localUser = localStorage.getItem('id');
       
       const response = await api.get('/games/'+GameID);
-      this.setState({ game: response.data});
-      this.setState({gameRunning: this.state.game.status});
-      if (this.state.gameRunning == "RUNNING"){
+      this.setState({ updatedGame: response.data});
+      this.setState({word: this.state.updatedGame.wordStatus});
+      if (this.state.word == "NOCHOSENWORD"){
           if (localUser == this.state.game.currentUserId){
               this.props.history.push('/games/drawphase');
           }else{
@@ -146,6 +147,7 @@ class PostGameCorrect extends React.Component {
 
     async next() {
       const gameID = localStorage.getItem('gameID');
+      await api.put(`/games/finish/${gameID}`);
       await api.put(`/games/start/${gameID}`);
     } 
 
