@@ -103,6 +103,8 @@ const override = css`
   background: rgb(0,0,0)}
 `;
 class Clues extends React.Component {
+    intervalID;
+
     constructor() {
         super();
         this.state = {
@@ -126,6 +128,10 @@ class Clues extends React.Component {
       );
       const response = await api.get(`/chosenword/${this.state.gameID}`);
       this.setState({chosenWord: response.data.chosenWord})
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.intervalID);
     }
 
     async checkAllClues(){

@@ -185,7 +185,7 @@ class CheckWord extends React.Component {
             }
             this.setState({activePlayerName: UserList});
 
-            this.intervalID = setTimeout(
+            this.intervalID = setInterval(
               () => this.checkChosen(),
               3000
           );
@@ -196,7 +196,7 @@ class CheckWord extends React.Component {
     }
 
     componentWillUnmount() {
-      clearTimeout(this.intervalID);
+      clearInterval(this.intervalID);
     }
 
     handleInputChange(key, value) {

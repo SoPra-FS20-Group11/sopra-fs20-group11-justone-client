@@ -87,6 +87,8 @@ export const CheckButton = styled.button`
 `
 
 class PostGameWrong extends React.Component {
+    intervalID;
+    
     constructor() {
         super();
         this.state = {
@@ -120,6 +122,10 @@ class PostGameWrong extends React.Component {
       } catch (error) {
           alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
       }
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.intervalID);
     }
 
     async checkNextRound(){

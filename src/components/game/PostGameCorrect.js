@@ -86,6 +86,8 @@ export const CheckButton = styled.button`
 `
 
 class PostGameCorrect extends React.Component {
+    intervalID;
+    
     constructor() {
         super();
         this.state = {
@@ -121,6 +123,11 @@ class PostGameCorrect extends React.Component {
         }
 
     }
+
+    componentWillUnmount() {
+      clearInterval(this.intervalID);
+    }
+
     async checkNextRound(){
       const GameID = localStorage.getItem('gameID');
       const localUser = localStorage.getItem('id');

@@ -163,7 +163,7 @@ class StartGame extends React.Component {
             localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
             // this.nextPlayer();
             
-            this.intervalID = setTimeout(
+            this.intervalID = setInterval(
                 () => this.directPlayers(),
                 7000
             );
@@ -174,7 +174,7 @@ class StartGame extends React.Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this.intervalID);
+        clearInterval(this.intervalID);
       }
 
     async return () {

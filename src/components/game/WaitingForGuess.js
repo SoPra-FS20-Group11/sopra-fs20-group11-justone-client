@@ -46,6 +46,8 @@ const Label2 = styled.h1`
 
 
 class WaitingForGuess extends React.Component {
+  intervalID;
+  
   constructor() {
     super();
     this.state = {
@@ -78,6 +80,10 @@ class WaitingForGuess extends React.Component {
         () => this.checkGuess(),
         5000
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   async checkGuess(){

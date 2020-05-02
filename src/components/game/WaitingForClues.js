@@ -46,6 +46,8 @@ const Label2 = styled.h1`
 `;
 
 class WaitingForClues extends React.Component {
+    intervalID;
+    
     constructor() {
         super();
         this.state = {
@@ -75,6 +77,10 @@ class WaitingForClues extends React.Component {
             () => this.checkClues(),
             5000
         );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
     }
 
     async checkClues() {

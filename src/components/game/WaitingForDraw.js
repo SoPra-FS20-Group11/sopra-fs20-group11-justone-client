@@ -46,6 +46,8 @@ const Label2 = styled.h1`
 
 
 class WaitingForDraw extends React.Component {
+  intervalID;
+  
   constructor() {
     super();
     this.state = {
@@ -78,6 +80,10 @@ class WaitingForDraw extends React.Component {
         () => this.checkChosenWord(),
         5000
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   async checkChosenWord(){

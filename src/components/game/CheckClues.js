@@ -180,7 +180,7 @@ class CheckClues extends React.Component {
 
             this.setState({ clues: response.data });
 
-            this.intervalID = setTimeout(
+            this.intervalID = setInterval(
                 () => this.checkChosen(),
                 7000
             );
@@ -204,7 +204,7 @@ class CheckClues extends React.Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this.intervalID);
+        clearInterval(this.intervalID);
       }
 
     handleInputChange(key, value) {
