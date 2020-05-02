@@ -145,6 +145,7 @@ class StartGame extends React.Component {
             const response = await api.get('/games/'+GameID);
             this.setState({users: response.data.usersIds});
             this.setState({game: response.data});
+            this.setState({lobbyUser: response.data.currentUserId});
             const uniqueSet = new Set(this.state.users);
             const uniqueUsers = [...uniqueSet];
 
@@ -201,7 +202,7 @@ class StartGame extends React.Component {
 
     async directPlayers(){
         const status = this.state.game.status;
-        const currentId = this.state.game.currenUserId;
+        const currentId = this.state.game.currentUserId;
         const currentPlayer = localStorage.getItem('id')
         if (status == "RUNNING") {
             if (currentId == currentPlayer) {
@@ -244,7 +245,7 @@ class StartGame extends React.Component {
                                 );
                             })}
                         </Users>
-                        {this.state.game.currentUserId==localStorage.getItem('id') &&
+                        {this.state.lobbyUser==localStorage.getItem('id') &&
                         <MainButton
                             width="100%"
                             onClick={() => {

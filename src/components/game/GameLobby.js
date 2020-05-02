@@ -182,6 +182,8 @@ class GameLobby extends React.Component {
 
       // if the game starts ==> everyone who enters the game/lobby, will be redirected to the game.
 
+      this.props.history.push(`/game/${response.data.id}`);
+      
     } catch (error) {
       alert(`Something went wrong while fetching the game: \n${handleError(error)}`)
     }
