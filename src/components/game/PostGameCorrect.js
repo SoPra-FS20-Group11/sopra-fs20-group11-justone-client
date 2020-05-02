@@ -137,7 +137,7 @@ class PostGameCorrect extends React.Component {
       this.setState({ updatedGame: response.data});
       this.setState({word: this.state.updatedGame.wordStatus});
       if (this.state.word == "NOCHOSENWORD"){
-          if (localUser == this.state.game.currentUserId){
+          if (localUser == this.state.updatedGame.currentUserId){
               this.props.history.push('/games/drawphase');
           }else{
               this.props.history.push('/games/waiting');
