@@ -154,6 +154,8 @@ const ClueLabel = styled.h1`
 
 
 class CheckClues extends React.Component {
+    intervalID;
+
     constructor() {
         super();
         this.state = {
@@ -178,7 +180,7 @@ class CheckClues extends React.Component {
 
             this.setState({ clues: response.data });
 
-            this.intervalID = setInterval(
+            this.intervalID = setTimeout(
                 () => this.checkChosen(),
                 7000
             );

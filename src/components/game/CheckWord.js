@@ -148,6 +148,9 @@ const Word = styled.div`
 `
 
 class CheckWord extends React.Component {
+
+  intervalID;
+
     constructor() {
         super();
         this.state = {
@@ -172,7 +175,7 @@ class CheckWord extends React.Component {
             this.setState({ chosenWord: response.data.chosenWord });
 
 
-            this.intervalID = setInterval(
+            this.intervalID = setTimeout(
                 () => this.checkChosen(),
                 1000
             );
