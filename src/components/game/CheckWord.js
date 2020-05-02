@@ -192,6 +192,9 @@ class CheckWord extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+      clearTimeout(intervalID);
+    }
 
     handleInputChange(key, value) {
         this.setState({ [key]: value });

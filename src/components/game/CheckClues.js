@@ -200,10 +200,10 @@ class CheckClues extends React.Component {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
     }
-    componentWillMount() {
-        clearInterval(this.intervalID);
-    }
 
+    componentWillUnmount() {
+        clearTimeout(intervalID);
+      }
 
     handleInputChange(key, value) {
         this.setState({ [key]: value });
