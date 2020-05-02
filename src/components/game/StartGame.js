@@ -129,7 +129,8 @@ class StartGame extends React.Component {
             userIds: [],
             allUsers: null,
             currentPlayer: null,
-            currentIndex: 0
+            currentIndex: 0,
+            lobbyUser: null
         };
     }
     async componentDidMount() {
