@@ -119,9 +119,12 @@ justify-content: center;
 `;
 
 class StartGame extends React.Component {
+    intervalID;
+
     constructor() {
         super();
         this.state = {
+            game: null,
             users: null,
             userIds: [],
             allUsers: null,
@@ -141,7 +144,7 @@ class StartGame extends React.Component {
             const {gameId} = this.props.match.params;
             const response = await api.get('/games/'+GameID);
             this.setState({users: response.data.usersIds});
-
+            this.setState({game: response.data});
             const uniqueSet = new Set(this.state.users);
             const uniqueUsers = [...uniqueSet];
 
@@ -158,11 +161,20 @@ class StartGame extends React.Component {
             localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
             // this.nextPlayer();
             
+            this.intervalID = setTimeout(
+                () => this.directPlayers(),
+                7000
+            );
 
         } catch (error) {
             alert(`Something went wrong while fetching the user: \n${handleError(error)}`);
         }
     }
+
+    componentWillUnmount() {
+        clearTimeout(this.intervalID);
+      }
+
     async return () {
         const currentId = localStorage.getItem('id');
         const requestBody = JSON.stringify({
@@ -184,9 +196,22 @@ class StartGame extends React.Component {
                 currentUserId: id
             });
             await api.put('/games/start/'+gameId, requestBody);
-            this.props.history.push('/games/drawphase')
         }
     }
+
+    async directPlayers(){
+        const status = this.state.game.status;
+        const currentId = this.state.game.currenUserId;
+        const currentPlayer = localStorage.getItem('id')
+        if (status == "RUNNING") {
+            if (currentId == currentPlayer) {
+              this.props.history.push(`/games/drawphase`);
+            } else {
+              this.props.history.push(`/games/waiting`);
+            }
+          }
+    }
+    
 
     async showUsers() {
         
@@ -219,14 +244,14 @@ class StartGame extends React.Component {
                                 );
                             })}
                         </Users>
-                        
+                        {this.state.game.currentUserId==localStorage.getItem('id') &&
                         <MainButton
                             width="100%"
                             onClick={() => {
                                 this.startGame();
                             }}>
                         Play!
-                        </MainButton>
+                        </MainButton>}
                         <MainButton
                             width="100%"
                             onClick={() => {

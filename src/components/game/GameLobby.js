@@ -181,16 +181,7 @@ class GameLobby extends React.Component {
       localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
 
       // if the game starts ==> everyone who enters the game/lobby, will be redirected to the game.
-      if (status == "RUNNING") {
-        if (currentId == currentPlayer) {
-          this.props.history.push(`/games/drawphase`);
-        } else {
-          this.props.history.push(`/games/waiting`);
-        }
-      } else {
-        this.props.history.push(`/game/${response.data.id}`);
-      }
-      
+
     } catch (error) {
       alert(`Something went wrong while fetching the game: \n${handleError(error)}`)
     }
