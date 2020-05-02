@@ -45,7 +45,7 @@ const Label2 = styled.h1`
 `;
 
 
-class WaitingForDraw extends React.Component {
+class WaitingForGuess extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -111,4 +111,4 @@ class WaitingForDraw extends React.Component {
   }
 }
 
-export default withRouter(WaitingForDraw);
+export default withRouter(WaitingForGuess);
