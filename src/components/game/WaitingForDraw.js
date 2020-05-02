@@ -10,7 +10,7 @@ import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
 import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
 //for the Spinner
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
 
 const Container = styled(BaseContainer)`
@@ -86,7 +86,7 @@ class WaitingForDraw extends React.Component {
     this.setState({wordChosen: responseWord.data.chosenWord});
     this.setState({wordStatus: responseWord.data.wordStatus});
     if (this.state.wordStatus == "SELECTED"){
-        this.props.history.push('/games/clues');
+        this.props.history.push('/games/checkwordphase');
     }
   }
 

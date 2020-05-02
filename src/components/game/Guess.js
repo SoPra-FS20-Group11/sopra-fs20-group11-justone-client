@@ -124,6 +124,7 @@ class Guess extends React.Component {
     constructor() {
         super();
         this.state = {
+            allClues: null,
             clues: null,
             guess: null
         };
@@ -136,12 +137,24 @@ class Guess extends React.Component {
             
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({clues: response.data.clues});
+            this.setState({allClues: response.data.clues});
+
+            const validClueArray = [];
+            for(var i=0; i< this.state.allClues.length; i++){
+                if(this.state.allClues[i].valid ){
+                validClueArray.push(response.data.clues[i]);}
+            }
+            this.setState({clues: validClueArray});
 
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
-        localStorage.setItem('clues', JSON.stringify(this.state.clues.clues));
+
+        if(this.state.clues){
+            localStorage.setItem('clues', JSON.stringify(this.state.clues.clues));
+        }else{
+            localStorage.setItem('clues', null);
+        }
     }
 
     async checkGuess(){
@@ -215,9 +228,12 @@ class Guess extends React.Component {
                                             {clue}
                                         </ClueContainer>
                                     </ButtonContainer>
+                                    
                                 );
                             })}
                         </Users>
+                        {this.state.clues.clues == null &&
+                        <Label2 > No valid clue! </Label2>}
                         <Form>
                         <InputField 
                             placeholder="Enter your guess..."

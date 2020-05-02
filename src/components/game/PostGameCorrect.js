@@ -89,29 +89,57 @@ class PostGameCorrect extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameId: null,
-            points: null
+            points: null,
+            game: null,
+            gameRunning: null,
+            currentUserId: null
         };
     }
 
     async componentDidMount() {
         try {
             const gameID = localStorage.getItem('gameID');
-            this.setState({ gameId: gameID });
+            await api.put(`/games/finish/${gameID}`);
+
+            const response = await api.get('/games/'+gameID);
+            this.setState({ 
+              game: response.data,
+              currentUserId: response.data.currentUserId
+             });
+            
+
+            
             //const response = await api.get(`/points/${gameID}`);
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
             //this.setState({ points: response.data });
-
+            this.intervalID = setInterval(
+              () => this.checkNextRound(),
+              5000
+          );
         } catch (error) {
             alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
         }
 
     }
+    async checkNextRound(){
+      const GameID = localStorage.getItem('gameID');
+      const localUser = localStorage.getItem('id');
+      
+      const response = await api.get('/games/'+GameID);
+      this.setState({ game: response.data});
+      this.setState({gameRunning: this.state.game.status});
+      if (this.state.gameRunning == "RUNNING"){
+          if (localUser == this.state.game.currentUserId){
+              this.props.history.push('/games/drawphase');
+          }else{
+              this.props.history.push('/games/waiting');
+          }
+      }
+    }
 
-    next() {
-      this.props.history.push(`/games/drawphase`)
+    async next() {
+      const gameID = localStorage.getItem('gameID');
+      await api.put(`/games/start/${gameID}`);
     } 
 
 
@@ -119,10 +147,11 @@ class PostGameCorrect extends React.Component {
       return (
         <Container>
         <GameContainer>
-          <Form>Congratulations! point(s) awarded</Form>
+          <Form>Congratulations! X point(s) awarded</Form>
+          {localStorage.getItem('id')==this.state.currentUserId &&
           <MainButton onClick={() => {this.next();
           }}> Next Round
-          </MainButton>
+          </MainButton>}
         </GameContainer>
         </Container>
       );

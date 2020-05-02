@@ -52,7 +52,8 @@ class WaitingForGuess extends React.Component {
         allUsers: null,
         game: null,
         activePlayerName: null,
-        wordChosen: null
+        wordChosen: null,
+        guess: null
     };
   }
 

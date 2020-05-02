@@ -36,9 +36,9 @@ class AppRouter extends React.Component {
               path="/login"
               exact
               render={() => (
-                <LoginGuard>
+                //<LoginGuard>
                   <Login />
-                </LoginGuard>
+                //</LoginGuard>
               )}
             />
             <Route
@@ -69,9 +69,9 @@ class AppRouter extends React.Component {
               path="/registration"
               exact
               render={() => (
-                <RegistrationGuard>
+                //<RegistrationGuard>
                   <Registration />
-                </RegistrationGuard>
+                //</RegistrationGuard>
               )}
             />
             <Route 
@@ -107,7 +107,7 @@ class AppRouter extends React.Component {
                 </AppGuard>
               )}
             /> 
-            <Route path="/" exact render={() => <Redirect to={"/main"} />} />
+            <Route path="/" exact render={() => <Redirect to={"/login"} />} />
           </div>
         </Switch>
       </BrowserRouter>

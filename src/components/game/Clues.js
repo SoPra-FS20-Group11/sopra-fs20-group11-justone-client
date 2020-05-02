@@ -8,7 +8,8 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
-
+import { Spinner } from '../../views/design/Spinner';
+import { css } from "@emotion/core";
 const Container = styled(BaseContainer)`
   color: white;
   text-align: center;
@@ -90,6 +91,17 @@ const Label3 = styled.h1`
   text-align: center;
 `;
 
+const Label4 = styled.h1`
+  margin-top: 2em;
+  font-family: system-ui;
+  font-weight: 700;
+  font-size: 25px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+`;
+const override = css`
+  background: rgb(0,0,0)}
+`;
 class Clues extends React.Component {
     constructor() {
         super();
@@ -97,7 +109,8 @@ class Clues extends React.Component {
           gameID: localStorage.getItem('gameID'),
           clue: null,
           allCluesBool: null,
-          chosenWord: null
+          chosenWord: null,
+          submitted: false
         };
     }
 
@@ -124,6 +137,7 @@ class Clues extends React.Component {
     }
 
     async saveClue(){
+      this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
         clue: this.state.clue,
@@ -147,15 +161,19 @@ class Clues extends React.Component {
                         />
                         <ButtonContainer>
                             <MainButton
-                                disabled={!this.state.clue}
+                                disabled={this.state.submitted}
                                 width="10%"
                                 onClick={() => {
-                                    this.saveClue();
+                                    this.saveClue();                                                                      
                                 }}
                                 >
                                 Submit
                                 </MainButton>
-                        </ButtonContainer>
+                        </ButtonContainer>    
+                        {!this.state.allCluesBool &&  this.state.submitted &&               
+                          <Label4 > Wait for all players to submit a clue </Label4>}
+                        {!this.state.allCluesBool && this.state.submitted &&
+                          <Label4><Spinner ></Spinner></Label4>}
                     </Form>
                 </FormContainer>
             </Container>
