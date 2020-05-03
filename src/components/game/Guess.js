@@ -196,7 +196,7 @@ class Guess extends React.Component {
         // ==> put request: skip guess
         await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
-        this.props.history.push(`/games/drawphase`);
+        this.props.history.push(`/games/resultlost`);
         this.nextPlayer();
     }
 

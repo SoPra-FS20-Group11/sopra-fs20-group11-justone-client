@@ -150,15 +150,16 @@ class StartGame extends React.Component {
             const uniqueSet = new Set(this.state.users);
             const uniqueUsers = [...uniqueSet];
 
-            for (var j = 0; j < uniqueUsers.length; j++){
+            var userIdArray = [];
+            for (var j = 0; j < this.state.game.usersIds.length; j++){
                 for (var i = 0; i < this.state.allUsers.length; i++) {
-                    if (uniqueUsers[j] == this.state.allUsers[i].id){
-                        this.state.userIds.push(this.state.allUsers[i]);
+                if (this.state.game.usersIds[j] == this.state.allUsers[i].id){
+                    userIdArray.push(this.state.allUsers[i]);
                     }
                 }
             }
-            this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
-            localStorage.setItem('currentPlayer', this.state.currentPlayer.id);
+            this.setState({userIds: userIdArray});
+            this.setState({currentPlayer: this.state.userIds});
             localStorage.setItem('currentPlayerIndex', this.state.currentIndex);
             localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
             // this.nextPlayer();
@@ -204,7 +205,17 @@ class StartGame extends React.Component {
     async directPlayers(){
         const GameID = localStorage.getItem('gameID');
         const responseGame = await api.get('/games/'+GameID);
-        this.setState({userIds: responseGame.data.usersIds});
+
+        var userIdArray = [];
+        for (var j = 0; j < responseGame.data.usersIds.length; j++){
+            for (var i = 0; i < this.state.allUsers.length; i++) {
+                if (responseGame.data.usersIds[j] == this.state.allUsers[i].id){
+                    userIdArray.push(this.state.allUsers[i]);
+                }
+            }
+        }
+        this.setState({userIds: userIdArray});
+        this.forceUpdate();
         const status = responseGame.data.status;
         const currentId = this.state.game.currentUserId;
         const currentPlayer = localStorage.getItem('id')
