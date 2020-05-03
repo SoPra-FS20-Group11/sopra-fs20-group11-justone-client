@@ -221,6 +221,15 @@ class CheckClues extends React.Component {
         this.setState({ decidedClues: decidedClueArray });
         this.setState({ colorAcc: colorArrayAcc });
         this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
+
+        var number = this.state.numdecidedClues;
+        if (number == this.state.clues.clues.length) {
+            const requestBody = JSON.stringify({
+                cluesToChange: this.state.invalidClueList
+            });
+            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
+            this.setState({ numdecidedClues: null });     
+        }
     }
 
     async rejectClue(clue, index) {
@@ -234,22 +243,25 @@ class CheckClues extends React.Component {
             }
         }
         invalidArray.push(clue);
-        
+        var number = this.state.numdecidedClues;
+        number = number+1;
         this.setState({ invalidClueList: invalidArray});
         this.setState({ decidedClues: decidedClueArray });
         this.setState({ colorRej: colorArrayRej });
-        this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
-    }
+        this.setState({ numdecidedClues: number });
 
-    async checkChosen() {  
         var number = this.state.numdecidedClues;
         if (number == this.state.clues.clues.length) {
             const requestBody = JSON.stringify({
                 cluesToChange: this.state.invalidClueList
             });
             const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
-            this.setState({ numdecidedClues: null });        
+            this.setState({ numdecidedClues: null });     
         }
+
+    }
+
+    async checkChosen() {  
         const response = await api.get('/clues/'+this.state.gameId)
         this.setState({allCluesBool: response.data.allManualClues});
         if (this.state.allCluesBool == true){

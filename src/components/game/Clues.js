@@ -124,7 +124,7 @@ class Clues extends React.Component {
   
       this.intervalID = setInterval(
           () => this.checkAllClues(),
-          5000
+          1000
       );
       const response = await api.get(`/chosenword/${this.state.gameID}`);
       this.setState({chosenWord: response.data.chosenWord})

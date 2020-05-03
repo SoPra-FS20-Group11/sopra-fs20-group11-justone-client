@@ -118,7 +118,7 @@ class PostGameWrong extends React.Component {
           //this.setState({ points: response.data });
           this.intervalID = setInterval(
             () => this.checkNextRound(),
-            5000
+            1000
         );
       } catch (error) {
           alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
