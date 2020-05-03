@@ -166,7 +166,7 @@ class CheckClues extends React.Component {
             decidedClues: [],
             colorAcc: [],
             colorRej: [],
-            numdecidedClues: 0,
+            numdecidedClues: null,
             invalidClueList: [],
             allCluesBool: null
         };
@@ -241,14 +241,17 @@ class CheckClues extends React.Component {
         this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
     }
 
-    async checkChosen() {
-        if (this.state.numdecidedClues == this.state.clues.clues.length) {
+    async checkChosen() {  
+        var number = this.state.numdecidedClues;
+        if (number == this.state.clues.clues.length) {
             const requestBody = JSON.stringify({
                 cluesToChange: this.state.invalidClueList
             });
             const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
-            this.setState({ numdecidedClues: this.state.numdecidedClues+1 });        
+            number = number+1;
+            this.setState({ numdecidedClues: number });        
         }
+        localStorage.setItem('number', JSON.stringify(this.state.numdecidedClues));
         const response = await api.get('/clues/'+this.state.gameId)
         this.setState({allCluesBool: response.data.allManualClues});
         if (this.state.allCluesBool == true){
