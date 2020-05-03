@@ -195,6 +195,10 @@ class CheckClues extends React.Component {
                 decidedClueArray.push('0');}
             this.setState({ decidedClues: decidedClueArray });
 
+            const intervalID = setInterval(
+                () => this.checkChosen(),
+                4000
+            )
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
@@ -264,10 +268,6 @@ class CheckClues extends React.Component {
     }
 
     render() {
-        const intervalID = setInterval(
-            () => this.checkChosen(),
-            4000
-        )
         return (         
             <Container>
                 <Label2> Here you see the clues! Check if they are acceptable! </Label2>
