@@ -195,7 +195,7 @@ class CheckClues extends React.Component {
                 decidedClueArray.push('0');}
             this.setState({ decidedClues: decidedClueArray });
 
-            const intervalID = setInterval(
+            this.intervalID = setInterval(
                 () => this.checkChosen(),
                 4000
             )

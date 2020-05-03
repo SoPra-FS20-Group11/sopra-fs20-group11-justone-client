@@ -97,8 +97,6 @@ class WaitingForGuess extends React.Component {
             clearInterval(this.intervalID);
             this.props.history.push('/games/resultlost');
         }
-    }else{
-      return;
     }
   }
 
