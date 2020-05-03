@@ -86,7 +86,7 @@ class WaitingForClues extends React.Component {
     async checkClues() {
         const GameID = localStorage.getItem('gameID');
         const responseClues = await api.get(`/clues/${GameID}`);
-        this.setState({allClues: responseClues.data.allAutomaticClues});
+        this.setState({allClues: responseClues.data.allManualClues});
         if (this.state.allClues == true) {
             this.props.history.push('/games/guessphase')
         }
