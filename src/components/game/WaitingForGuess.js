@@ -78,7 +78,7 @@ class WaitingForGuess extends React.Component {
 
     this.intervalID = setInterval(
         () => this.checkGuess(),
-        1000
+        3000
     );
   }
 

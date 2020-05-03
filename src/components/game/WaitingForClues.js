@@ -75,7 +75,7 @@ class WaitingForClues extends React.Component {
 
         this.intervalID = setInterval(
             () => this.checkClues(),
-            1000
+            3000
         );
     }
 
