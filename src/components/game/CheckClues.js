@@ -167,6 +167,8 @@ class CheckClues extends React.Component {
             colorAcc: [],
             colorRej: [],
             numdecidedClues: 0,
+            invalidClueList: [],
+            allCluesBool: null
         };
     }
 
@@ -179,11 +181,6 @@ class CheckClues extends React.Component {
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             this.setState({ clues: response.data });
-
-            this.intervalID = setInterval(
-                () => this.checkChosen(),
-                7000
-            );
 
             const colorArrayAcc = [];
             const colorArrayRej = [];
@@ -205,7 +202,7 @@ class CheckClues extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
-      }
+    }
 
     handleInputChange(key, value) {
         this.setState({ [key]: value });
@@ -227,11 +224,7 @@ class CheckClues extends React.Component {
     }
 
     async rejectClue(clue, index) {
-        const requestBody = JSON.stringify({
-            clue: clue
-        });
-        const response = await api.put(`/clues/${this.state.gameId}`, requestBody);
-
+        const invalidArray = this.state.invalidClueList;
         const colorArrayRej = this.state.colorRej;
         const decidedClueArray = this.state.decidedClues;
         for (var i = 0; i < this.state.clues.clues.length; i++) {
@@ -240,19 +233,35 @@ class CheckClues extends React.Component {
                 decidedClueArray[i] = '1';
             }
         }
+        invalidArray.push(clue);
+        
+        this.setState({ invalidClueList: invalidArray});
         this.setState({ decidedClues: decidedClueArray });
         this.setState({ colorRej: colorArrayRej });
         this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
     }
 
-    checkChosen() {
+    async checkChosen() {
+        localStorage.setItem('clueList', JSON.stringify(this.state.invalidClueList));
+        const requestBody = JSON.stringify({
+            cluesToChange: this.state.invalidClueList
+        });
         if (this.state.numdecidedClues >= this.state.clues.clues.length) {
+            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);           
+        }
+        const response = await api.get('/clues/'+this.state.gameId)
+        this.setState({allCluesBool: response.data.allManualClues});
+        if (this.state.allCluesBool == true){
             this.props.history.push(`/games/waiting2`);
         }
     }
 
     render() {
-        return (
+        const intervalID = setInterval(
+            () => this.checkChosen(),
+            4000
+        )
+        return (         
             <Container>
                 <Label2> Here you see the clues! Check if they are acceptable! </Label2>
                 {!this.state.clues ? (
