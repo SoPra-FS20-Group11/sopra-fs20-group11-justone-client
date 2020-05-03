@@ -95,7 +95,8 @@ class PostGameCorrect extends React.Component {
             game: null,
             gameRunning: null,
             currentUserId: null,
-            updatedGame: null
+            updatedGame: null,
+            word: null
         };
     }
 
