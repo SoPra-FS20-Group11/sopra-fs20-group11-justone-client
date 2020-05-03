@@ -82,19 +82,18 @@ class WaitingForGuess extends React.Component {
     );
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
 
   async checkGuess(){
     const GameID = localStorage.getItem('gameID');
     const responseGuess = await api.get('/guess/'+GameID);
     this.setState({guess: responseGuess.data});
-    const guessStatus = this.state.guess.guessSatus;
-    if (guessStatus != "NOGUESS"){
-        if (this.state.guess.guessStatus == "CORRECT"){
-            clearInterval(this.intervalID);
+    if (this.state.guess.guessStatus != "NOGUESS"){
+        if (this.state.guess.guessStatus === "CORRECT"){
             this.props.history.push('/games/resultwon');
         }else{
-            clearInterval(this.intervalID);
             this.props.history.push('/games/resultlost');
         }
     }
