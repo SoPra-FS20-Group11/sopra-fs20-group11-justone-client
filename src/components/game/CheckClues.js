@@ -246,8 +246,8 @@ class CheckClues extends React.Component {
             const requestBody = JSON.stringify({
                 cluesToChange: this.state.invalidClueList
             });
-            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody); 
-            this.setState({numdecidedClues: numdecidedClues+1});               
+            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
+            this.setState({ numdecidedClues: this.state.numdecidedClues+1 });        
         }
         const response = await api.get('/clues/'+this.state.gameId)
         this.setState({allCluesBool: response.data.allManualClues});
