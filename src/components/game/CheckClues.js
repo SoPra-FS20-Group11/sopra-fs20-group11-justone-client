@@ -218,6 +218,8 @@ class CheckClues extends React.Component {
             }
         }
         
+        var number = this.state.numdecidedClues;
+        number = number+1;
         this.setState({ decidedClues: decidedClueArray });
         this.setState({ colorAcc: colorArrayAcc });
         this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
