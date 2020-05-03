@@ -224,14 +224,6 @@ class CheckClues extends React.Component {
         this.setState({ colorAcc: colorArrayAcc });
         this.setState({ numdecidedClues: this.state.numdecidedClues+1 });
 
-        var number = this.state.numdecidedClues;
-        if (number == this.state.clues.clues.length) {
-            const requestBody = JSON.stringify({
-                cluesToChange: this.state.invalidClueList
-            });
-            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
-            this.setState({ numdecidedClues: null });     
-        }
     }
 
     async rejectClue(clue, index) {
@@ -251,16 +243,6 @@ class CheckClues extends React.Component {
         this.setState({ decidedClues: decidedClueArray });
         this.setState({ colorRej: colorArrayRej });
         this.setState({ numdecidedClues: number });
-
-        var number = this.state.numdecidedClues;
-        if (number == this.state.clues.clues.length) {
-            const requestBody = JSON.stringify({
-                cluesToChange: this.state.invalidClueList
-            });
-            const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody);  
-            this.setState({ numdecidedClues: null });     
-        }
-
     }
 
     async checkChosen() {  
@@ -269,6 +251,16 @@ class CheckClues extends React.Component {
         if (this.state.allCluesBool == true){
             this.props.history.push(`/games/waiting2`);
         }
+    }
+
+    async put(){
+        var number = this.state.numdecidedClues;
+        number = number+1;
+        const requestBody = JSON.stringify({
+            cluesToChange: this.state.invalidClueList
+        });
+        const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody); 
+        this.setState({ numdecidedClues: number });
     }
 
     render() {
@@ -313,8 +305,19 @@ class CheckClues extends React.Component {
                                     );
                                 })}
                             </Users>
-           
+                            <ButtonContainer>
+                        <MainButton
+                            disabled={this.state.numdecidedClues!=this.state.clues.clues.length}
+                            width="10%"
+                            onClick={() => {
+                                this.put();                                                                      
+                            }}
+                            >
+                            Submit valid clues
+                            </MainButton>
+                    </ButtonContainer>        
                         </GameContainer>
+                        
                     )}
             </Container>
         )
