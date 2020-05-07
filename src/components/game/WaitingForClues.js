@@ -54,7 +54,8 @@ class WaitingForClues extends React.Component {
             allUsers: null,
             game: null,
             activePlayerName: null,
-            allClues: null
+            allClues: null,
+            NoClues: false
         };
     }
 
@@ -88,8 +89,19 @@ class WaitingForClues extends React.Component {
         const responseClues = await api.get(`/clues/${GameID}`);
         this.setState({allClues: responseClues.data.allManualClues});
         if (this.state.allClues == true) {
-            this.props.history.push('/games/guessphase')
+            if (responseClues.data.clues.length<=0){
+                this.setState({NoClues: true});
+                this.redirectToLost();           
+            }else{
+                this.props.history.push('/games/guessphase');
+            }
         }
+    }
+
+    async redirectToLost(){
+        await new Promise(resolve => setTimeout(resolve, 6000))
+        await api.put(`/skip/${this.state.game.id}`);
+        this.props.history.push('/games/resultlost');
     }
     
     render() {
@@ -98,12 +110,14 @@ class WaitingForClues extends React.Component {
                 <LabelContainer>
                 &nbsp;
                 <Label2> Waiting for the Clues! </Label2>
+                {!this.state.NoClues && 
                 <Loader
                     type="Triangle"
                     color="rgba(204, 73, 3, 1)"
                     height={200}
                     width={200}
-                />
+                />}
+                {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
                 </LabelContainer>
             </Container>
         );

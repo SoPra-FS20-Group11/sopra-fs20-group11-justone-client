@@ -23,11 +23,10 @@ const Users = styled.ul`
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
-
 const ClueContainer = styled.div`
   justify-content: center;
   padding: 0px;
@@ -90,7 +89,6 @@ const MainButton = styled.button`
   font-weight: 900;
   font-size: 30px;
   text-align: center;
-  margin-left: auto;
   color: rgba(0, 0, 0, 1);
   width: 50%;
   height: 50px;
@@ -106,10 +104,12 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 450px;
+  width: 70%;
+  height: 200px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   font-family: system-ui;
-  font-size: 20px;
+  font-size: 40px;
   font-weight: 1000;
   padding-left: 37px;
   padding-right: 37px;
@@ -144,7 +144,8 @@ class EndScreen extends React.Component {
         super();
         this.state = {
             gameId: null,
-            points: null
+            totalPoints: 0,
+            game: null
         };
     }
 
@@ -152,13 +153,18 @@ class EndScreen extends React.Component {
         try {
             const gameID = localStorage.getItem('gameID');
             this.setState({ gameId: gameID });
-            const response = await api.get(`/totalPoints/${gameID}`);
+            //const response = await api.get(`/totalPoints/${gameID}`);
+
+            const responseGame = await api.get('/games/'+gameID);
+            this.setState({game: responseGame.data});
 
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            this.setState({ totalPoints: response.data });
+            //this.setState({ totalPoints: response.data });
 
-
+            if(this.state.game.currentUserId==localStorage.getItem('id') && this.state.game.status != "FINISHED"){
+              await api.put(`/games/finish/${gameID}`);
+            }
         } catch (error) {
             alert(`Something went wrong while fetching the total points: \n${handleError(error)}`);
         }
@@ -172,15 +178,16 @@ class EndScreen extends React.Component {
 
     render() {
       return (
-        <GameContainer>
-          <Form>Game over. You reached a total of {this.state.totalPoints}</Form>
-          <MainButton onClick={() => {this.finish();
-          }}> Finish
-          </MainButton>
-        </GameContainer>
-
+        <Container>
+          <GameContainer>
+            <Form>Game is over! You reached a total of {this.state.totalPoints} Points</Form>
+            <MainButton onClick={() => {this.finish();
+            }}> Return
+            </MainButton>
+          </GameContainer>
+        </Container>
       );
     }
 }
 
-export default withRouter(PostGameWrong);
+export default withRouter(EndScreen);

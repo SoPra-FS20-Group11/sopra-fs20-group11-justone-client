@@ -85,6 +85,15 @@ export const CheckButton = styled.button`
   transition: all 0.3s ease;
 `
 
+const Label2 = styled.h1`
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 50px;
+  text-shadow: 0 0 10px black;
+  color: rgba(204, 73, 3, 1);
+  text-align: center;
+`;
+
 class PostGameCorrect extends React.Component {
     intervalID;
     
@@ -96,7 +105,8 @@ class PostGameCorrect extends React.Component {
             gameRunning: null,
             currentUserId: null,
             updatedGame: null,
-            word: null
+            word: null,
+            endgame: false
         };
     }
 
@@ -120,10 +130,20 @@ class PostGameCorrect extends React.Component {
               () => this.checkNextRound(),
               3000
           );
+          
+          if (this.state.game.deckSize==0){
+            this.setState({ending: true});
+            this.endgame();
+          }
         } catch (error) {
             alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
         }
 
+    }
+
+    async endgame(){    
+        await new Promise(resolve => setTimeout(resolve, 6000))
+        this.props.history.push('/games/end');
     }
 
     componentWillUnmount() {
@@ -158,7 +178,9 @@ class PostGameCorrect extends React.Component {
         <Container>
         <GameContainer>
           <Form>Congratulations! X point(s) awarded</Form>
-          {localStorage.getItem('id')==this.state.currentUserId &&
+          {this.state.ending &&
+          <Label2>This was the last round! Calculating points... </Label2>}
+          {localStorage.getItem('id')==this.state.currentUserId && !this.state.ending &&
           <MainButton onClick={() => {this.next();
           }}> Next Round
           </MainButton>}

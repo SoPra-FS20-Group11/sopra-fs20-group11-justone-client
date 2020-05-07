@@ -253,8 +253,17 @@ class CheckClues extends React.Component {
         const response = await api.get('/clues/'+this.state.gameId)
         this.setState({allCluesBool: response.data.allManualClues});
         if (this.state.allCluesBool == true){
-            this.props.history.push(`/games/waiting2`);
+            if(this.state.clues.clues.length<=0){
+                this.redirectToLost();
+            }else{
+                this.props.history.push(`/games/waiting2`);
+            }
         }
+    }
+
+    async redirectToLost(){
+        await new Promise(resolve => setTimeout(resolve, 6000))
+        this.props.history.push('/games/resultlost');
     }
 
     async put(){
@@ -305,17 +314,18 @@ class CheckClues extends React.Component {
                                     );
                                 })}
                             </Users>
+                            {this.state.clues.clues.length<=0 && <Label2> No valid clue! Ending the turn... </Label2>}
                             <ButtonContainer>
-                        <MainButton
-                            disabled={this.state.numdecidedClues!=this.state.clues.clues.length}
-                            width="10%"
-                            onClick={() => {
-                                this.put();                                                                      
-                            }}
-                            >
-                            Submit valid clues
-                            </MainButton>
-                    </ButtonContainer>        
+                                <MainButton
+                                disabled={this.state.numdecidedClues!=this.state.clues.clues.length}
+                                width="10%"
+                                onClick={() => {
+                                    this.put();                                                                      
+                                }}
+                                >
+                                Submit valid clues
+                                </MainButton>
+                            </ButtonContainer>
                         </GameContainer>
                         
                     )}

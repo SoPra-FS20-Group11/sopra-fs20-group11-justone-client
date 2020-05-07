@@ -15,6 +15,7 @@ import WaitingForGuess from "../../game/WaitingForGuess";
 import WaitingForClues from "../../game/WaitingForClues";
 import PostGameCorrect from "../../game/PostGameCorrect";
 import PostGameWrong from "../../game/PostGameWrong";
+import EndScreen from "../../game/EndScreen";
 
 
 const Container = styled.div`
@@ -103,6 +104,13 @@ class GameRouter extends React.Component {
           path={`${this.props.base}/resultlost`}
           render={() => (
             <PostGameWrong />
+          )}
+        />
+        <Route
+          exact
+          path={`${this.props.base}/end`}
+          render={() => (
+            <EndScreen />
           )}
         />
         <Route
