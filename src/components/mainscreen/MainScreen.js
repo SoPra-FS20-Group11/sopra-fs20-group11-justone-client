@@ -8,6 +8,12 @@ import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
 import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
+import JustOneRule1 from "../../JustOneRule1.jpg";
+import JustOneRule2 from "../../JustOneRule2.jpg";
+import JustOneRule3 from "../../JustOneRule3.jpg";
+
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -37,12 +43,15 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+const JustOneRules = [JustOneRule1, JustOneRule2, JustOneRule3];
 
 class MainScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-        users: null
+        users: null,
+        photoIndex: 0,
+        isOpen: false
     };
   }
 
@@ -82,6 +91,7 @@ class MainScreen extends React.Component {
   }
 
   render() {
+    const { photoIndex, isOpen } = this.state;
     return (
       <Container>
         &nbsp;
@@ -127,14 +137,27 @@ class MainScreen extends React.Component {
             </LogoutButton>
             </ButtonContainer>
             <RulesButtonContainer>
-            <RulesButton
-              width="100%"
-              onClick={() => {
-                this.rules();
-              }}
-            >
+            <RulesButton type="button" onClick={() => this.setState({ isOpen: true })}>
               Rules
             </RulesButton>
+            {isOpen && (
+              <Lightbox
+                mainSrc={JustOneRules[photoIndex]}
+                nextSrc={JustOneRules[(photoIndex + 1) % JustOneRules.length]}
+                prevSrc={JustOneRules[(photoIndex + JustOneRules.length - 1) % JustOneRules.length]}
+                onCloseRequest={() => this.setState({isOpen:false})}
+                onMovePrevRequest = {() => 
+                  this.setState({
+                    photoIndex: (photoIndex + JustOneRules.length - 1) % JustOneRules.length
+                  })
+                }
+                onMoveNextRequest={() => 
+                  this.setState({
+                    photoIndex: (photoIndex + 1) % JustOneRules.length
+                  })
+                }
+                />
+            )}
             </RulesButtonContainer>
       </Container>     
     );
