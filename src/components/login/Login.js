@@ -8,6 +8,8 @@ import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import GameLogo from "../../GameLogo.png";
 import JustOneTitle from "../../JustOneTitle.png";
+import PasswordMask from 'react-password-mask';
+
 
 // for buttons
 
@@ -157,10 +159,35 @@ class Login extends React.Component {
               }}
             />
             <Label>Password</Label>
-            <InputField
+            <PasswordMask
+              id="password"
+              name="password"
               placeholder="Enter here your password..."
+              value={this.state.password}
               onChange={e => {
                 this.handleInputChange('password', e.target.value);
+              }}
+              inputStyles={{
+                height: "35px",
+                border: "grey0",
+                paddingLeft: "15px",
+                marginLeft: "-4px",
+                border: "grey0",
+                borderRadius: "20px",
+                fontWeight: "bold",
+                background: "rgba(255, 255, 255, 0.2)"
+
+              }}
+              buttonStyles={{
+                width: '80px',
+                height: '40px',
+                fontSize: '20px',
+                marginRight: '-20px',
+                marginTop: '-20px',
+                borderRadius: '10px',
+                background: 'rgba(255, 229, 153)',
+                border: '2px',
+                transition: 'all 0.3s ease'
               }} 
             />
             <ButtonContainer>
@@ -195,3 +222,6 @@ class Login extends React.Component {
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
 export default withRouter(Login);
+
+
+        

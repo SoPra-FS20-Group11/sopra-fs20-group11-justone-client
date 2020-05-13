@@ -6,6 +6,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
+import PasswordMask from 'react-password-mask';
 
 // for buttons
 
@@ -128,11 +129,36 @@ class Registration extends React.Component {
                                 }}
                             />
                             <Label>Password</Label>
-                            <InputField 
+                            <PasswordMask
+                                id="password"
+                                name="password"
                                 placeholder="Enter here your password..."
-                                onChange={e=> {
+                                value={this.state.password}
+                                onChange={e => {
                                     this.handleInputChange('password', e.target.value);
                                 }}
+                                inputStyles={{
+                                    height: "35px",
+                                    border: "grey0",
+                                    paddingLeft: "15px",
+                                    marginLeft: "-4px",
+                                    border: "grey0",
+                                    borderRadius: "20px",
+                                    fontWeight: "bold",
+                                    background: "rgba(255, 255, 255, 0.2)"
+
+                                }}
+                                buttonStyles={{
+                                    width: '80px',
+                                    height: '40px',
+                                    fontSize: '20px',
+                                    marginRight: '-20px',
+                                    marginTop: '-20px',
+                                    borderRadius: '10px',
+                                    background: 'rgba(255, 229, 153)',
+                                    border: '2px',
+                                    transition: 'all 0.3s ease'
+                                }} 
                             />
                             <ButtonContainer>
                                 <MainButton
