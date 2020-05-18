@@ -9,13 +9,12 @@ import { withRouter } from 'react-router-dom';
 import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
-
+import InGamePlayer from '../../views/InGamePlayer';
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;
   align-items: auto;
 `;
-
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
@@ -23,7 +22,6 @@ const GameContainer = styled.li`
   justify-content: center;
   flex-direction: column;
 `;
-
 const MainButton = styled.button`
   &:hover {
     transform: translateY(-2px);
@@ -34,7 +32,6 @@ const MainButton = styled.button`
   font-weight: 900;
   font-size: 30px;
   text-align: center;
-  margin-left: auto;
   color: rgba(0, 0, 0, 1);
   width: 50%;
   height: 50px;
@@ -45,7 +42,6 @@ const MainButton = styled.button`
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
 `;
-
 const Form = styled.div`
   display: flex;
   flex-direction: column;
@@ -63,7 +59,6 @@ const Form = styled.div`
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
-
 export const CheckButton = styled.button`
   &:hover {
     transform: translateY(-2px);
@@ -84,14 +79,44 @@ export const CheckButton = styled.button`
   background: rgb(230, 180, 100);
   transition: all 0.3s ease;
 `
-
 const Label2 = styled.h1`
   font-weight: bold;
   font-family: system-ui;
   font-size: 50px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
+`;
+const Users = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 0;
+  justify-content: center;
+`;
+const InGamePlayerField = styled.div`
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: left;
+  color: rgba(0, 0, 0, 1);
+  width: 250px;
+
+  border: none;
+  border-radius: 5px;
+  background: rgb(255, 229, 210);
+`;
+const PlayerContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: 'center';
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 class PostGameCorrect extends React.Component {
@@ -106,7 +131,8 @@ class PostGameCorrect extends React.Component {
             currentUserId: null,
             updatedGame: null,
             word: null,
-            endgame: false
+            endgame: false,
+            userIds: null
         };
     }
 
@@ -114,15 +140,24 @@ class PostGameCorrect extends React.Component {
         try {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get('/games/'+gameID);
-
+            const responseUsers = await api.get('/users');
 
             this.setState({ 
+              allUsers : responseUsers.data,
               game: response.data,
               currentUserId: response.data.currentUserId
              });
-            
 
-            
+            var userIdArray = [];
+            for (var j = 0; j < this.state.game.usersIds.length; j++){
+                for (var i = 0; i < this.state.allUsers.length; i++) {
+                    if (this.state.game.usersIds[j] == this.state.allUsers[i].id){
+                    userIdArray.push(this.state.allUsers[i]);
+                    }
+                }
+            }
+            this.setState({userIds: userIdArray});
+ 
             //const response = await api.get(`/points/${gameID}`);
 
             //this.setState({ points: response.data });
@@ -184,6 +219,21 @@ class PostGameCorrect extends React.Component {
           <MainButton onClick={() => {this.next();
           }}> Next Round
           </MainButton>}
+          {!this.state.userIds ? (
+                 <Spinner />
+                    ) : (
+                    <Users>
+                    {this.state.userIds.map(user => {
+                        return (
+                            <PlayerContainer key={user.id}>
+                                <InGamePlayerField>
+                                    <InGamePlayer user={user} />
+                                </InGamePlayerField>
+                            </PlayerContainer>
+                        );
+                    })}
+                    </Users>
+                )} 
         </GameContainer>
         </Container>
       );

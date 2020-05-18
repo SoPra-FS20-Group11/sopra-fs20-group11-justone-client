@@ -55,7 +55,7 @@ const Label2 = styled.h1`
   font-family: system-ui;
   font-size: 30px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -155,26 +155,30 @@ class CheckWord extends React.Component {
         super();
         this.state = {
             chosenWord: null,
-            gameId: null,
+            gameID: localStorage.getItem('gameID'),
             card: null,
             numChosen: 0,
             activePlayername: null,
-            allUsers: null
+            allUsers: null,
+            rejectedWord: false,
+            acceptedWord: false,
+            wordStatus: null,
         };
     }
 
     async componentDidMount() {
         try {
-            const gameID = localStorage.getItem('gameID');
-            this.setState({ gameId: gameID });
-            const response = await api.get(`/chosenword/${gameID}`);
+            const response = await api.get(`/chosenword/${this.state.gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            const responseCard = await api.get(`/cards/${gameID}`);
+            const responseCard = await api.get(`/cards/${this.state.gameID}`);
             this.setState({card: responseCard.data.words});
-            this.setState({ chosenWord: response.data.chosenWord });
+            this.setState({ 
+              chosenWord: response.data.chosenWord,
+              wordStatus: response.data.wordStatus,
+             });
 
-            const responseGame = await api.get('/games/'+gameID);
+            const responseGame = await api.get('/games/'+this.state.gameID);
             const responseUsers = await api.get('/users');
             this.setState({ allUsers : responseUsers.data});
             const UserList = [];
@@ -203,22 +207,46 @@ class CheckWord extends React.Component {
         this.setState({ [key]: value });
     }
 
-    acceptWord() {
+    async acceptWord() {
+        const requestBody = JSON.stringify({
+          status: true
+        });
+        const response = await api.put(`/chosenword/update/${this.state.gameID}`, requestBody);
+        this.setState({acceptedWord: true})
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
     }
 
     async rejectWord() {
+        const requestBody = JSON.stringify({
+          status: false
+        });
+        const response = await api.put(`/chosenword/update/${this.state.gameID}`, requestBody);
+        this.setState({rejectedWord: true})
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
     }
 
-    checkChosen() {
-        if (this.state.numChosen >= 1) {
-            this.props.history.push(`/games/clues`);
+    async checkChosen() {
+      const responseWord = await api.get('/chosenword/'+this.state.gameID);
+      this.setState({ wordStatus: responseWord.data.wordStatus});
+      if (this.state.wordStatus == "REJECTED"){
+        this.redirectToWait();
+      }
+        if (this.state.wordStatus == "ACCEPTED") {
+          this.redirectToClue();
         }
+    }
+
+    async redirectToWait(){
+      await new Promise(resolve => setTimeout(resolve, 6000))
+      this.props.history.push('/games/waiting');
+    }
+    async redirectToClue(){
+      await new Promise(resolve => setTimeout(resolve, 6000))
+      this.props.history.push('/games/clues');
     }
 
     render() {
@@ -257,6 +285,7 @@ class CheckWord extends React.Component {
                                   }})}
                                     
                                 <CheckButton
+                                disabled={this.state.acceptedWord || this.state.rejectedWord}
                                 width="100%"
                                 onClick={() => {
                                     this.acceptWord();
@@ -264,7 +293,7 @@ class CheckWord extends React.Component {
                                     Accept
                                     </CheckButton>
                                     <CheckButton
-                                    disabled
+                                    disabled={this.state.acceptedWord || this.state.rejectedWord}
                                     width="100%"
                                     onClick={() => {
                                         this.rejectWord();
@@ -272,7 +301,10 @@ class CheckWord extends React.Component {
                                         Reject
                                     </CheckButton>
                             </Users>
-           
+                            {this.state.acceptedWord || this.state.rejectedWord && <Label2> Wait for the other players to decide... </Label2> && <Spinner /> }
+                            {this.state.wordStatus=="ACCEPTED" && <Label2> The word is accepted! Redirecting... </Label2>}
+                            {this.state.rejectedWord && <Label2> Someone rejected the word! A new word will be chosen. Redirecting... </Label2>}  
+                             
                         </GameContainer>
                     )}
             </Container>
