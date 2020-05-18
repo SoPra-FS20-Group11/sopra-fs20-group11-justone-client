@@ -9,6 +9,10 @@ import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
 import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
+import ScoreboardPlayer from '../../views/ScoreboardPlayer';
+
+//Pop-Up Screen for Scoreboard
+import Modal from 'react-modal';
 
 //for the Spinner
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -20,6 +24,11 @@ const Container = styled(BaseContainer)`
 `;
 const LabelContainer = styled.div`
   margin-top: 4em;
+`;
+
+const Users = styled.ul`
+  list-style: none;
+  padding-left: 0;
 `;
 
 const RulesButtonContainer = styled.div`
@@ -45,6 +54,52 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
+
+const ScoreboardPlayerButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 900px;
+  height: 90px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 210);
+  transition: all 0.3s ease;
+`;
+
+const CloseButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 30px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 20%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+`;
+
+Modal.setAppElement('#root');
+
 class WaitingForClues extends React.Component {
     intervalID;
 
@@ -52,20 +107,37 @@ class WaitingForClues extends React.Component {
         super();
         this.state = {
             allUsers: null,
+            userIds: [],
             game: null,
             activePlayerName: null,
             allClues: null,
-            NoClues: false
+            NoClues: false,
+            modalIsOpen: false,
+            setModalIsOpen: false
         };
+    }
+    sortByScore(a, b) {
+        const user1 = a.score;
+        const user2 = b.score;
+    
+        let comparison = 0;
+        if (user1 < user2) {
+          comparison = 1;
+        } else if (user1 > user2) {
+          comparison = -1;
+        }
+        return comparison;
     }
 
     async componentDidMount() {
         const GameID = localStorage.getItem('gameID');
         const responseUsers = await api.get('/users');
         this.setState({allUsers : responseUsers.data});
+        this.state.allUsers.sort(this.sortByScore)
 
         const response = await api.get(`/games/${GameID}`);
         this.setState({game: response.data});
+
         const UserList = [];
         for (var i=0; i < this.state.allUsers.length; i++) {
             if (this.state.game.currentUserId == this.state.allUsers[i].id) {
@@ -73,6 +145,17 @@ class WaitingForClues extends React.Component {
             }
         }
         this.setState({activePlayerName: UserList});
+
+        //list of all players in the particular lobby
+        var userIdArray = [];
+            for (var j = 0; j < this.state.game.usersIds.length; j++){
+                for (var i = 0; i < this.state.allUsers.length; i++) {
+                    if (this.state.game.usersIds[j] == this.state.allUsers[i].id){
+                        userIdArray.push(this.state.allUsers[i]);
+                    }
+                }
+            }
+        this.setState({userIds: userIdArray});
 
         this.intervalID = setInterval(
             () => this.checkClues(),
@@ -103,6 +186,10 @@ class WaitingForClues extends React.Component {
         await api.put(`/skip/${this.state.game.id}`);
         this.props.history.push('/games/resultlost');
     }
+
+    setModalIsOpen(boolean) {
+        this.setState({modalIsOpen: boolean})
+    }
     
     render() {
         return (
@@ -119,6 +206,44 @@ class WaitingForClues extends React.Component {
                 />}
                 {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
                 </LabelContainer>
+                <MainButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</MainButton>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={() => this.setModalIsOpen(false)}
+                    style={
+                        {
+                            overlay: {
+                                top: 100,
+                                left: 100,
+                                right: 100,
+                                bottom: 50,
+                                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                                border: '1px solid #ccc',
+                                borderRadius: '40px'
+                            },
+                            content: {
+                                color: '#3b0303',
+                                background: '#8f1010',
+                                borderRadius: '40px'
+                            }
+                        }
+                    }
+                    >
+                    <Users>
+                    {this.state.userIds.map(user => {
+                        return (
+                            <ButtonContainer key={user.id}>
+                                <ScoreboardPlayerButton>
+                                    <ScoreboardPlayer user={user} />
+                                </ScoreboardPlayerButton>
+                            </ButtonContainer>
+                        );
+                    })}
+                    </Users>
+                    <ButtonContainer>
+                        <CloseButton onClick={() => this.setModalIsOpen(false)}>Close</CloseButton>
+                    </ButtonContainer>   
+                </Modal>
             </Container>
         );
     }

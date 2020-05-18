@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
+import ScoreboardPlayer from '../../views/ScoreboardPlayer';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
+import Modal from 'react-modal';
 
 
 const Container = styled(BaseContainer)`
@@ -61,6 +63,27 @@ const PlayerButton = styled.button`
   transition: all 0.3s ease;
 `;
 
+const ScoreboardPlayerButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 900px;
+  height: 90px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 210);
+  transition: all 0.3s ease;
+`;
+
 const MainButton = styled.button`
   &:hover {
     transform: translateY(-2px);
@@ -82,6 +105,29 @@ const MainButton = styled.button`
   transition: all 0.3s ease;
   margin-top: 10px;
 `;
+
+const CloseButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 30px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 20%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+`;
+
 const InputField = styled.input`
   &::placeholder {
     color: grey4;
@@ -119,6 +165,8 @@ color: grey0;
 justify-content: center;
 `;
 
+Modal.setAppElement('#root');
+
 class StartGame extends React.Component {
     intervalID;
 
@@ -131,26 +179,37 @@ class StartGame extends React.Component {
             allUsers: null,
             currentPlayer: null,
             currentIndex: 0,
-            lobbyUser: null
+            lobbyUser: null,
+            modalIsOpen: false,
+            setModalIsOpen: false
         };
     }
+    sortByScore(a, b) {
+        const user1 = a.score;
+        const user2 = b.score;
+    
+        let comparison = 0;
+        if (user1 < user2) {
+          comparison = 1;
+        } else if (user1 > user2) {
+          comparison = -1;
+        }
+        return comparison;
+      }
+
     async componentDidMount() {
         try {
             const GameID = localStorage.getItem('gameID');
-            const requestBody = JSON.stringify({
-                id: GameID
-            });
+            
             const responseUsers = await api.get('/users');
             this.setState({ allUsers : responseUsers.data});
+            this.state.allUsers.sort(this.sortByScore)
 
-            const {gameId} = this.props.match.params;
             const response = await api.get('/games/'+GameID);
             this.setState({users: response.data.usersIds});
             this.setState({game: response.data});
             this.setState({lobbyUser: response.data.currentUserId});
-            const uniqueSet = new Set(this.state.users);
-            const uniqueUsers = [...uniqueSet];
-
+            
             var userIdArray = [];
             for (var j = 0; j < this.state.game.usersIds.length; j++){
                 for (var i = 0; i < this.state.allUsers.length; i++) {
@@ -161,9 +220,6 @@ class StartGame extends React.Component {
             }
             this.setState({userIds: userIdArray});
             this.setState({currentPlayer: this.state.userIds});
-            localStorage.setItem('currentPlayerIndex', this.state.currentIndex);
-            localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
-            // this.nextPlayer();
             
             this.intervalID = setInterval(
                 () => this.directPlayers(),
@@ -240,7 +296,9 @@ class StartGame extends React.Component {
         this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
         localStorage.setItem('currentPlayer', JSON.stringify(this.state.currentPlayer.id));
     }
-
+    setModalIsOpen(boolean) {
+        this.setState({modalIsOpen: boolean})
+    }
 
     render () {
         return (
@@ -276,6 +334,45 @@ class StartGame extends React.Component {
                             }}>
                         Return
                         </MainButton>
+                        <MainButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</MainButton>
+                        <Modal 
+                            isOpen={this.state.modalIsOpen} 
+                            onRequestClose={() => this.setModalIsOpen(false)}
+                            style={
+                                {
+                                    overlay: {
+                                        top: 100,
+                                        left: 100,
+                                        right: 100,
+                                        bottom: 50,
+                                        backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '40px'
+                                    },
+                                    content: {
+                                        color: '#3b0303',
+                                        background: '#8f1010',
+                                        borderRadius: '40px'
+                                        
+                                    }
+                                }
+                            }
+                            >
+                            <Users>
+                            {this.state.userIds.map(user => {
+                                return (
+                                    <ButtonContainer key={user.id}>
+                                        <ScoreboardPlayerButton>
+                                            <ScoreboardPlayer user={user} />
+                                        </ScoreboardPlayerButton>
+                                    </ButtonContainer>
+                                );
+                            })}
+                            </Users>
+                            <ButtonContainer>
+                                <CloseButton onClick={() => this.setModalIsOpen(false)}>Close</CloseButton>
+                            </ButtonContainer>
+                        </Modal>
                     </div>
                 )}
             </Container>
