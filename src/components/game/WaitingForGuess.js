@@ -233,7 +233,7 @@ class WaitingForGuess extends React.Component {
       <Container>
         <LabelContainer>
         &nbsp;
-        <Label2> Waiting for Player "{this.state.activePlayerName}" to submit a guess.. </Label2>
+        <Label2> Waiting for "{this.state.activePlayerName}" to submit a guess.. </Label2>
         <Loader
             type="Triangle"
             color="rgba(240, 125, 7, 1)"

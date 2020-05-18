@@ -238,7 +238,7 @@ class WaitingForDraw extends React.Component {
       <Container>
         <LabelContainer>
         &nbsp;
-        <Label2> Waiting for Player "{this.state.activePlayerName}" to draw a card and/or choose a word.. </Label2>
+        <Label2> Waiting for "{this.state.activePlayerName}" to draw a card and/or choose a word.. </Label2>
         <Loader
             type="Triangle"
             color="rgba(240, 125, 7, 1)"
