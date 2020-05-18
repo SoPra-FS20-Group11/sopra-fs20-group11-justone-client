@@ -27,11 +27,6 @@ const LabelContainer = styled.div`
   margin-top: 4em;
 `;
 
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
-
 const RulesButtonContainer = styled.div`
   display: flex;
   direction: rtl;
@@ -71,8 +66,10 @@ const InGamePlayerField = styled.div`
   text-align: left;
   color: rgba(0, 0, 0, 1);
   width: 250px;
+  border: none;
+  border-radius: 5px;
+  background: rgb(255, 229, 210);
 `;
-
 
 const ScoreboardPlayerButton = styled.button`
   &:hover {
@@ -93,6 +90,7 @@ const ScoreboardPlayerButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 210);
   transition: all 0.3s ease;
+  margin-top: 20px;
 `;
 
 const CloseButton = styled.button`
@@ -114,7 +112,7 @@ const CloseButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const PlayerContainer = styled.div`
@@ -126,6 +124,29 @@ const PlayerContainer = styled.div`
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
+`;
+
+const ScoreboardButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 30px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 153);
+  transition: all 0.3s ease;
+  margin-top: -100px;
+  margin-left: 900px;
 `;
 
 Modal.setAppElement('#root');
@@ -260,7 +281,28 @@ class WaitingForClues extends React.Component {
                     height={200}
                     width={200}
                 />}
-                <MainButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</MainButton>
+                {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
+                <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
+                </LabelContainer>
+                {!this.state.userIds ? (
+                 <Spinner />
+                    ) : (
+                    <Users>
+                    {this.state.userIds.map(user => {
+                        return (
+                            <PlayerContainer key={user.id}>
+                                <InGamePlayerField>
+                                    <InGamePlayer user={user} />
+                                    {user.username == this.state.activePlayerName && 
+                                    <div>Waiting...</div>}
+                                    {user.username != this.state.activePlayerName && 
+                                    <div>Currently submitting clues...</div>}
+                                </InGamePlayerField>
+                            </PlayerContainer>
+                        );
+                    })}
+                    </Users>
+                )}
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={() => this.setModalIsOpen(false)}
@@ -297,28 +339,7 @@ class WaitingForClues extends React.Component {
                     <ButtonContainer>
                         <CloseButton onClick={() => this.setModalIsOpen(false)}>Close</CloseButton>
                     </ButtonContainer>   
-                </Modal>
-                {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
-                </LabelContainer>
-                {!this.state.userIds ? (
-                 <Spinner />
-                    ) : (
-                    <Users>
-                    {this.state.userIds.map(user => {
-                        return (
-                            <PlayerContainer key={user.id}>
-                                <InGamePlayerField>
-                                    <InGamePlayer user={user} />
-                                    {user.username == this.state.activePlayerName && 
-                                    <div>Waiting...</div>}
-                                    {user.username != this.state.activePlayerName && 
-                                    <div>Currently submitting clues...</div>}
-                                </InGamePlayerField>
-                            </PlayerContainer>
-                        );
-                    })}
-                    </Users>
-                )}                
+                </Modal>                
             </Container>
         );
     }
