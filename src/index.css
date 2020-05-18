@@ -15,8 +15,8 @@ body {
 img {
   size: 15%;
   position: relative;
-  animation-name: zoomInUp;
-  animation-duration: 2s;
+  animation-name: bounceInUp;
+  animation-duration: 1s;
 }
 
 div {

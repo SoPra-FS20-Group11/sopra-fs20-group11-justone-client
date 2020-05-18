@@ -78,7 +78,7 @@ const Label2 = styled.h1`
   font-family: system-ui;
   font-size: 30px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -87,7 +87,7 @@ const Label3 = styled.h1`
   font-family: system-ui;
   font-size: 50px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -110,9 +110,11 @@ class Clues extends React.Component {
         this.state = {
           gameID: localStorage.getItem('gameID'),
           clue: null,
+          clue2: null,
           allCluesBool: null,
           chosenWord: null,
-          submitted: false
+          submitted: false,
+          threePlayers: false
         };
     }
 
@@ -121,7 +123,10 @@ class Clues extends React.Component {
     }
 
     async componentDidMount() {
-  
+      const gameResponse = await api.get('/games/'+this.state.gameID)
+      if (gameResponse.data.usersIds.length == 3){
+        this.setState({threePlayers: true})
+      }
       this.intervalID = setInterval(
           () => this.checkAllClues(),
           3000
@@ -150,6 +155,14 @@ class Clues extends React.Component {
         time: 30
         });
       const response = await api.post(`/clues/${gameID}`, requestBody);
+
+      if(this.state.clue2){
+        const requestBody2 = JSON.stringify({
+          clue: this.state.clue2,
+          time: 30
+          });
+        await api.post(`/clues/${gameID}`, requestBody2)
+      }
     }
 
     render() {
@@ -158,6 +171,7 @@ class Clues extends React.Component {
                 <FormContainer>
                     <Label2> Give a clue to the following word! </Label2>
                     <Label3> "{this.state.chosenWord}" </Label3>
+                    {this.state.threePlayers && <Label2> This is a 3-Player Game. You can give two clues! </Label2>}
                     <Form>
                         <InputField
                             placeholder="Enter your clue... "
@@ -165,9 +179,16 @@ class Clues extends React.Component {
                                 this.handleInputChange('clue', e.target.value);
                             }}
                         />
+                        {this.state.threePlayers &&
+                        <InputField
+                        placeholder="Enter your second clue... "
+                        onChange={e => {
+                            this.handleInputChange('clue2', e.target.value);
+                        }}
+                        />}
                         <ButtonContainer>
                             <MainButton
-                                disabled={this.state.submitted}
+                                disabled={!this.state.clue ||  this.state.threePlayers && !this.state.clue2 || this.state.submitted}
                                 width="10%"
                                 onClick={() => {
                                     this.saveClue();                                                                      
