@@ -14,6 +14,7 @@ import ScoreboardPlayer from '../../views/ScoreboardPlayer';
 
 //Pop-Up Screen for Scoreboard
 import Modal from 'react-modal';
+import Modal2 from 'react-modal';
 
 //for the Spinner
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -41,6 +42,28 @@ const Users = styled.div`
   flex-wrap: wrap;
   padding-left: 0;
   justify-content: center;
+`;
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  height: 90px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 10px;
+  background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+`;
+
+const Label = styled.label`
+  color: grey0;
+  margin-bottom: 10px;
+  text-transform: none;
 `;
 const InGamePlayerField = styled.div`
   padding: 0px;
@@ -157,7 +180,8 @@ class WaitingForGuess extends React.Component {
         guess: null,
         userIds: [],
         modalIsOpen: false,
-        setModalIsOpen: false
+        modalIsOpen2: false,
+        clickedUser: null 
     };
   }
 
@@ -228,6 +252,19 @@ class WaitingForGuess extends React.Component {
     this.setState({modalIsOpen: boolean})
   }
 
+  setModalIsOpen2(boolean) {
+    this.setState({modalIsOpen2: boolean})
+  }
+
+  async setId(userId) {
+    const response = await api.get(`/users/${userId}`);
+    this.setState({clickedUser: response.data});
+    localStorage.setItem('clickedUsername', this.state.clickedUser.username);
+    localStorage.setItem('clickedName', this.state.clickedUser.name);
+    localStorage.setItem('clickedScore', this.state.clickedUser.score)
+    localStorage.setItem('clickedGamesPlayed', this.state.clickedUser.gamesPlayed);
+  }
+
   render() {
     return (
       <Container>
@@ -284,16 +321,66 @@ class WaitingForGuess extends React.Component {
                       }
                       >
                       <Users>
-                      {this.state.userIds.map(user => {
+                    {this.state.userIds.map(user => {
                         return (
-                          <ButtonContainer key={user.id}>
-                              <ScoreboardPlayerButton>
-                                <ScoreboardPlayer user={user} />
-                              </ScoreboardPlayerButton>
-                          </ButtonContainer>
-                          );
-                        })}
-                      </Users>
+                            <ButtonContainer key={user.id}>
+                                <ScoreboardPlayerButton onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
+                                    <ScoreboardPlayer user={user} />
+                                </ScoreboardPlayerButton>
+                                <Modal2 
+                                    isOpen={this.state.modalIsOpen2}
+                                    onRequestClose={() => this.setModalIsOpen2(false)}
+                                    style={
+                                            {
+                                                overlay: {
+                                                    top: 100,
+                                                    left: 100,
+                                                    right: 100,
+                                                    bottom: 50,
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                                                    border: '1px solid #ccc',
+                                                    borderRadius: '40px'
+                                                },
+                                                content: {
+                                                    color: '#3b0303',
+                                                    background: '#8f1010',
+                                                    borderRadius: '40px'
+                                                }
+                                            }
+                                        }
+                                >
+                                <Users>
+                                    <ButtonContainer>
+                                        <Label2>User Profile of "{localStorage.getItem('clickedUsername')}"</Label2>
+                                        <Form>
+                                            <Label> Name: </Label>
+                                            {localStorage.getItem('clickedName')}
+                                        </Form>
+                                        &nbsp;
+                                        <Form>
+                                            <Label> Username: </Label>
+                                            {localStorage.getItem('clickedUsername')}
+                                        </Form>
+                                        &nbsp;
+                                        <Form>
+                                            <Label> Score: </Label>
+                                            {localStorage.getItem('clickedScore')}
+                                        </Form>
+                                        &nbsp;
+                                        <Form>
+                                            <Label> Games played: </Label>
+                                            {localStorage.getItem('clickedGamesPlayed')}
+                                        </Form>
+                                    </ButtonContainer>
+                                </Users> 
+                                <ButtonContainer>
+                                    <CloseButton onClick={() => this.setModalIsOpen2(false)}>Back</CloseButton>
+                                </ButtonContainer>
+                                </Modal2>
+                            </ButtonContainer>
+                        );
+                    })}
+                    </Users>
                       <ButtonContainer>
                         <CloseButton onClick={() => this.setModalIsOpen(false)}>Close</CloseButton>
                       </ButtonContainer>   

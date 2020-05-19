@@ -14,6 +14,7 @@ import ScoreboardPlayer from '../../views/ScoreboardPlayer';
 
 //Pop-Up Screen for Scoreboard
 import Modal from 'react-modal';
+import Modal2 from 'react-modal';
 
 //for the Spinner
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -53,6 +54,28 @@ const Label2 = styled.h1`
   text-shadow: 0 0 10px black;
   color: rgba(240, 125, 7, 1);
   text-align: center;
+`;
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  height: 90px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 10px;
+  background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+`;
+
+const Label = styled.label`
+  color: grey0;
+  margin-bottom: 10px;
+  text-transform: none;
 `;
 
 const Users = styled.div`
@@ -160,7 +183,8 @@ class WaitingForDraw extends React.Component {
         wordStatus: null,
         changeableWord: null,
         modalIsOpen: false,
-        setModalIsOpen: false
+        modalIsOpen2: false,
+        clickedUser: null
     };
   }
   sortByScore(a, b) {
@@ -228,9 +252,25 @@ class WaitingForDraw extends React.Component {
       }
     }
   }
+  handleInputChange(key, value) {
+    // Example: if the key is username, this statement is the equivalent to the following one:
+    // this.setState({'username': value});
+    this.setState({ [key]: value });
+  }
 
   setModalIsOpen(boolean) {
     this.setState({modalIsOpen: boolean})
+  }
+  setModalIsOpen2(boolean) {
+    this.setState({modalIsOpen2: boolean})
+  }
+  async setId(userId) {
+    const response = await api.get(`/users/${userId}`);
+    this.setState({clickedUser: response.data});
+    localStorage.setItem('clickedUsername', this.state.clickedUser.username);
+    localStorage.setItem('clickedName', this.state.clickedUser.name);
+    localStorage.setItem('clickedScore', this.state.clickedUser.score)
+    localStorage.setItem('clickedGamesPlayed', this.state.clickedUser.gamesPlayed);
   }
 
   render() {
@@ -292,9 +332,59 @@ class WaitingForDraw extends React.Component {
               {this.state.userIds.map(user => {
                   return (
                     <ButtonContainer key={user.id}>
-                      <ScoreboardPlayerButton>
+                      <ScoreboardPlayerButton onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
                         <ScoreboardPlayer user={user} />
                       </ScoreboardPlayerButton>
+                      <Modal2 
+                        isOpen={this.state.modalIsOpen2}
+                        onRequestClose={() => this.setModalIsOpen2(false)}
+                        style={
+                          {
+                            overlay: {
+                                top: 100,
+                                left: 100,
+                                right: 100,
+                                bottom: 50,
+                                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                                border: '1px solid #ccc',
+                                borderRadius: '40px'
+                              },
+                              content: {
+                                color: '#3b0303',
+                                background: '#8f1010',
+                                borderRadius: '40px'
+                                }
+                              }
+                        }
+                      >
+                      <Users>
+                          <ButtonContainer>
+                            <Label2>User Profile of "{localStorage.getItem('clickedUsername')}"</Label2>
+                            <Form>
+                                <Label> Name: </Label>
+                                {localStorage.getItem('clickedName')}
+                            </Form>
+                            &nbsp;
+                            <Form>
+                                <Label> Username: </Label>
+                                {localStorage.getItem('clickedUsername')}
+                            </Form>
+                            &nbsp;
+                            <Form>
+                                <Label> Score: </Label>
+                                {localStorage.getItem('clickedScore')}
+                            </Form>
+                            &nbsp;
+                            <Form>
+                                <Label> Games played: </Label>
+                                {localStorage.getItem('clickedGamesPlayed')}
+                            </Form>
+                          </ButtonContainer>
+                      </Users> 
+                      <ButtonContainer>
+                        <CloseButton onClick={() => this.setModalIsOpen2(false)}>Back</CloseButton>
+                      </ButtonContainer>
+                      </Modal2>
                     </ButtonContainer>
                         );
                     })}
