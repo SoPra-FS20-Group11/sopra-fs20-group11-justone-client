@@ -144,7 +144,7 @@ class EndScreen extends React.Component {
         super();
         this.state = {
             gameId: null,
-            totalPoints: 1,
+            totalPoints: 0,
             game: null
         };
     }
