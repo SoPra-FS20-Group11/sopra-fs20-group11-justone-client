@@ -10,6 +10,7 @@ class User {
     this.status = null;
     this.score = null;
     this.gamesPlayed = null;
+    this.correctlyGuessed = null;
     Object.assign(this, data);
   }
 }

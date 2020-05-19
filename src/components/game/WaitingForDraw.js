@@ -184,7 +184,13 @@ class WaitingForDraw extends React.Component {
         changeableWord: null,
         modalIsOpen: false,
         modalIsOpen2: false,
-        clickedUser: null
+        clickedUser: null,
+
+        clickedUsername: null,
+        clickedName: null,
+        clickedScore: null,
+        clickedGamesPlayed: null,
+        clickedCorrectlyGuessed: null
     };
   }
   sortByScore(a, b) {
@@ -267,10 +273,14 @@ class WaitingForDraw extends React.Component {
   async setId(userId) {
     const response = await api.get(`/users/${userId}`);
     this.setState({clickedUser: response.data});
-    localStorage.setItem('clickedUsername', this.state.clickedUser.username);
-    localStorage.setItem('clickedName', this.state.clickedUser.name);
-    localStorage.setItem('clickedScore', this.state.clickedUser.score)
-    localStorage.setItem('clickedGamesPlayed', this.state.clickedUser.gamesPlayed);
+    
+    const player = new User(response.data);
+
+    this.setState({clickedUsername: player.username})
+    this.setState({clickedName: player.name})
+    this.setState({clickedScore: player.score})
+    this.setState({clickedCorrectlyGuessed: player.correctlyGuessed})
+    this.setState({clickedGamesPlayed: player.gamesPlayed})
   }
 
   render() {
@@ -359,25 +369,30 @@ class WaitingForDraw extends React.Component {
                       >
                       <Users>
                           <ButtonContainer>
-                            <Label2>User Profile of "{localStorage.getItem('clickedUsername')}"</Label2>
+                            <Label2>User Profile of "{this.state.clickedUsername}"</Label2>
                             <Form>
                                 <Label> Name: </Label>
-                                {localStorage.getItem('clickedName')}
+                                {this.state.clickedName}
                             </Form>
                             &nbsp;
                             <Form>
                                 <Label> Username: </Label>
-                                {localStorage.getItem('clickedUsername')}
+                                {this.state.clickedUsername}
                             </Form>
                             &nbsp;
                             <Form>
                                 <Label> Score: </Label>
-                                {localStorage.getItem('clickedScore')}
+                                {this.state.clickedScore}
                             </Form>
                             &nbsp;
                             <Form>
                                 <Label> Games played: </Label>
-                                {localStorage.getItem('clickedGamesPlayed')}
+                                {this.state.clickedGamesPlayed}
+                            </Form>
+                            &nbsp;
+                            <Form>
+                                <Label> correctly guessed words: </Label>
+                                {this.state.clickedCorrectlyGuessed}
                             </Form>
                           </ButtonContainer>
                       </Users> 
