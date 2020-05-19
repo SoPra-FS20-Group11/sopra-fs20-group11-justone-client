@@ -185,7 +185,7 @@ class Clues extends React.Component {
               <Form>
                 {this.state.seconds === 0 
                 ? <h1>Time's Over!</h1>
-                : <h1> Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
+                : <h1>Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
                 }
                 </Form>
                 <FormContainer>

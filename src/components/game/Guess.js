@@ -126,11 +126,12 @@ class Guess extends React.Component {
         this.state = {
             allClues: null,
             clues: null,
-            guess: null
+            guess: null,
+            seconds: 30
         };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         try {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
@@ -149,6 +150,19 @@ class Guess extends React.Component {
             }
             this.setState({clues: validClueArray});
 
+            // This is the timer function
+            this.myInterval = setInterval(() => {
+                
+                if (this.state.seconds > 0) {
+                    this.setState(({seconds}) => ({
+                        seconds: seconds -1
+                    }))
+                }
+                if (this.state.seconds === 0) {
+                    clearInterval(this.myInterval)
+                }
+            }, 1000)
+
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
@@ -158,6 +172,10 @@ class Guess extends React.Component {
         }else{
             localStorage.setItem('clues', null);
         }
+    }
+
+    async componentWillUnmount(){
+        clearInterval(this.myInterval)
     }
 
     async checkGuess(){
@@ -218,6 +236,12 @@ class Guess extends React.Component {
     render() {
         return (
             <Container>
+                <Form>
+                {this.state.seconds === 0 
+                ? <h1>Time's Over!</h1>
+                : <h1>Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
+                }
+                </Form>
                 <Label2> Here you see the clues! Try to guess the mysteryword! </Label2>
                 {!this.state.allClues ? (
                     <Spinner />
