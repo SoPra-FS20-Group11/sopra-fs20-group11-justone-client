@@ -128,6 +128,7 @@ class PostGameWrong extends React.Component {
         this.state = {
           points: null,
           game: null,
+          chosenWord: null,
           gameRunning: null,
           currentUserId: null,
           updatedGame: null,
@@ -147,6 +148,7 @@ class PostGameWrong extends React.Component {
           this.setState({ 
             allUsers : responseUsers.data,
             game: response.data,
+            chosenWord: response.data.chosenWord,
             currentUserId: response.data.currentUserId
            });
           
@@ -213,7 +215,7 @@ class PostGameWrong extends React.Component {
       return (
         <Container>
         <GameContainer>
-          <Form>Too bad! Better luck next time...</Form>
+          <Form>Too bad! The word {this.state.chosenWord} was not guessed correctly. <div>Better luck next time...</div></Form>
           {this.state.ending &&
           <Label2>This was the last round! Calculating points... </Label2>}
           {localStorage.getItem('id')==this.state.currentUserId && !this.state.ending &&

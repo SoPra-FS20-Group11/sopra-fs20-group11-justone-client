@@ -70,7 +70,6 @@ const ImgContainer = styled.div`
 const JustOneDeck = styled.img`
   position: relative;
   justify-content: center;
-  
 `;
 const JustOneNext = styled.img`
   margin-bottom: 300px;
@@ -142,7 +141,6 @@ class DrawCard extends React.Component {
       var requestBody = JSON.stringify({
         chosenWord: card[number]
       })
-      localStorage.setItem('reqest', requestBody);
       await api.put('/chosenword/'+gameID, requestBody)
       localStorage.setItem('wordnum', wordNum);
     }

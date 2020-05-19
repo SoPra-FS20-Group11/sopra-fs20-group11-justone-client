@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import { Redirect, Route } from "react-router-dom";
 import DrawCard from './DrawCard';
 import Game from '../shared/models/Game';
+import Timer from '../../Timer.png';
 
 
 const Container = styled(BaseContainer)`
@@ -102,6 +103,26 @@ const Form = styled.div`
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
+const TimerForm = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: 'flex-start';
+  align-items: 'flex-start';
+  alignSelf: 'flex-start';
+  position: absolute;
+  margin-top: 80px;
+  width: 270px;
+  height: 100px;
+  font-family: system-ui;
+  font-size: 12px;
+  font-weight: 1000;
+  margin-left: -15em;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  background: linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+`;
 
 const InputField = styled.input`
   &::placeholder {
@@ -118,20 +139,41 @@ const InputField = styled.input`
   background: rgba(255, 255, 255, 0.2);
   color: grey0;
 `;
+const TimerContainer = styled.img`
+margin-top: 18px;
+margin-left: -20px;
+position: relative;
+background: 'transparent';
+height: 65px;
+width: 65px;
+opacity: 1;
+`;
 
+const Time = styled.h1`
+  margin-top: 30px;
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-align: center;
+`;
 
 class Guess extends React.Component {
+    myInterval;
+
     constructor() {
         super();
         this.state = {
+            gameID: localStorage.getItem('gameID'),
             allClues: null,
             clues: null,
             guess: null,
-            seconds: 30
+            seconds: 30,
+            time: 0,
+            color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)'
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         try {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
@@ -151,17 +193,16 @@ class Guess extends React.Component {
             this.setState({clues: validClueArray});
 
             // This is the timer function
-            this.myInterval = setInterval(() => {
-                
-                if (this.state.seconds > 0) {
+            this.myInterval = setInterval(() => { 
                     this.setState(({seconds}) => ({
-                        seconds: seconds -1
-                    }))
-                }
-                if (this.state.seconds === 0) {
-                    clearInterval(this.myInterval)
-                }
+                        seconds: seconds -1,
+                        time: this.state.time + 1
+                    })) 
+                    if (this.state.seconds==15){
+                        this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
+                      }           
             }, 1000)
+
 
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
@@ -196,8 +237,8 @@ class Guess extends React.Component {
             const gameID = localStorage.getItem('gameID');
             //send a request to guess the mystery word
             const requestBody = JSON.stringify({
-                guess: this.state.guess,
-                time: 30
+                guessWord: this.state.guess,
+                time: this.state.time
             });
             const response = await api.post(`/guess/${gameID}`, requestBody);
             // ==> skip to the nextpage
@@ -205,7 +246,6 @@ class Guess extends React.Component {
         } catch (error) {
             alert(`Something went wrong during the submit of the guess: \n${handleError(error)}`);
         }
-        this.nextPlayer();
     }
 
     async skipGuess() {
@@ -215,33 +255,24 @@ class Guess extends React.Component {
         await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
         this.props.history.push(`/games/resultlost`);
-        this.nextPlayer();
+ 
     }
 
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
 
+    async timeOver(){
+        clearInterval(this.myInterval);
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        await api.put(`/skip/${this.state.gameID}`);  
+         this.props.history.push('/games/resultlost');     
+    }
     // After the current player guessed, the next player will be set to the current Player
-    nextPlayer() {
-        const List = localStorage.getItem('PlayersList');
-        const PlayersList = JSON.parse(List);
-        const index = (localStorage.getItem('currentPlayerIndex') + 1) % PlayersList.length;
-        localStorage.setItem('Length', PlayersList.length);
-        localStorage.setItem('currentPlayerIndex', index);
-        const NextCurrentPlayer = PlayersList[localStorage.getItem('currentPlayerIndex')];
-        localStorage.setItem('currentPlayer', NextCurrentPlayer);
-      }
 
     render() {
         return (
             <Container>
-                <Form>
-                {this.state.seconds === 0 
-                ? <h1>Time's Over!</h1>
-                : <h1>Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
-                }
-                </Form>
                 <Label2> Here you see the clues! Try to guess the mysteryword! </Label2>
                 {!this.state.allClues ? (
                     <Spinner />
@@ -270,6 +301,13 @@ class Guess extends React.Component {
                         />
                         </Form>
                         &nbsp;
+                        <TimerForm style={{background: this.state.color}}>
+                        <TimerContainer src={Timer} />
+                        {this.state.seconds === 0 
+                        ? this.timeOver() && <Time>Time's Over!</Time>
+                        : <h1>Time Remaining: </h1>}
+                        {this.state.seconds != 0 && <Time >{this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
+                        </TimerForm>
                         <MainButton
                             disabled={!this.state.guess}
                             width="10%"

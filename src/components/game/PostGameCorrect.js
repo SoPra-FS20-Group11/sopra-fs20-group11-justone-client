@@ -127,12 +127,14 @@ class PostGameCorrect extends React.Component {
         this.state = {
             points: null,
             game: null,
+            chosenWord: null,
             gameRunning: null,
             currentUserId: null,
             updatedGame: null,
             word: null,
             endgame: false,
-            userIds: null
+            userIds: null,
+            cardScore: 0
         };
     }
 
@@ -141,11 +143,14 @@ class PostGameCorrect extends React.Component {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get('/games/'+gameID);
             const responseUsers = await api.get('/users');
+            const responseCard = await api.get('/cards/'+gameID);
 
             this.setState({ 
               allUsers : responseUsers.data,
               game: response.data,
-              currentUserId: response.data.currentUserId
+              chosenWord: response.data.chosenWord,
+              currentUserId: response.data.currentUserId,
+              cardScore: responseCard.data.score
              });
 
             var userIdArray = [];
@@ -212,7 +217,7 @@ class PostGameCorrect extends React.Component {
       return (
         <Container>
         <GameContainer>
-          <Form>Congratulations! X point(s) awarded</Form>
+          <Form>Congratulations! The word {this.state.chosenWord} was guessed correctly! <div>{this.state.cardScore} point(s) awarded</div></Form>
           {this.state.ending &&
           <Label2>This was the last round! Calculating points... </Label2>}
           {localStorage.getItem('id')==this.state.currentUserId && !this.state.ending &&

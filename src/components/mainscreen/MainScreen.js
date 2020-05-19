@@ -37,9 +37,9 @@ const ButtonContainer = styled.div`
 const Label2 = styled.h1`
   font-weight: bold;
   font-family: system-ui;
-  font-size: 30px;
+  font-size: 50px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 

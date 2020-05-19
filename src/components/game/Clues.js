@@ -10,6 +10,8 @@ import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
 import { Spinner } from '../../views/design/Spinner';
 import { css } from "@emotion/core";
+import Timer from '../../Timer.png';
+
 const Container = styled(BaseContainer)`
   color: white;
   text-align: center;
@@ -90,9 +92,8 @@ const Label3 = styled.h1`
   color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
-
 const Label4 = styled.h1`
-  margin-top: 2em;
+
   font-family: system-ui;
   font-weight: 700;
   font-size: 25px;
@@ -102,8 +103,48 @@ const Label4 = styled.h1`
 const override = css`
   background: rgb(0,0,0)}
 `;
+const TimerContainer = styled.img`
+margin-top: 18px;
+margin-left: -20px;
+position: relative;
+background: 'transparent';
+height: 65px;
+width: 65px;
+opacity: 1;
+`;
+const Time = styled.h1`
+  margin-top: 30px;
+  font-weight: bold;
+  font-family: system-ui;
+  font-size: 30px;
+  text-align: center;
+`;
+const TimerForm = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: 'center';
+  position: absolute;
+  margin-top: 150px;
+  width: 270px;
+  height: 100px;
+  font-family: system-ui;
+  font-size: 12px;
+  font-weight: 1000;
+  margin-left: 13em;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  background: linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+`;
+const SpinnerCont = styled.div`
+  margin-top: 0em;
+  color: rgba(0, 0, 0, 1);
+`;
+
 class Clues extends React.Component {
     intervalID;
+    myInterval;
 
     constructor() {
         super();
@@ -115,7 +156,9 @@ class Clues extends React.Component {
           chosenWord: null,
           submitted: false,
           threePlayers: false,
-          seconds: 30
+          seconds: 20,
+          time: 0,
+          color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)'
         };
     }
 
@@ -137,16 +180,24 @@ class Clues extends React.Component {
 
       // This is the timer function
       this.myInterval = setInterval(() => {
-
-        if (this.state.seconds > 0) {
           this.setState(({seconds}) => ({
-            seconds: seconds -1
+            seconds: seconds -1,
+            time: this.state.time + 1
           }))
-        }
-        if (this.state.seconds === 0) {
-          clearInterval(this.myInterval)
-        }
+          if (this.state.seconds==10){
+            this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
+          }
       }, 1000)
+    }
+
+    async timeOver(){
+      clearInterval(this.myInterval);
+      const requestBody = JSON.stringify({
+        clueWord: "OVERTIMED",
+        time: this.state.time
+        });
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      await api.post(`/clues/${this.state.gameID}`, requestBody)     
     }
 
     componentWillUnmount() {
@@ -165,15 +216,15 @@ class Clues extends React.Component {
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
-        clue: this.state.clue,
-        time: 30
+        clueWord: this.state.clue,
+        time: this.state.time
         });
       const response = await api.post(`/clues/${gameID}`, requestBody);
 
       if(this.state.clue2){
         const requestBody2 = JSON.stringify({
-          clue: this.state.clue2,
-          time: 30
+          clueWord: this.state.clue2,
+          time: this.state.time
           });
         await api.post(`/clues/${gameID}`, requestBody2)
       }
@@ -182,12 +233,6 @@ class Clues extends React.Component {
     render() {
         return (
             <Container>
-              <Form>
-                {this.state.seconds === 0 
-                ? <h1>Time's Over!</h1>
-                : <h1>Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
-                }
-                </Form>
                 <FormContainer>
                     <Label2> Give a clue to the following word! </Label2>
                     <Label3> "{this.state.chosenWord}" </Label3>
@@ -208,7 +253,7 @@ class Clues extends React.Component {
                         />}
                         <ButtonContainer>
                             <MainButton
-                                disabled={!this.state.clue ||  this.state.threePlayers && !this.state.clue2 || this.state.submitted}
+                                disabled={!this.state.clue ||  this.state.threePlayers && !this.state.clue2 || this.state.submitted || !this.state.seconds || this.state.seconds === 0  }
                                 width="10%"
                                 onClick={() => {
                                     this.saveClue();                                                                      
@@ -216,11 +261,19 @@ class Clues extends React.Component {
                                 >
                                 Submit
                                 </MainButton>
-                        </ButtonContainer>    
+                        </ButtonContainer>
+                    
                         {!this.state.allCluesBool &&  this.state.submitted &&               
                           <Label4 > Wait for all players to submit a clue </Label4>}
                         {!this.state.allCluesBool && this.state.submitted &&
-                          <Label4><Spinner ></Spinner></Label4>}
+                          <SpinnerCont><Spinner ></Spinner></SpinnerCont>}
+                        {!this.state.submitted && <TimerForm style={{background: this.state.color}}> 
+                        <TimerContainer src={Timer} />
+                        {this.state.seconds === 0 
+                        ? this.timeOver() && <Time>Time's Over!</Time>
+                        : <h1>Time Remaining: </h1>}
+                        {this.state.seconds != 0 && <Time >{this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
+                        </TimerForm>  }
                     </Form>
                 </FormContainer>
             </Container>

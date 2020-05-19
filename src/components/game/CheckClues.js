@@ -326,9 +326,9 @@ class CheckClues extends React.Component {
                                 Submit valid clues
                                 </MainButton>
                             </ButtonContainer>
-                            {!this.state.allCluesBool &&  this.state.submitted &&               
+                            {!this.state.allCluesBool &&  this.state.numdecidedClues!=this.state.clues.clues.length &&               
                             <Label2> Wait for all players to submit a clue </Label2>}
-                            {!this.state.allCluesBool && this.state.submitted &&
+                            {!this.state.allCluesBool && this.state.numdecidedClues!=this.state.clues.clues.length &&
                           <Label2><Spinner ></Spinner></Label2>}
                         </GameContainer>
                         

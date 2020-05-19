@@ -25,7 +25,7 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 const LabelContainer = styled.div`
-  margin-top: 2em;
+  margin-top: 3em;
 `;
 
 const PlayerContainer = styled.div`
@@ -148,23 +148,24 @@ const ScoreboardButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  position: absolute;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 30px;
+  font-size: 40px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 200px;
-  height: 50px;
+  width: 250px;
+  height: 80px;
   border: none;
   border-radius: 5px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: -100px;
-  margin-left: 900px;
+  margin-top: -13.4em;
+  margin-left: 300px;
 `;
 
 Modal.setAppElement('#root');
@@ -175,7 +176,7 @@ class WaitingForDraw extends React.Component {
   constructor() {
     super();
     this.state = {
-        allUsers: null,
+        allUsers: [],
         userIds: [],
         game: null,
         activePlayerName: null,
@@ -283,20 +284,30 @@ class WaitingForDraw extends React.Component {
     this.setState({clickedGamesPlayed: player.gamesPlayed})
   }
 
+  isPlayerInGame(id){
+    var color = 'rgba(0, 0, 0, 1)';
+    for (var j = 0; j < this.state.userIds.length; j++){
+      if(id == this.state.userIds[j]){
+        color = '#03AC13';
+      }
+    }
+    return color;
+  }
+
   render() {
     return (
       <Container>
         <LabelContainer>
         &nbsp;
-        <Label2> Waiting for "{this.state.activePlayerName}" to draw a card and/or choose a word.. </Label2>
+        <Label2> Waiting for Player "{this.state.activePlayerName}" to draw a card and/or choose a word.. </Label2>
         <Loader
             type="Triangle"
             color="rgba(240, 125, 7, 1)"
             height={200}
             width={200}
         />
-        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         </LabelContainer>
+        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         {!this.state.userIds ? (
             <Spinner />
             ) : (
@@ -339,10 +350,10 @@ class WaitingForDraw extends React.Component {
               }
               >
               <Users>
-              {this.state.userIds.map(user => {
+              {this.state.allUsers.map(user => {
                   return (
                     <ButtonContainer key={user.id}>
-                      <ScoreboardPlayerButton onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
+                      <ScoreboardPlayerButton style={{color: this.isPlayerInGame(user.id)}} onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)} }>
                         <ScoreboardPlayer user={user} />
                       </ScoreboardPlayerButton>
                       <Modal2 
@@ -386,12 +397,12 @@ class WaitingForDraw extends React.Component {
                             </Form>
                             &nbsp;
                             <Form>
-                                <Label> Games played: </Label>
+                                <Label> Games Played: </Label>
                                 {this.state.clickedGamesPlayed}
                             </Form>
                             &nbsp;
                             <Form>
-                                <Label> correctly guessed words: </Label>
+                                <Label> Correctly Guessed Words: </Label>
                                 {this.state.clickedCorrectlyGuessed}
                             </Form>
                           </ButtonContainer>

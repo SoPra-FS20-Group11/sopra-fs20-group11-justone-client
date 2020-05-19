@@ -55,10 +55,7 @@ margin-top: 10px;
 const InGamePlayer = ({ user }) => {
   return (
     <GamePlayerContainer>
-      <UserName>Player <div>{user.username}</div></UserName> 
-      <Score>Score 
-        <div>{user.score}</div>
-      </Score> 
+      <UserName>Player <div>{user.username}</div></UserName>  
       <CorrectlyGuessed>Correctly Guessed Words <div>{user.correctlyGuessed}</div></CorrectlyGuessed>
     </GamePlayerContainer>
   );

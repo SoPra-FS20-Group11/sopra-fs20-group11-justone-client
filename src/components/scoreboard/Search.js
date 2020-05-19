@@ -77,9 +77,9 @@ color: grey0;
 const Label2 = styled.h1`
   font-weight: bold;
   font-family: system-ui;
-  font-size: 30px;
+  font-size: 60px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -183,7 +183,7 @@ class Search extends React.Component {
         const foundOne = this.state.foundOne;  
         let result;   
         if (!foundOne){
-          result = <FormContainer><Label2>No user found !!</Label2>
+          result = <FormContainer><Label2>No user found!</Label2>
           <MainButton
             width="100%"
             onClick={() => {

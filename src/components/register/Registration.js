@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import PasswordMask from 'react-password-mask';
+import JustOneTitle from "../../JustOneTitle.png";
 
 // for buttons
 
@@ -71,7 +72,7 @@ const Label2 = styled.h1`
   font-family: system-ui;
   font-size: 30px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -112,6 +113,7 @@ class Registration extends React.Component {
         return(
             <BaseContainer>
                 <FormContainer>
+                    <img src={JustOneTitle} height={120}/> 
                     <Label2> Enter your credentials </Label2>
                         <Form>
                             <Label>Name</Label>

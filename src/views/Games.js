@@ -35,7 +35,7 @@ const Id = styled.div`
 const Games = ({ game }) => {
   return (
     <Container>
-      <Id>ID: {game.id}</Id> <Status>status: {game.status}</Status>
+      <Id>GameID: {game.id}</Id> <Status>Status: {game.status}</Status>
     </Container>
   );
 };

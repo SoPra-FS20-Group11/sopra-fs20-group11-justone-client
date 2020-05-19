@@ -52,7 +52,7 @@ const GamesPlayed = styled.div`
 const ScoreboardPlayer = ({ user }) => {
   return (
     <Container>
-      <UserName>Username: {user.username}</UserName> <CorrectlyGuessed>correctly guessed words: {user.correctlyGuessed}</CorrectlyGuessed> <Score>Score: {user.score}</Score> <GamesPlayed>Games Played: {user.gamesPlayed}</GamesPlayed>
+      <UserName>Username: {user.username}</UserName> <CorrectlyGuessed>Correctly Guessed Words: {user.correctlyGuessed}</CorrectlyGuessed> <Score>Score: {user.score}</Score> <GamesPlayed>Games Played: {user.gamesPlayed}</GamesPlayed>
     </Container>
   );
 };

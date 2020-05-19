@@ -144,7 +144,7 @@ class EndScreen extends React.Component {
         super();
         this.state = {
             gameId: null,
-            totalPoints: 0,
+            totalPoints: 1,
             game: null
         };
     }
@@ -156,7 +156,10 @@ class EndScreen extends React.Component {
             //const response = await api.get(`/totalPoints/${gameID}`);
 
             const responseGame = await api.get('/games/'+gameID);
-            this.setState({game: responseGame.data});
+            this.setState({
+              game: responseGame.data,
+              totalPoints: responseGame.data.score
+            });
 
             await new Promise(resolve => setTimeout(resolve, 1000));
 

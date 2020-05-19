@@ -25,7 +25,7 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 const LabelContainer = styled.div`
-  margin-top: 4em;
+  margin-top: 3em;
 `;
 
 const Form = styled.div`
@@ -153,23 +153,24 @@ const ScoreboardButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+  position: absolute;
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 30px;
+  font-size: 40px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
-  width: 200px;
-  height: 50px;
+  width: 250px;
+  height: 80px;
   border: none;
   border-radius: 5px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: -100px;
-  margin-left: 900px;
+  margin-top: -13.4em;
+  margin-left: 300px;
 `;
 
 Modal.setAppElement('#root');
@@ -180,7 +181,7 @@ class WaitingForClues extends React.Component {
     constructor() {
         super();
         this.state = {
-            allUsers: null,
+            allUsers: [],
             userIds: [],
             game: null,
             activePlayerName: null,
@@ -215,7 +216,9 @@ class WaitingForClues extends React.Component {
     async componentDidMount() {
         const GameID = localStorage.getItem('gameID');
         const responseUsers = await api.get('/users');
-        this.setState({allUsers : responseUsers.data});
+
+        const allUserArray = responseUsers.data;
+        this.setState({allUsers : allUserArray});
         this.state.allUsers.sort(this.sortByScore)
 
         const response = await api.get(`/games/${GameID}`);
@@ -235,7 +238,8 @@ class WaitingForClues extends React.Component {
             }
         }
         this.setState({userIds: userIdArray});
-
+        localStorage.setItem('usersingame', JSON.stringify(this.state.userIds));
+        localStorage.setItem('allusers', JSON.stringify(this.state.allUsers));
         const UserList = [];
         for (var i=0; i < this.state.allUsers.length; i++) {
             if (this.state.game.currentUserId == this.state.allUsers[i].id) {
@@ -306,7 +310,17 @@ class WaitingForClues extends React.Component {
         await new Promise(resolve => setTimeout(resolve, 6000))
         this.props.history.push('/games/drawphase');
     }
-    
+
+    isPlayerInGame(id){
+        var color = 'rgba(0, 0, 0, 1)';
+        for (var j = 0; j < this.state.userIds.length; j++){
+          if(id == this.state.game.usersIds[j]){
+            color = '#03AC13';
+          }
+        }
+        return color;
+    }
+
     render() {
         return (
             <Container>
@@ -328,8 +342,8 @@ class WaitingForClues extends React.Component {
                     width={200}
                 />}
                 {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
-                <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
                 </LabelContainer>
+                <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
                 {!this.state.userIds ? (
                  <Spinner />
                     ) : (
@@ -372,11 +386,11 @@ class WaitingForClues extends React.Component {
                     }
                     >
                     <Users>
-                    {this.state.userIds.map(user => {
+                    {this.state.allUsers.map(user => {
                         return (
                             <ButtonContainer key={user.id}>
-                                <ScoreboardPlayerButton onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
-                                    <ScoreboardPlayer user={user} />
+                                <ScoreboardPlayerButton style={{color: this.isPlayerInGame(user.id)}} onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
+                                    <ScoreboardPlayer  user={user} />
                                 </ScoreboardPlayerButton>
                                 <Modal2 
                                     isOpen={this.state.modalIsOpen2}
@@ -419,12 +433,12 @@ class WaitingForClues extends React.Component {
                                         </Form>
                                         &nbsp;
                                         <Form>
-                                            <Label> Games played: </Label>
+                                            <Label> Games Played: </Label>
                                             {this.state.clickedGamesPlayed}
                                         </Form>
                                         &nbsp;
                                         <Form>
-                                            <Label> correctly guessed words: </Label>
+                                            <Label> Correctly Guessed Words: </Label>
                                             {this.state.clickedCorrectlyGuessed}
                                         </Form>
                                     </ButtonContainer>
