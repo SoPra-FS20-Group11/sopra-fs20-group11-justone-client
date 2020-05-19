@@ -84,6 +84,28 @@ const ScoreboardPlayerButton = styled.button`
   transition: all 0.3s ease;
 `;
 
+const RankingButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 80px;
+  height: 90px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 110);
+  transition: all 0.3s ease;
+  margin-right: 20px;
+`;
+
 const MainButton = styled.button`
   &:hover {
     transform: translateY(-2px);
@@ -195,7 +217,7 @@ class StartGame extends React.Component {
           comparison = -1;
         }
         return comparison;
-      }
+    }
 
     async componentDidMount() {
         try {
@@ -359,9 +381,10 @@ class StartGame extends React.Component {
                             }
                             >
                             <Users>
-                            {this.state.userIds.map(user => {
+                            {this.state.userIds.map((user,index) => {
                                 return (
                                     <ButtonContainer key={user.id}>
+                                        <RankingButton> {index + 1} </RankingButton>
                                         <ScoreboardPlayerButton>
                                             <ScoreboardPlayer user={user} />
                                         </ScoreboardPlayerButton>

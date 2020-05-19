@@ -76,7 +76,8 @@ const MainButton = styled.button`
   font-size: 30px;
   text-align: center;
   align-self: center;
-  margin-left: auto;
+  margin-top: 20px;
+  margin-left: 20px;
   color: rgba(0, 0, 0, 1);
   width: 50%;
   height: 50px;
@@ -102,6 +103,27 @@ const Form = styled.div`
   border-radius: 10px;
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
+  outline: 10px solid black;
+`;
+
+const TimerForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+  height: 100px;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 1000;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 10px;
+  background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  outline: 10px dashed black;
+  margin-top: 50px;
+  margin-left: -300px;
+  margin-bottom: 100px;
 `;
 const TimerForm = styled.div`
   display: flex;
