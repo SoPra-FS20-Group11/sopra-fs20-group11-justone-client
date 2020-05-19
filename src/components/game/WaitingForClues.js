@@ -58,6 +58,12 @@ const RulesButtonContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const ButtonContainer2 = styled.div`
+  display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -146,6 +152,29 @@ const PlayerContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
   margin-left: 20px;
+  margin-right: 20px;
+`;
+
+const RankingButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 0px;
+  box-shadow: 3px 3px 5px 4px;
+  font-family: system-ui;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+  width: 80px;
+  height: 90px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(255, 229, 110);
+  transition: all 0.3s ease;
+  margin-top: 20px;
   margin-right: 20px;
 `;
 
@@ -372,9 +401,10 @@ class WaitingForClues extends React.Component {
                     }
                     >
                     <Users>
-                    {this.state.userIds.map(user => {
+                    {this.state.userIds.map((user, index) => {
                         return (
                             <ButtonContainer key={user.id}>
+                                <RankingButton>{index+1}</RankingButton>
                                 <ScoreboardPlayerButton onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
                                     <ScoreboardPlayer user={user} />
                                 </ScoreboardPlayerButton>
@@ -401,7 +431,7 @@ class WaitingForClues extends React.Component {
                                         }
                                 >
                                 <Users>
-                                    <ButtonContainer>
+                                    <ButtonContainer2>
                                         <Label2>User Profile of "{this.state.clickedUsername}"</Label2>
                                         <Form>
                                             <Label> Name: </Label>
@@ -427,7 +457,7 @@ class WaitingForClues extends React.Component {
                                             <Label> correctly guessed words: </Label>
                                             {this.state.clickedCorrectlyGuessed}
                                         </Form>
-                                    </ButtonContainer>
+                                    </ButtonContainer2>
                                 </Users> 
                                 <ButtonContainer>
                                     <CloseButton onClick={() => this.setModalIsOpen2(false)}>Back</CloseButton>
