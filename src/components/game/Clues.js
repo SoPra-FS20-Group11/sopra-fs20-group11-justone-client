@@ -114,7 +114,8 @@ class Clues extends React.Component {
           allCluesBool: null,
           chosenWord: null,
           submitted: false,
-          threePlayers: false
+          threePlayers: false,
+          seconds: 30
         };
     }
 
@@ -133,10 +134,23 @@ class Clues extends React.Component {
       );
       const response = await api.get(`/chosenword/${this.state.gameID}`);
       this.setState({chosenWord: response.data.chosenWord})
+
+      // This is the timer function
+      this.myInterval = setInterval(() => {
+
+        if (this.state.seconds > 0) {
+          this.setState(({seconds}) => ({
+            seconds: seconds -1
+          }))
+        }
+        if (this.state.seconds === 0) {
+          clearInterval(this.myInterval)
+        }
+      }, 1000)
     }
 
     componentWillUnmount() {
-      clearInterval(this.intervalID);
+      clearInterval(this.intervalID, this.myInterval);
     }
 
     async checkAllClues(){
@@ -168,6 +182,12 @@ class Clues extends React.Component {
     render() {
         return (
             <Container>
+              <Form>
+                {this.state.seconds === 0 
+                ? <h1>Time's Over!</h1>
+                : <h1> Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</h1>
+                }
+                </Form>
                 <FormContainer>
                     <Label2> Give a clue to the following word! </Label2>
                     <Label3> "{this.state.chosenWord}" </Label3>
