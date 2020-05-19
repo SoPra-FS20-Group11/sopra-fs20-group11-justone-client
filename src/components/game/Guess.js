@@ -76,7 +76,6 @@ const MainButton = styled.button`
   font-size: 30px;
   text-align: center;
   align-self: center;
-  margin-top: 20px;
   margin-left: 20px;
   color: rgba(0, 0, 0, 1);
   width: 50%;
@@ -110,8 +109,8 @@ const TimerForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
-  height: 100px;
+  width: 55%;
+  height: 80px;
   font-family: system-ui;
   font-size: 20px;
   font-weight: 1000;
@@ -121,30 +120,11 @@ const TimerForm = styled.div`
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
   outline: 10px dashed black;
-  margin-top: 50px;
+  margin-top: 20px;
   margin-left: -300px;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 `;
-const TimerForm = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: 'flex-start';
-  align-items: 'flex-start';
-  alignSelf: 'flex-start';
-  position: absolute;
-  margin-top: 80px;
-  width: 270px;
-  height: 100px;
-  font-family: system-ui;
-  font-size: 12px;
-  font-weight: 1000;
-  margin-left: -15em;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 10px;
-  background: linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0));
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
+
 
 const InputField = styled.input`
   &::placeholder {
@@ -162,9 +142,9 @@ const InputField = styled.input`
   color: grey0;
 `;
 const TimerContainer = styled.img`
-margin-top: 18px;
-margin-left: -20px;
-position: relative;
+margin-top: 0px;
+margin-left: -30px;
+position: absolute;
 background: 'transparent';
 height: 65px;
 width: 65px;
@@ -191,6 +171,7 @@ class Guess extends React.Component {
             guess: null,
             seconds: 30,
             time: 0,
+            overtimed: false,
             color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)'
         };
     }
@@ -288,7 +269,7 @@ class Guess extends React.Component {
         clearInterval(this.myInterval);
         await new Promise(resolve => setTimeout(resolve, 3000));
         await api.put(`/skip/${this.state.gameID}`);  
-         this.props.history.push('/games/resultlost');     
+        this.props.history.push('/games/resultlost');     
     }
     // After the current player guessed, the next player will be set to the current Player
 
@@ -316,6 +297,7 @@ class Guess extends React.Component {
                         <Label2 > No valid clue! </Label2>}
                         <Form>
                         <InputField 
+                            disabled={this.state.seconds===0}
                             placeholder="Enter your guess..."
                             onChange={e => {
                                 this.handleInputChange('guess', e.target.value);
@@ -327,11 +309,11 @@ class Guess extends React.Component {
                         <TimerContainer src={Timer} />
                         {this.state.seconds === 0 
                         ? this.timeOver() && <Time>Time's Over!</Time>
-                        : <h1>Time Remaining: </h1>}
-                        {this.state.seconds != 0 && <Time >{this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
+                        : 
+                        this.state.seconds != 0 && <Time >Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
                         </TimerForm>
                         <MainButton
-                            disabled={!this.state.guess}
+                            disabled={!this.state.guess || this.state.seconds===0}
                             width="10%"
                             onClick={() => {
                                 this.submitGuess();
@@ -340,6 +322,7 @@ class Guess extends React.Component {
                         </MainButton>
                         &nbsp;
                         <MainButton
+                            disabled={this.state.seconds===0}
                             width="10%"
                             onClick={() => {
                                 this.skipGuess();

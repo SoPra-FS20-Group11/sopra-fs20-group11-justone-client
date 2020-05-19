@@ -197,7 +197,8 @@ class Clues extends React.Component {
         time: this.state.time
         });
       await new Promise(resolve => setTimeout(resolve, 3000));
-      await api.post(`/clues/${this.state.gameID}`, requestBody)     
+      await api.post(`/clues/${this.state.gameID}`, requestBody) 
+      this.setState({submitted: true});    
     }
 
     componentWillUnmount() {

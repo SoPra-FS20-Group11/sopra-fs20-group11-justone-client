@@ -370,9 +370,10 @@ class WaitingForGuess extends React.Component {
                       }
                       >
                       <Users>
-                    {this.state.allUsers.map(user => {
+                      {this.state.allUsers.map((user, index) => {
                         return (
                             <ButtonContainer key={user.id}>
+                              <RankingButton> {index+1} </RankingButton>
                                 <ScoreboardPlayerButton style={{color: this.isPlayerInGame(user.id)}} onClick={() => {this.setModalIsOpen2(true); this.setId(user.id)}}>
                                     <ScoreboardPlayer user={user} />
                                 </ScoreboardPlayerButton>
