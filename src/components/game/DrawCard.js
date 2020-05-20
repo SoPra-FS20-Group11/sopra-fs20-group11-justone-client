@@ -139,10 +139,12 @@ class DrawCard extends React.Component {
       var requestBody = null;
       const card = JSON.parse(localStorage.getItem('card'));
       var requestBody = JSON.stringify({
-        chosenWord: card[number]
+        chosenWord: this.state.card[number]
       })
       await api.put('/chosenword/'+gameID, requestBody)
       localStorage.setItem('wordnum', wordNum);
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      this.props.history.push(`/games/waiting1`); 
     }
 
     render() {
@@ -181,8 +183,7 @@ class DrawCard extends React.Component {
                             disabled={number==localStorage.getItem('wordnum') && chosenWordStatus != "NOCHOSENWORD"}                    
                             width="100%"
                             onClick={() => {
-                                this.setChosenWord(number);
-                                this.props.history.push(`/games/waiting1`);                   
+                                this.setChosenWord(number);                  
                             }}
                           >                        
                           <div> Word {number}</div>             
