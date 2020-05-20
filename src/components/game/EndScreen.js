@@ -183,9 +183,10 @@ class EndScreen extends React.Component {
             <Spinner />
             ) : (
             <Form>Game is over! You reached a total of {this.state.totalPoints} Points</Form>
+            )}
             <MainButton onClick={() => {this.finish();
             }}> Return
-            </MainButton>)}
+            </MainButton>
           </GameContainer>
         </Container>
       );
