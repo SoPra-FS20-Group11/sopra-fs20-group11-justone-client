@@ -202,8 +202,8 @@ class DrawCard extends React.Component {
             </Container>
       }
       return (      
-        this.state.round && this.state.chosenWordStatus ? (
-          <Spinner></Spinner>)
+        !this.state.round && !this.state.chosenWordStatus ? (
+          <Container><Spinner></Spinner></Container>)
           : (
         <Container>
         {renderRight}
