@@ -361,8 +361,11 @@ class WaitingForClues extends React.Component {
                 {this.state.wordDecided=="REJECTEDBYALL" &&
                 <Label2> The word was rejected! Choose a new word. Redirecting... </Label2>}
                 {this.state.wordDecided=="ACCEPTED" &&
-                <Label2> The word was accepted! </Label2> &&
+                <Label2> The word was accepted! </Label2>}
+                {this.state.wordDecided=="ACCEPTED" &&
                 <Label2> Waiting for the clues! </Label2>}
+                 {this.state.wordDecided=="SELECTED" && !this.state.changeableWord &&
+                 <Label2> Waiting for the clues! </Label2>}
                 {!this.state.NoClues && 
                 <Loader
                     type="Triangle"

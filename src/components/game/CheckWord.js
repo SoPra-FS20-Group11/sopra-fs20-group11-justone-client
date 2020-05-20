@@ -162,6 +162,7 @@ class CheckWord extends React.Component {
             allUsers: null,
             rejectedWord: false,
             acceptedWord: false,
+            rejectedbyAll: false,
             wordStatus: null,
         };
     }
@@ -223,6 +224,7 @@ class CheckWord extends React.Component {
           status: false
         });
         const response = await api.put(`/chosenword/update/${this.state.gameID}`, requestBody);
+        this.setState({rejectedWord: true});
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
@@ -232,7 +234,7 @@ class CheckWord extends React.Component {
       const responseWord = await api.get('/chosenword/'+this.state.gameID);
       this.setState({ wordStatus: responseWord.data.wordStatus});
       if (this.state.wordStatus == "REJECTEDBYALL"){
-        this.setState({rejectedWord: true});
+        this.setState({rejectedbyAll: true});
         this.redirectToWait();
       }
         if (this.state.wordStatus == "ACCEPTED") {
@@ -303,7 +305,7 @@ class CheckWord extends React.Component {
                             </Users>
                             {this.state.acceptedWord || this.state.rejectedWord && <Label2> Wait for the other players to decide... </Label2> && <Spinner /> }
                             {this.state.wordStatus=="ACCEPTED" && <Label2> The word is accepted! Redirecting... </Label2>}
-                            {this.state.rejectedWord && <Label2> Someone rejected the word! A new word will be chosen. Redirecting... </Label2>}  
+                            {this.state.rejectedByAll && <Label2> Someone rejected the word! A new word will be chosen. Redirecting... </Label2>}  
                              
                         </GameContainer>
                     )}

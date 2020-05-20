@@ -175,7 +175,10 @@ class DrawCard extends React.Component {
                 </ButtonContainer>
             </Container>
       }else{
-        renderRight = 
+        {this.state.round && this.state.chosenWordStatus ? (
+          renderRight = <Spinner></Spinner>)
+          : (
+            renderRight = 
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
                 <ImgContainer>
@@ -200,7 +203,7 @@ class DrawCard extends React.Component {
                       
                   <Label2> Pick a word from the card! </Label2>
                   
-            </Container>
+            </Container>)}
       }
       return (      
         <Container>
