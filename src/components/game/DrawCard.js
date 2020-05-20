@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
+import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
