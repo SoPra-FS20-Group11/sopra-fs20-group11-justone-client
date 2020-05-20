@@ -176,10 +176,7 @@ class DrawCard extends React.Component {
                 </ButtonContainer>
             </Container>
       }else{
-        {this.state.round && this.state.chosenWordStatus ? (
-          renderRight = <Spinner></Spinner>)
-          : (
-            renderRight = 
+          renderRight = 
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
                 <ImgContainer>
@@ -200,17 +197,18 @@ class DrawCard extends React.Component {
                     </ButtonContainer>);})}
                 </ButtonContainer2>  
                 <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />       
-                </ImgContainer>
-                      
-                  <Label2> Pick a word from the card! </Label2>
-                  
-            </Container>)}
+                </ImgContainer>                     
+                  <Label2> Pick a word from the card! </Label2>  
+            </Container>
       }
       return (      
+        this.state.round && this.state.chosenWordStatus ? (
+          <Spinner></Spinner>)
+          : (
         <Container>
         {renderRight}
         </Container>
-      )
+      ))
     }
 }
 export default withRouter(DrawCard);
