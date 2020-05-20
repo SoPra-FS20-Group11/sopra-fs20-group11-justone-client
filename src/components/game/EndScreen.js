@@ -144,7 +144,7 @@ class EndScreen extends React.Component {
         super();
         this.state = {
             gameId: null,
-            totalPoints: 0,
+            totalPoints: null,
             game: null
         };
     }
@@ -160,10 +160,6 @@ class EndScreen extends React.Component {
               game: responseGame.data,
               totalPoints: responseGame.data.score
             });
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            //this.setState({ totalPoints: response.data });
 
             if(this.state.game.currentUserId==localStorage.getItem('id') && this.state.game.status != "FINISHED"){
               await api.put(`/games/finish/${gameID}`);
@@ -183,10 +179,13 @@ class EndScreen extends React.Component {
       return (
         <Container>
           <GameContainer>
+            {!this.state.totalPoints ? (
+            <Spinner />
+            ) : (
             <Form>Game is over! You reached a total of {this.state.totalPoints} Points</Form>
             <MainButton onClick={() => {this.finish();
             }}> Return
-            </MainButton>
+            </MainButton>)}
           </GameContainer>
         </Container>
       );

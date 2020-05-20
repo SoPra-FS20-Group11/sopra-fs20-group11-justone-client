@@ -107,7 +107,8 @@ class DrawCard extends React.Component {
             card: null,
             round: null,
             chosenWordStatus: null,
-            gameID: localStorage.getItem('gameID')
+            gameID: localStorage.getItem('gameID'),
+            disabledButton: false
         };
     }
     async componentDidMount() {
@@ -135,7 +136,9 @@ class DrawCard extends React.Component {
 
     async setChosenWord(wordNum){
       const response = await api.get(`/cards/${this.state.gameID}`);
-      this.setState({card: response.data.words});
+      this.setState({
+        card: response.data.words,
+        disabledButton: true});
       const number = wordNum-1;
       const gameID = localStorage.getItem('gameID');
       var requestBody = null;
@@ -143,9 +146,9 @@ class DrawCard extends React.Component {
       var requestBody = JSON.stringify({
         chosenWord: this.state.card[number]
       })
+      await new Promise(resolve => setTimeout(resolve, 1500));
       await api.put('/chosenword/'+gameID, requestBody)
       localStorage.setItem('wordnum', wordNum);
-      await new Promise(resolve => setTimeout(resolve, 1000))
       this.props.history.push(`/games/waiting1`); 
     }
 
@@ -181,8 +184,8 @@ class DrawCard extends React.Component {
                     {numbers.map((number) => {
                       return (               
                         <ButtonContainer key={number}> 
-                        <WordButton 
-                            disabled={number==localStorage.getItem('wordnum') && chosenWordStatus != "NOCHOSENWORD"}                    
+                        <WordButton
+                            disabled={number==localStorage.getItem('wordnum') && chosenWordStatus != "NOCHOSENWORD" || this.state.disabledButton}                   
                             width="100%"
                             onClick={() => {
                                 this.setChosenWord(number);                  

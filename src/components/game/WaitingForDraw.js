@@ -267,7 +267,7 @@ class WaitingForDraw extends React.Component {
 
     this.intervalID = setInterval(
         () => this.checkChosenWord(),
-        3000
+        2000
     );
   }
 

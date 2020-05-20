@@ -241,11 +241,11 @@ class CheckWord extends React.Component {
     }
 
     async redirectToWait(){
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       this.props.history.push('/games/waiting');
     }
     async redirectToClue(){
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      await new Promise(resolve => setTimeout(resolve, 4000))
       this.props.history.push('/games/clues');
     }
 
