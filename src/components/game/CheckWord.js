@@ -191,7 +191,7 @@ class CheckWord extends React.Component {
 
             this.intervalID = setInterval(
               () => this.checkChosen(),
-              3000
+              1000
           );
 
         } catch (error) {
@@ -241,11 +241,11 @@ class CheckWord extends React.Component {
     }
 
     async redirectToWait(){
-      await new Promise(resolve => setTimeout(resolve, 6000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
       this.props.history.push('/games/waiting');
     }
     async redirectToClue(){
-      await new Promise(resolve => setTimeout(resolve, 6000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
       this.props.history.push('/games/clues');
     }
 

@@ -336,7 +336,7 @@ class WaitingForClues extends React.Component {
     }
 
     async redirectToDraw(){    
-        await new Promise(resolve => setTimeout(resolve, 6000))
+        await new Promise(resolve => setTimeout(resolve, 5000))
         this.props.history.push('/games/drawphase');
     }
 

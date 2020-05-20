@@ -134,6 +134,8 @@ class DrawCard extends React.Component {
     }
 
     async setChosenWord(wordNum){
+      const response = await api.get(`/games/${this.state.gameID}`);
+      this.setState({card: response.data.words});
       const number = wordNum-1;
       const gameID = localStorage.getItem('gameID');
       var requestBody = null;
