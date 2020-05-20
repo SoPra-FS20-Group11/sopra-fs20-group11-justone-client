@@ -223,7 +223,6 @@ class CheckWord extends React.Component {
           status: false
         });
         const response = await api.put(`/chosenword/update/${this.state.gameID}`, requestBody);
-        this.setState({rejectedWord: true})
         let num = this.state.numChosen;
         num = num + 1;
         this.setState({ numChosen: num });
@@ -232,7 +231,8 @@ class CheckWord extends React.Component {
     async checkChosen() {
       const responseWord = await api.get('/chosenword/'+this.state.gameID);
       this.setState({ wordStatus: responseWord.data.wordStatus});
-      if (this.state.wordStatus == "REJECTED"){
+      if (this.state.wordStatus == "REJECTEDBYALL"){
+        this.setState({rejectedWord: true});
         this.redirectToWait();
       }
         if (this.state.wordStatus == "ACCEPTED") {

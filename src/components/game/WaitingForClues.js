@@ -296,7 +296,7 @@ class WaitingForClues extends React.Component {
             allClues: responseClues.data.allManualClues,
             wordDecided: responseWord.data.wordStatus});
 
-        if (this.state.wordDecided=="REJECTED"){
+        if (this.state.wordDecided=="REJECTEDBYALL"){
             this.redirectToDraw();
         }
         if (this.state.allClues == true) {
@@ -358,7 +358,7 @@ class WaitingForClues extends React.Component {
                 {this.state.wordDecided=="SELECTED" && this.state.changeableWord &&
                 <Label2> Waiting for the other players to accept or reject the word... </Label2> 
                 }
-                {this.state.wordDecided=="REJECTED" &&
+                {this.state.wordDecided=="REJECTEDBYALL" &&
                 <Label2> The word was rejected! Choose a new word. Redirecting... </Label2>}
                 {this.state.wordDecided=="ACCEPTED" &&
                 <Label2> The word was accepted! </Label2> &&
