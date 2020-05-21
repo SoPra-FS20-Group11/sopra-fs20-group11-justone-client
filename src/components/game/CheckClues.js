@@ -183,6 +183,12 @@ class CheckClues extends React.Component {
 
             this.setState({ clues: response.data });
 
+            const removeArrayItem = (arr, itemToRemove) => {
+                return arr.filter(item => item !== itemToRemove)
+              }
+
+            this.state.clues.clues = removeArrayItem(this.state.clues.clues, 'OVERTIMED')
+           
             const colorArrayAcc = [];
             const colorArrayRej = [];
             for (var i = 0; i < this.state.clues.clues.length; i++) {
