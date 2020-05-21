@@ -205,11 +205,13 @@ const ScoreboardButton = styled.button`
 Modal.setAppElement('#root');
 
 class WaitingForClues extends React.Component {
+    _isMounted = false;
     intervalID;
 
     constructor() {
         super();
         this.state = {
+            isLoading: true,
             allUsers: [],
             userIds: [],
             game: null,
@@ -243,19 +245,23 @@ class WaitingForClues extends React.Component {
     }
 
     async componentDidMount() {
+        this._isMounted = true;
         const GameID = localStorage.getItem('gameID');
-        const responseUsers = await api.get('/users');
+        await api.get('/users').then(responseUsers => {
+            if (this._isMounted) {
+                this.setState({allUsers : responseUsers.data});
+            }
+        })
+        this.state.allUsers.sort(this.sortByScore);
 
-        const allUserArray = responseUsers.data;
-        this.setState({allUsers : allUserArray});
-        this.state.allUsers.sort(this.sortByScore)
-
-        const response = await api.get(`/games/${GameID}`);
-
-        this.setState({
-            game: response.data,
-            wordDecided: response.data.wordStatus,
-            changeableWord: response.data.changeWord});
+        await api.get(`/games/${GameID}`).then(response => {
+            if (this._isMounted) {
+                this.setState({
+                    game: response.data,
+                    wordDecided: response.data.wordStatus,
+                    changeableWord: response.data.changeWord})
+                }
+            })
 
         //list of all players in the particular lobby
         var userIdArray = [];
@@ -277,14 +283,16 @@ class WaitingForClues extends React.Component {
         }
         this.setState({activePlayerName: UserList});
 
+        await new Promise(resolve => setTimeout(resolve, 2000))
         this.intervalID = setInterval(
             () => this.checkClues(),
-            3000
+            1500
         );
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
+        this._isMounted = false;
     }
 
     async checkClues() {
@@ -355,7 +363,7 @@ class WaitingForClues extends React.Component {
             <Container>
                 <LabelContainer>
                 &nbsp;
-                {this.state.wordDecided=="SELECTED" && this.state.changeableWord &&
+                {((this.state.wordDecided=="SELECTED" && this.state.changeableWord) || this.state.wordDecided=="REJECTED") &&
                 <Label2> Waiting for the other players to accept or reject the word... </Label2> 
                 }
                 {this.state.wordDecided=="REJECTEDBYALL" &&

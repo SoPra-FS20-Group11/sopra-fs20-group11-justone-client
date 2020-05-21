@@ -164,6 +164,7 @@ class CheckWord extends React.Component {
             acceptedWord: false,
             rejectedbyAll: false,
             wordStatus: null,
+            allUsersDecided: false
         };
     }
 
@@ -234,10 +235,12 @@ class CheckWord extends React.Component {
       const responseWord = await api.get('/chosenword/'+this.state.gameID);
       this.setState({ wordStatus: responseWord.data.wordStatus});
       if (this.state.wordStatus == "REJECTEDBYALL"){
-        this.setState({rejectedbyAll: true});
+        this.setState({allUsersDecided: true});
+        this.setState({rejectedByAll: true});
         this.redirectToWait();
       }
         if (this.state.wordStatus == "ACCEPTED") {
+          this.setState({allUsersDecided: true});
           this.redirectToClue();
         }
     }
@@ -303,7 +306,8 @@ class CheckWord extends React.Component {
                                         Reject
                                     </CheckButton>
                             </Users>
-                            {this.state.acceptedWord || this.state.rejectedWord && <Label2> Wait for the other players to decide... </Label2> && <Spinner /> }
+                            {((this.state.acceptedWord || this.state.rejectedWord) && !this.state.allUsersDecided) && <Label2> Wait for the other players to decide... </Label2>}
+                            {((this.state.acceptedWord || this.state.rejectedWord) && !this.state.allUsersDecided) && <Spinner /> }
                             {this.state.wordStatus=="ACCEPTED" && <Label2> The word is accepted! Redirecting... </Label2>}
                             {this.state.rejectedByAll && <Label2> Someone rejected the word! A new word will be chosen. Redirecting... </Label2>}  
                              

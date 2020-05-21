@@ -261,9 +261,10 @@ class WaitingForGuess extends React.Component {
     }
     this.setState({activePlayerName: UserList});
 
+    await new Promise(resolve => setTimeout(resolve, 2000))
     this.intervalID = setInterval(
         () => this.checkGuess(),
-        3000
+        1500
     );
   }
 

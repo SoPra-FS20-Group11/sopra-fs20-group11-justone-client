@@ -164,10 +164,10 @@ class PostGameWrong extends React.Component {
            this.setState({userIds: userIdArray});
           //const response = await api.get(`/points/${gameID}`);
 
-          //this.setState({ points: response.data });
+          await new Promise(resolve => setTimeout(resolve, 2000))
           this.intervalID = setInterval(
             () => this.checkNextRound(),
-            3000
+            1500
         );
 
         if (this.state.game.deckSize==0){
@@ -206,6 +206,8 @@ class PostGameWrong extends React.Component {
     }
 
     async next() {
+      this.setState({clickedNext: true});
+      await new Promise(resolve => setTimeout(resolve, 2500));
       const gameID = localStorage.getItem('gameID');
       await api.put(`/games/reset/${gameID}`);
     } 
@@ -219,7 +221,9 @@ class PostGameWrong extends React.Component {
           {this.state.ending &&
           <Label2>This was the last round! Calculating points... </Label2>}
           {localStorage.getItem('id')==this.state.currentUserId && !this.state.ending &&
-          <MainButton onClick={() => {this.next();
+          <MainButton 
+            disabled={this.state.clickedNext}
+            onClick={() => {this.next();
           }}> Next Round
           </MainButton>}
           {!this.state.userIds ? (

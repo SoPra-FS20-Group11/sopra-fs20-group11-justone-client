@@ -216,6 +216,7 @@ class GameLobby extends React.Component {
           <GameContainer>
             <Users>
               {this.state.games.map(game => {
+                if (game.status === 'CREATED'){
                 return (
                   <ButtonContainer key={game.id}>
                     <GameButton
@@ -227,7 +228,7 @@ class GameLobby extends React.Component {
                       <Games game={game} />
                     </GameButton>
                   </ButtonContainer>
-                );
+                );}
               })}
             </Users>
             <MainButton

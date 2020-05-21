@@ -262,6 +262,7 @@ class Guess extends React.Component {
 
     async submitGuess() {
         try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
             const gameID = localStorage.getItem('gameID');
             //send a request to guess the mystery word
             const requestBody = JSON.stringify({
@@ -282,6 +283,7 @@ class Guess extends React.Component {
         // ==> put request: skip guess
         await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
+        await new Promise(resolve => setTimeout(resolve, 3500));
         this.props.history.push(`/games/resultlost`);
  
     }
