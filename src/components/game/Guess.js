@@ -172,7 +172,11 @@ class Guess extends React.Component {
             seconds: 30,
             time: 0,
             overtimed: false,
-            color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)'
+            color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
+            currentUserId: null,
+            correctlyGuessed: null,
+            duplicateClues: null,
+            score: null,
         };
     }
 
@@ -180,12 +184,19 @@ class Guess extends React.Component {
         try {
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
+            const response2 = await api.get(`/games/${gameID}`);
+
+            this.setState({currentUserId: response2.data.currentUserId});
 
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            this.setState({allClues: response.data});
+            const currentUserId = this.state.currentUserId;
+            const responseGameStat = await api.get(`/users/${currentUserId}`);
+            this.setState({correctlyGuessed: responseGameStat.data.correctlyGuessed});
+            this.setState({duplicateClues: responseGameStat.data.duplicateClues});
+            this.setState({score: responseGameStat.data.score})
 
-            
+            this.setState({allClues: response.data});
 
             const validClueArray = [];
             for(var i=0; i< this.state.allClues.length; i++){
@@ -224,10 +235,24 @@ class Guess extends React.Component {
 
     async checkGuess(){
         const GameID = localStorage.getItem('gameID');
+        const newCorrectylGuessed = this.state.correctlyGuessed + 1;
+        const requestBody = JSON.stringify({
+            correctlyGuessed: newCorrectylGuessed,
+            duplicateClues: this.state.duplicateClues
+        });
+        const responseScore = await api.get(`/cards/${GameID}`);
+        this.setState({score: responseScore.data.score + this.state.score})
+        const requestBodyScore = JSON.stringify({
+            score: this.state.score
+        });
+
+        const currentUserId = this.state.currentUserId;
         const responseGuess = await api.get('/guess/'+GameID);
         this.setState({guess: responseGuess.data});
         if (this.state.guess.guessStatus != "NOGUESS"){
             if (this.state.guess.guessStatus === "CORRECT"){
+                await api.put(`/users/gamestat/${currentUserId}`, requestBody)
+                await api.put(`/users/score/${currentUserId}`, requestBodyScore)
                 this.props.history.push('/games/resultwon');
             }else{
                 this.props.history.push('/games/resultlost');
