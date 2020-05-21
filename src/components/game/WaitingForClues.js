@@ -252,7 +252,7 @@ class WaitingForClues extends React.Component {
                 this.setState({allUsers : responseUsers.data});
             }
         })
-        this.state.allUsers.sort(this.sortByScore);
+        this.setState({allUsers: this.state.allUsers.sort((a, b) => (a.score < b.score) ? 1 : -1)});
 
         await api.get(`/games/${GameID}`).then(response => {
             if (this._isMounted) {

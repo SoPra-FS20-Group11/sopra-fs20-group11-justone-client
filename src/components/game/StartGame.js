@@ -226,7 +226,7 @@ class StartGame extends React.Component {
             
             const responseUsers = await api.get('/users');
             this.setState({ allUsers : responseUsers.data});
-            this.state.allUsers.sort(this.sortByScore)
+            this.setState({allUsers: this.state.allUsers.sort((a, b) => (a.score < b.score) ? 1 : -1)});
 
             const response = await api.get('/games/'+GameID);
             this.setState({users: response.data.usersIds});

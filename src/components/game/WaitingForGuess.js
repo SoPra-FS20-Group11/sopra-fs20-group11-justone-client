@@ -238,7 +238,7 @@ class WaitingForGuess extends React.Component {
     const GameID = localStorage.getItem('gameID');
     const responseUsers = await api.get('/users');
     this.setState({ allUsers : responseUsers.data});
-    this.state.allUsers.sort(this.sortByScore);
+    this.setState({allUsers: this.state.allUsers.sort((a, b) => (a.score < b.score) ? 1 : -1)});
 
     const response = await api.get('/games/'+GameID);
     this.setState({game: response.data});
