@@ -37,8 +37,10 @@ const ButtonContainer2 = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  margin-top: -45px;
-  position: absolute;
+  margin-top: 2em;
+  margin-left: -200px;
+  margin-right: 250px;
+  position: relative;
 `;
 
 const Label2 = styled.h1`
@@ -65,17 +67,25 @@ const ImgContainer = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: row;
-  justify-content: center;
+  
+`;
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const JustOneDeck = styled.img`
   position: relative;
   justify-content: center;
 `;
+const JustOneDeckDrawn = styled.img`
+  position: relative;
+  justify-content: center;
+  margin-left: 100px;
+`;
 const JustOneNext = styled.img`
-  margin-bottom: 300px;
-  position: absolute;
-  margin-left: 10em;
+  margin-top: -370px;
+  position: relative;
 `;
 
 export const WordButton = styled.button`
@@ -100,25 +110,42 @@ export const WordButton = styled.button`
 `;
 
 class DrawCard extends React.Component {
+  _isMounted = false;
     constructor() {
         super();
         this.state = {
+            isLoading: true,
             users: null,
             drawnCardBool: false,
             card: null,
             round: null,
             chosenWordStatus: null,
-            gameID: localStorage.getItem('gameID'),
+            gameID: null,
             disabledButton: false
         };
     }
     async componentDidMount() {
-      const response = await api.get(`/games/${this.state.gameID}`);
-      const responseChosenWord = await api.get(`/chosenword/${this.state.gameID}`);
-      this.setState({
-        round: response.data.round,
-        chosenWordStatus: responseChosenWord.data.wordStatus
-      });
+      this._isMounted = true;
+      const gameID = localStorage.getItem('gameID');
+      await api.get(`/games/${gameID}`).then(response => {
+        if (this._isMounted) {
+        this.setState({
+          round: response.data.round,
+          })
+        }
+      })
+      await api.get(`/chosenword/${gameID}`).then(responseChosenWord => {
+        if (this._isMounted) {
+          this.setState({
+            isLoading: false,
+            chosenWordStatus: responseChosenWord.data.wordStatus
+          })
+        }
+      })
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
     }
 
     async drawNewCard() {
@@ -129,28 +156,31 @@ class DrawCard extends React.Component {
       const response = await api.put(`/cards/${gameID}`);
       this.setState({card: response.data.words});
 
-      var cardarray = new Array();
+      var cardarray = [];
       for (var i = 0; i < response.data.words.length; i++) {
         cardarray.push(response.data.words[i])}
-      localStorage.setItem('card', JSON.stringify(cardarray));
     }
 
     async setChosenWord(wordNum){
-      const response = await api.get(`/cards/${this.state.gameID}`);
+      const gameID = localStorage.getItem('gameID');
+      localStorage.setItem('wordnum', wordNum);
+      const response = await api.get(`/cards/${gameID}`);
       this.setState({
         card: response.data.words,
         disabledButton: true});
       const number = wordNum-1;
-      const gameID = localStorage.getItem('gameID');
-      var requestBody = null;
-      const card = JSON.parse(localStorage.getItem('card'));
       var requestBody = JSON.stringify({
         chosenWord: this.state.card[number]
       })
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      await api.put('/chosenword/'+gameID, requestBody)
-      localStorage.setItem('wordnum', wordNum);
-      this.props.history.push(`/games/waiting1`); 
+      this.putrequest(requestBody);
+    }
+
+    async putrequest(requestBody){
+      const gameID = localStorage.getItem('gameID');
+      await new Promise(resolve => setTimeout(resolve, 3500));
+      await api.put('/chosenword/'+gameID, requestBody).then(result => {
+        this.props.history.push(`/games/waiting1`);
+      })
     }
 
     render() {
@@ -158,8 +188,8 @@ class DrawCard extends React.Component {
       const chosenWordStatus = this.state.chosenWordStatus;
       let renderRight;   
       const numbers = [1, 2, 3, 4, 5];
-      if (!drawnCardBool && chosenWordStatus == "NOCHOSENWORD"){
-        renderRight =
+      return (
+      !drawnCardBool && chosenWordStatus === "NOCHOSENWORD" ? (
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
                 <JustOneDeck src={JustOneCards} alt= "Just One Cards" height={400} />
@@ -174,19 +204,19 @@ class DrawCard extends React.Component {
                     Draw a card
                     </MainButton>
                 </ButtonContainer>
-            </Container>
-      }else{
-          renderRight = 
+            </Container>)
+      : (
             <Container>
               <RoundLabel> Round {this.state.round} </RoundLabel>
                 <ImgContainer>
-                <JustOneDeck src={JustOneSingle} alt= "Just One Cards" height={380} />
+                <JustOneDeckDrawn src={JustOneSingle} alt= "Just One Cards" height={380} />
+                <CardContainer>
                 <ButtonContainer2>
                     {numbers.map((number) => {
                       return (               
                         <ButtonContainer key={number}> 
                         <WordButton
-                            disabled={number==localStorage.getItem('wordnum') && chosenWordStatus != "NOCHOSENWORD" || this.state.disabledButton}                   
+                            disabled={(number==localStorage.getItem('wordnum') && chosenWordStatus != "NOCHOSENWORD") || this.state.disabledButton}                   
                             width="100%"
                             onClick={() => {
                                 this.setChosenWord(number);                  
@@ -196,19 +226,11 @@ class DrawCard extends React.Component {
                     </WordButton>
                     </ButtonContainer>);})}
                 </ButtonContainer2>  
-                <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />       
+                <JustOneNext src={JustOneCards} alt= "Just One Cards" height={420} />  
+                </CardContainer>     
                 </ImgContainer>                     
                   <Label2> Pick a word from the card! </Label2>  
-            </Container>
-      }
-      return (      
-        !this.state.round && !this.state.chosenWordStatus ? (
-          <Container><Spinner></Spinner></Container>)
-          : (
-        <Container>
-        {renderRight}
-        </Container>
-      ))
+            </Container>))
     }
 }
 export default withRouter(DrawCard);

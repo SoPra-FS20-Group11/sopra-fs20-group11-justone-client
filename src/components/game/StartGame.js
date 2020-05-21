@@ -199,6 +199,7 @@ class StartGame extends React.Component {
             users: null,
             userIds: [],
             allUsers: null,
+            allUserList: null,
             currentPlayer: null,
             currentIndex: 0,
             lobbyUser: null,
@@ -243,9 +244,10 @@ class StartGame extends React.Component {
             this.setState({userIds: userIdArray});
             this.setState({currentPlayer: this.state.userIds});
             
+            await new Promise(resolve => setTimeout(resolve, 2000))
             this.intervalID = setInterval(
                 () => this.directPlayers(),
-                3000
+                1500
             );
 
         } catch (error) {
@@ -284,12 +286,13 @@ class StartGame extends React.Component {
     async directPlayers(){
         const GameID = localStorage.getItem('gameID');
         const responseGame = await api.get('/games/'+GameID);
-
+        const responseUsers = await api.get('/users');
+        this.setState({ allUserList : responseUsers.data});
         var userIdArray = [];
         for (var j = 0; j < responseGame.data.usersIds.length; j++){
-            for (var i = 0; i < this.state.allUsers.length; i++) {
-                if (responseGame.data.usersIds[j] == this.state.allUsers[i].id){
-                    userIdArray.push(this.state.allUsers[i]);
+            for (var i = 0; i < this.state.allUserList.length; i++) {
+                if (responseGame.data.usersIds[j] == this.state.allUserList[i].id){
+                    userIdArray.push(this.state.allUserList[i]);
                 }
             }
         }
@@ -313,11 +316,6 @@ class StartGame extends React.Component {
         this.props.history.push('/game/players');
     }
 
-    nextPlayer() {
-        this.setState({currentIndex: (this.state.currentIndex + 1) % this.state.userIds.length});
-        this.setState({currentPlayer: this.state.userIds[this.state.currentIndex]});
-        localStorage.setItem('currentPlayer', JSON.stringify(this.state.currentPlayer.id));
-    }
     setModalIsOpen(boolean) {
         this.setState({modalIsOpen: boolean})
     }

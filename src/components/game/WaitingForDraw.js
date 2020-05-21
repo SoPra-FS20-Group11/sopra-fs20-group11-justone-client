@@ -265,9 +265,10 @@ class WaitingForDraw extends React.Component {
     }
     this.setState({activePlayerName: UserList});
 
+    await new Promise(resolve => setTimeout(resolve, 2000));
     this.intervalID = setInterval(
         () => this.checkChosenWord(),
-        2000
+        1500
     );
   }
 

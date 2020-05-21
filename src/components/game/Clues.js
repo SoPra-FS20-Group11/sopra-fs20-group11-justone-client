@@ -123,8 +123,8 @@ const TimerForm = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: 'center';
-  position: absolute;
-  margin-top: 150px;
+  position: relative;
+  margin-top: 50px;
   width: 270px;
   height: 100px;
   font-family: system-ui;
@@ -171,10 +171,7 @@ class Clues extends React.Component {
       if (gameResponse.data.usersIds.length == 3){
         this.setState({threePlayers: true})
       }
-      this.intervalID = setInterval(
-          () => this.checkAllClues(),
-          3000
-      );
+
       const response = await api.get(`/chosenword/${this.state.gameID}`);
       this.setState({chosenWord: response.data.chosenWord})
 
@@ -188,13 +185,19 @@ class Clues extends React.Component {
             this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
           }
       }, 1000)
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      this.intervalID = setInterval(
+          () => this.checkAllClues(),
+          1500
+      );
     }
 
     async timeOver(){
       clearInterval(this.myInterval);
       const requestBody = JSON.stringify({
         clueWord: "OVERTIMED",
-        time: this.state.time
+        time: -1
         });
       await new Promise(resolve => setTimeout(resolve, 3000));
       await api.post(`/clues/${this.state.gameID}`, requestBody) 
@@ -268,7 +271,8 @@ class Clues extends React.Component {
                           <Label4 > Wait for all players to submit a clue </Label4>}
                         {!this.state.allCluesBool && this.state.submitted &&
                           <SpinnerCont><Spinner ></Spinner></SpinnerCont>}
-                        {!this.state.submitted && <TimerForm style={{background: this.state.color}}> 
+                        {!this.state.submitted && 
+                        <TimerForm style={{background: this.state.color}}> 
                         <TimerContainer src={Timer} />
                         {this.state.seconds === 0 
                         ? this.timeOver() && <Time>Time's Over!</Time>

@@ -168,7 +168,8 @@ class CheckClues extends React.Component {
             colorRej: [],
             numdecidedClues: null,
             invalidClueList: [],
-            allCluesBool: null
+            allCluesBool: null,
+            submitted: false
         };
     }
 
@@ -195,9 +196,10 @@ class CheckClues extends React.Component {
                 decidedClueArray.push('0');}
             this.setState({ decidedClues: decidedClueArray });
 
+            await new Promise(resolve => setTimeout(resolve, 2000));
             this.intervalID = setInterval(
                 () => this.checkChosen(),
-                4000
+                1500
             )
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
@@ -273,7 +275,9 @@ class CheckClues extends React.Component {
             cluesToChange: this.state.invalidClueList
         });
         const responseClues = await api.put(`/clues/${this.state.gameId}`, requestBody); 
-        this.setState({ numdecidedClues: number });
+        this.setState({ 
+            numdecidedClues: number,
+            submitted: true });
     }
 
     render() {
@@ -326,12 +330,13 @@ class CheckClues extends React.Component {
                                 Submit valid clues
                                 </MainButton>
                             </ButtonContainer>
-                            {!this.state.allCluesBool &&  this.state.numdecidedClues!=this.state.clues.clues.length &&               
-                            <Label2> Wait for all players to submit a clue </Label2>}
-                            {!this.state.allCluesBool && this.state.numdecidedClues!=this.state.clues.clues.length &&
-                          <Label2><Spinner ></Spinner></Label2>}
+                            {(!this.state.allCluesBool &&  this.state.submitted) &&               
+                            <Label2> Wait for all players to check the clues... </Label2>}
+                            {(!this.state.allCluesBool && this.state.submitted) &&
+                            <Label2><Spinner ></Spinner></Label2>}
+                            {this.state.allCluesBool &&
+                            <Label2> Submitting all valid clues. Redirecting... </Label2>}
                         </GameContainer>
-                        
                     )}
             </Container>
         )
