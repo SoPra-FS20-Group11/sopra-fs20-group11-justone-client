@@ -194,6 +194,12 @@ class Guess extends React.Component {
             
             this.setState({allClues: response.data});
 
+            const removeArrayItem = (arr, itemToRemove) => {
+                return arr.filter(item => item !== itemToRemove)
+              }
+
+            this.state.allClues.clues = removeArrayItem(this.state.allClues.clues, 'OVERTIMED');
+
             const validClueArray = [];
             for(var i=0; i< this.state.allClues.length; i++){
                 //if(this.state.allClues[i].valid == "VALID"){
