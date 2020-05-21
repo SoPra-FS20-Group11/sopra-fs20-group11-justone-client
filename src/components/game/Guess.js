@@ -177,6 +177,8 @@ class Guess extends React.Component {
             correctlyGuessed: null,
             duplicateClues: null,
             score: null,
+            skipped: false,
+            submitted: false
         };
     }
 
@@ -190,12 +192,6 @@ class Guess extends React.Component {
 
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            const currentUserId = this.state.currentUserId;
-            const responseGameStat = await api.get(`/users/${currentUserId}`);
-            this.setState({correctlyGuessed: responseGameStat.data.correctlyGuessed});
-            this.setState({duplicateClues: responseGameStat.data.duplicateClues});
-            this.setState({score: responseGameStat.data.score})
-
             this.setState({allClues: response.data});
 
             const validClueArray = [];
@@ -235,24 +231,17 @@ class Guess extends React.Component {
 
     async checkGuess(){
         const GameID = localStorage.getItem('gameID');
-        const newCorrectylGuessed = this.state.correctlyGuessed + 1;
-        const requestBody = JSON.stringify({
-            correctlyGuessed: newCorrectylGuessed,
-            duplicateClues: this.state.duplicateClues
-        });
-        const responseScore = await api.get(`/cards/${GameID}`);
-        this.setState({score: responseScore.data.score + this.state.score})
-        const requestBodyScore = JSON.stringify({
-            score: this.state.score
-        });
 
         const currentUserId = this.state.currentUserId;
         const responseGuess = await api.get('/guess/'+GameID);
         this.setState({guess: responseGuess.data});
         if (this.state.guess.guessStatus != "NOGUESS"){
             if (this.state.guess.guessStatus === "CORRECT"){
-                await api.put(`/users/gamestat/${currentUserId}`, requestBody)
-                await api.put(`/users/score/${currentUserId}`, requestBodyScore)
+                const requestBody = JSON.stringify({
+                    correctlyGuessed: 1,
+                    duplicateClues: 0
+                });
+                await api.put(`/users/gamestats/${currentUserId}`, requestBody);              
                 this.props.history.push('/games/resultwon');
             }else{
                 this.props.history.push('/games/resultlost');
@@ -262,6 +251,7 @@ class Guess extends React.Component {
 
     async submitGuess() {
         try {
+            this.setState({submitted: true});
             await new Promise(resolve => setTimeout(resolve, 2000));
             const gameID = localStorage.getItem('gameID');
             //send a request to guess the mystery word
@@ -279,7 +269,7 @@ class Guess extends React.Component {
 
     async skipGuess() {
         const gameID = localStorage.getItem('gameID');
-        
+        this.setState({skipped: true});
         // ==> put request: skip guess
         await api.put(`/skip/${gameID}`);
         // ==> skip to the nextpage
@@ -340,7 +330,7 @@ class Guess extends React.Component {
                         this.state.seconds != 0 && <Time >Time Remaining: {this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
                         </TimerForm>
                         <MainButton
-                            disabled={!this.state.guess || this.state.seconds===0}
+                            disabled={!this.state.guess || this.state.seconds===0 || this.state.submitted}
                             width="10%"
                             onClick={() => {
                                 this.submitGuess();
@@ -349,7 +339,7 @@ class Guess extends React.Component {
                         </MainButton>
                         &nbsp;
                         <MainButton
-                            disabled={this.state.seconds===0}
+                            disabled={this.state.seconds===0 || this.state.skipped}
                             width="10%"
                             onClick={() => {
                                 this.skipGuess();

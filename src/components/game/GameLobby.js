@@ -72,7 +72,7 @@ const MainButton = styled.button`
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 30px;
+  font-size: 25px;
   text-align: center;
   margin-left: auto;
   color: rgba(0, 0, 0, 1);
@@ -94,7 +94,7 @@ const CreateGameButton = styled.button`
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 25px;
   text-align: center;
   margin-left: auto;
   color: rgba(0, 0, 0, 1);

@@ -170,7 +170,7 @@ class Registration extends React.Component {
                                         this.register();
                                     }}
                                 >
-                                    Create Player
+                                    <div>Create Player</div>
                                 </MainButton>
                                 &nbsp;
                                 <MainButton

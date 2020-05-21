@@ -145,13 +145,15 @@ class EndScreen extends React.Component {
         this.state = {
             gameId: null,
             totalPoints: null,
-            game: null
+            game: null,
         };
     }
 
     async componentDidMount() {
         try {
             const gameID = localStorage.getItem('gameID');
+            const localUserId = localStorage.getItem('id');
+
             this.setState({ gameId: gameID });
             //const response = await api.get(`/totalPoints/${gameID}`);
 
@@ -160,8 +162,14 @@ class EndScreen extends React.Component {
               game: responseGame.data,
               totalPoints: responseGame.data.score
             });
+            const responseScore = await api.get(`/games/${gameID}`);
+            this.setState({score: responseScore.data.score})
+            const requestBodyScore = JSON.stringify({
+                score: this.state.score
+            });
+            await api.put(`/users/score/${localUserId}`, requestBodyScore);
 
-            if(this.state.game.currentUserId==localStorage.getItem('id') && this.state.game.status != "FINISHED"){
+            if(this.state.game.currentUserId==localUserId && this.state.game.status != "FINISHED"){
               await api.put(`/games/finish/${gameID}`);
             }
         } catch (error) {
@@ -179,7 +187,7 @@ class EndScreen extends React.Component {
       return (
         <Container>
           <GameContainer>
-            {!this.state.totalPoints ? (
+            {this.state.totalPoints == null ? (
             <Spinner />
             ) : (
             <Form>Game is over! You reached a total of {this.state.totalPoints} Points</Form>

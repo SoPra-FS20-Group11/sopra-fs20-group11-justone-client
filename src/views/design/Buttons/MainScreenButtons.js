@@ -8,7 +8,7 @@ export const MainButton = styled.button`
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
   font-weight: 900;
-  font-size: 35px;
+  font-size: 30px;
   text-align: center;
   color: rgba(0, 0, 0, 1);
   width: 60%;

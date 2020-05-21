@@ -170,7 +170,7 @@ class Clues extends React.Component {
 
     async componentDidMount() {
       const gameResponse = await api.get('/games/'+this.state.gameID)
-      if (gameResponse.data.usersIds.length == 3){
+      if (!gameResponse.data.normalMode){
         this.setState({threePlayers: true})
       }
 
@@ -179,10 +179,6 @@ class Clues extends React.Component {
 
       const response2 = await api.get(`/games/${this.state.gameID}`);
       this.setState({currentUserId: response2.data.currentUserId});
-
-      const currentUserId = this.state.currentUserId;
-      const reponseGameStat = await api.get(`/users/${currentUserId}`);
-      this.setState({duplicateClues: reponseGameStat.data.duplicateClues});
 
       // This is the timer function
       this.myInterval = setInterval(() => {
@@ -235,9 +231,9 @@ class Clues extends React.Component {
       const response = await api.post(`/clues/${gameID}`, requestBody);
       if (response.data.valid == "DUPLICATE") {
         const requestBodyDC = JSON.stringify({
-          duplicateClues: (this.state.duplicateClues + 1)
+          duplicateClues: 1
         });
-        await api.put(`/users/gamestat/${this.state.currentUserId}`, requestBodyDC);
+        await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC);
       }
 
       if(this.state.clue2){
@@ -248,11 +244,12 @@ class Clues extends React.Component {
         const response2 = await api.post(`/clues/${gameID}`, requestBody2)
         if (response2.data.valid == "DUPLICATE") {
           const requestBodyDC2 = JSON.stringify({
-            duplicateClues: (this.state.duplicateClues + 1)
+            duplicateClues: 1
           });
-          await api.put(`/users/gamestat/${this.state.currentUserId}`, requestBodyDC2);
+          await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC2);
         }
       }
+      
     }
 
     render() {

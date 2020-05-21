@@ -182,7 +182,7 @@ class PostGameCorrect extends React.Component {
 
     }
 
-    async endgame(){    
+    async endgame(){  
         await new Promise(resolve => setTimeout(resolve, 6000))
         this.props.history.push('/games/end');
     }
