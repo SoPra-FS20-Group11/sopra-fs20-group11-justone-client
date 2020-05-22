@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-
+//import { useLocation } from "react-router-dom";
+import { api } from "../../../helpers/api";
 
 /**
  * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
@@ -11,16 +12,22 @@ import { Redirect } from "react-router-dom";
  * @Guard
  * @param props
  */
-export const CurrentPlayerGuard = props => {
-    const currentPlayerID = localStorage.getItem('id');
+
+export const GameGuard = props => {
+
+    const LocalPlayerID = localStorage.getItem('id');
     const gameID = localStorage.getItem('gameID');
     const currentPlayer = localStorage.getItem('currentPlayer');
 
     //let location = useLocation();
-    var currentLocation = window.history.back();
-    localStorage.setItem('siite', currentLocation);
-    if (currentPlayerID == currentPlayer) {
-        return props.children;
+    if (gameID) {
+        var currentLocation = window.history.back();
+        localStorage.setItem('siite', currentLocation);
+        if (LocalPlayerID == currentPlayer) {
+            return props.children;
+    }else if(!localStorage.getItem("token")) {
+        return <Redirect to={"/login"}/>;
     }
-    return <Redirect to={currentLocation} />;
+    return <Redirect to={"/main"}/>;
+    }
 }

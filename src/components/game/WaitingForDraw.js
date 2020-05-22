@@ -125,7 +125,7 @@ const ScoreboardPlayerButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 210);
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const CloseButton = styled.button`
@@ -193,7 +193,7 @@ const ScoreboardButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: -13.4em;
+  margin-top: -1.6em;
   margin-left: 300px;
 `;
 
@@ -237,6 +237,7 @@ class WaitingForDraw extends React.Component {
   } 
 
   async componentDidMount() {
+    localStorage.setItem('currentPage', 'WaitingForDraw');
     const GameID = localStorage.getItem('gameID');
     const responseUsers = await api.get('/users');
     this.setState({ allUsers : responseUsers.data});
@@ -317,16 +318,17 @@ class WaitingForDraw extends React.Component {
   isPlayerInGame(id){
     var color = 'rgba(0, 0, 0, 1)';
     for (var j = 0; j < this.state.userIds.length; j++){
-      if(id == this.state.userIds[j]){
+      if(id == this.state.game.usersIds[j]){
         color = '#03AC13';
       }
     }
     return color;
-  }
+}
 
   render() {
     return (
       <Container>
+        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         <LabelContainer>
         &nbsp;
         <Label2> Waiting for Player "{this.state.activePlayerName}" to draw a card and/or choose a word.. </Label2>
@@ -337,7 +339,6 @@ class WaitingForDraw extends React.Component {
             width={200}
         />
         </LabelContainer>
-        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         {!this.state.userIds ? (
             <Spinner />
             ) : (

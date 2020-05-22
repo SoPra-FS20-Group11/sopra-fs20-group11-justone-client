@@ -42,10 +42,7 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const PlayerButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
+const PlayerForm = styled.button`
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
   font-family: system-ui;
@@ -57,7 +54,6 @@ const PlayerButton = styled.button`
   height: 90px;
   border: none;
   border-radius: 5px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 210);
   transition: all 0.3s ease;
@@ -244,7 +240,7 @@ class StartGame extends React.Component {
             this.setState({userIds: userIdArray});
             this.setState({currentPlayer: this.state.userIds});
             
-            await new Promise(resolve => setTimeout(resolve, 2000))
+            await new Promise(resolve => setTimeout(resolve, 3000))
             this.intervalID = setInterval(
                 () => this.directPlayers(),
                 1500
@@ -266,11 +262,14 @@ class StartGame extends React.Component {
         });
         const gameId = localStorage.getItem('gameID');
         await api.put('/games/leave/'+gameId, requestBody);
-        this.props.history.push('/games/lobby');
+        /*if(this.state.lobbyUser == currentId){
+          await api.put(`/games/finish/${gameId}`);
+        }*/
+        this.props.history.push('/lobby');
     }
 
     async startGame() {
-
+        localStorage.setItem('userIds', this.state.userIds);
         if (this.state.userIds.length < 3) {
             alert(`Not enough Players! Must be atleast 3 Players to start the game!`);
         } else {
@@ -308,6 +307,9 @@ class StartGame extends React.Component {
               this.props.history.push(`/games/waiting`);
             }
           }
+          if (status == "FINISHED") {
+            this.props.history.push(`/lobby`);
+          }
     }
     
 
@@ -332,9 +334,9 @@ class StartGame extends React.Component {
                             {this.state.userIds.map(user => {
                                 return (
                                     <ButtonContainer key={user.id}>
-                                        <PlayerButton>
+                                        <PlayerForm>
                                             <Player user={user} />
-                                        </PlayerButton>
+                                        </PlayerForm>
                                     </ButtonContainer>
                                 );
                             })}

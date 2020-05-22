@@ -191,7 +191,7 @@ const ScoreboardButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: -11.8em;
+  margin-top: -1.6em;
   margin-left: 300px;
 `;
 
@@ -235,6 +235,7 @@ class WaitingForGuess extends React.Component {
   } 
 
   async componentDidMount() {
+    localStorage.setItem('currentPage', 'WaitingForGuess');
     const GameID = localStorage.getItem('gameID');
     const responseUsers = await api.get('/users');
     this.setState({ allUsers : responseUsers.data});
@@ -318,6 +319,7 @@ class WaitingForGuess extends React.Component {
   render() {
     return (
       <Container>
+        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         <LabelContainer>
         &nbsp;
         <Label2> Waiting for Player "{this.state.activePlayerName}" to submit a guess.. </Label2>
@@ -328,7 +330,6 @@ class WaitingForGuess extends React.Component {
             width={200}
         />
         </LabelContainer>
-        <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
         {!this.state.userIds ? (
                  <Spinner />
                     ) : (

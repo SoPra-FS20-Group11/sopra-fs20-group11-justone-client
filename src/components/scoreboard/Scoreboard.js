@@ -35,7 +35,7 @@ const Label2 = styled.h1`
   font-family: system-ui;
   font-size: 30px;
   text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
+  color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
 
@@ -58,31 +58,6 @@ const PlayerButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 210);
   transition: all 0.3s ease;
-  margin-top: 20px;
-  margin-right: 150px;
-`;
-
-const RankingButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
-  font-family: system-ui;
-  font-weight: 900;
-  font-size: 25px;
-  text-align: center;
-  color: rgba(0, 0, 0, 1);
-  width: 80px;
-  height: 90px;
-  border: none;
-  border-radius: 5px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(255, 229, 110);
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  margin-right: 20px;
 `;
 
 const MainButton = styled.button`
@@ -187,6 +162,7 @@ class Scoreboard extends React.Component {
 
   async componentDidMount() {
     try {
+      localStorage.setItem('currentPlayer', localStorage.getItem('id'));
       const response = await api.get('/users');
       // delays continuous execution of an async operation for 1 second.
       // This is just a fake async call, so that the spinner can be displayed
@@ -238,10 +214,9 @@ render() {
       ) : (
         <div>
           <Users>
-            {this.state.users.map((user, index) => {
+            {this.state.users.map(user => {
               return (
-                  <ButtonContainer key={user.id}>
-                    <RankingButton>{index+1}</RankingButton>  
+                  <ButtonContainer key={user.id}>  
                     <PlayerButton
                       width="100%"
                       onClick={() => {

@@ -125,6 +125,7 @@ class DrawCard extends React.Component {
         };
     }
     async componentDidMount() {
+      localStorage.setItem('currentPage', 'drawphase');
       this._isMounted = true;
       const gameID = localStorage.getItem('gameID');
       await api.get(`/games/${gameID}`).then(response => {

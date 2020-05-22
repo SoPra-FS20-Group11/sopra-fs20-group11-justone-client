@@ -141,6 +141,7 @@ class PostGameWrong extends React.Component {
 
     async componentDidMount() {
       try {
+          localStorage.setItem('currentPage', 'resultlost');
           const gameID = localStorage.getItem('gameID');
           const response = await api.get('/games/'+gameID);
           const responseUsers = await api.get('/users');

@@ -169,6 +169,7 @@ class Clues extends React.Component {
     }
 
     async componentDidMount() {
+      localStorage.setItem('currentPage', 'clues');
       const gameResponse = await api.get('/games/'+this.state.gameID)
       if (!gameResponse.data.normalMode){
         this.setState({threePlayers: true})
@@ -205,7 +206,12 @@ class Clues extends React.Component {
         time: -1
         });
       await new Promise(resolve => setTimeout(resolve, 3000));
-      await api.post(`/clues/${this.state.gameID}`, requestBody) 
+      if(!this.state.threePlayers){
+          await api.post(`/clues/${this.state.gameID}`, requestBody);
+      }else{
+        await api.post(`/clues/${this.state.gameID}`, requestBody);
+        await api.post(`/clues/${this.state.gameID}`, requestBody);
+      }
       this.setState({submitted: true});    
     }
 
@@ -221,7 +227,7 @@ class Clues extends React.Component {
       }
     }
 
-    async saveClue(){
+    async saveClue(){ 
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({

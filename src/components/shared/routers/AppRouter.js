@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { Component, PropTypes } from 'react';
+import { BrowserRouter, Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { AppGuard } from "../routeProtectors/AppGuard";
 import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
@@ -16,6 +17,8 @@ import SearchRouter from "./SearchRouter";
 import GameLobby from "../../game/GameLobby";
 import StartGame from "../../game/StartGame";
 import LobbyRouter from "./LobbyRouter";
+import { GameGuard } from "../routeProtectors/GameGuard";
+import { LobbyGuard } from "../routeProtectors/LobbyGuard";
 
 /**
  * Main router of your application.
@@ -36,9 +39,9 @@ class AppRouter extends React.Component {
               path="/login"
               exact
               render={() => (
-                //<LoginGuard>
+                <LoginGuard>
                   <Login />
-                //</LoginGuard>
+                </LoginGuard>
               )}
             />
             <Route
@@ -50,28 +53,36 @@ class AppRouter extends React.Component {
               )}
             />
             <Route
-              path="/game"
+              path={`/lobby`}
               render={() => (
                 <AppGuard>
-                  <LobbyRouter base={"/game"} />
+                  <GameLobby />
                 </AppGuard>
+              )}
+            />
+            <Route
+              path="/game"
+              render={() => (
+                //<LobbyGuard>
+                  <LobbyRouter base={"/game"} />
+                //</LobbyGuard>
               )}
             />
             <Route
               path="/games"
               render={() => (
-                <AppGuard>
+                //<GameGuard>
                   <GameRouter base={"/games"}/>
-                </AppGuard>
+                //</GameGuard>
               )}
             />
             <Route 
               path="/registration"
               exact
               render={() => (
-                //<RegistrationGuard>
+                <RegistrationGuard>
                   <Registration />
-                //</RegistrationGuard>
+                </RegistrationGuard>
               )}
             />
             <Route 
@@ -114,6 +125,17 @@ class AppRouter extends React.Component {
     );
   }
 }
+/*AppRouter.propTypes = {
+  label: PropTypes.string.isRequired,
+  goBack: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+      goBack: ownProps.router.goBack
+  };
+}*/
+
 /*
 * Don't forget to export your component!
  */

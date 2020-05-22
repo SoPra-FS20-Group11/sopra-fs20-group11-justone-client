@@ -9,6 +9,7 @@ import CheckWord from "../../game/CheckWord";
 import StartGame from "../../game/StartGame";
 import Guess from "../../game/Guess";
 import {CurrentPlayerGuard} from "../routeProtectors/CurrentPlayerGuard";
+import {GameGuard} from "../routeProtectors/GameGuard";
 import Overview from "../../game/Overview";
 import WaitingForDraw from "../../game/WaitingForDraw";
 import WaitingForGuess from "../../game/WaitingForGuess";
@@ -32,15 +33,11 @@ class GameRouter extends React.Component {
       <Container>
         <Switch>
         <Route
-          path={`${this.props.base}/lobby`}
-          render={() => <GameLobby />}
-        />
-        <Route
           path={`${this.props.base}/drawphase`}
           render={() => (
-            //<CurrentPlayerGuard>
+            <GameGuard>
               <DrawCard />
-            //</CurrentPlayerGuard>
+            </GameGuard>
           )}
         />
         <Route

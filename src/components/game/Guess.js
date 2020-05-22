@@ -184,6 +184,7 @@ class Guess extends React.Component {
 
     async componentDidMount() {
         try {
+            localStorage.setItem('currentPage', 'guessphase');
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
             const response2 = await api.get(`/games/${gameID}`);

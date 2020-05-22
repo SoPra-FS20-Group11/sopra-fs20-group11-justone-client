@@ -175,6 +175,7 @@ class CheckClues extends React.Component {
 
     async componentDidMount() {
         try {
+            localStorage.setItem('currentPage', 'checkphase');
             const gameID = localStorage.getItem('gameID');
             this.setState({ gameId: gameID });
             const response = await api.get(`/clues/${gameID}`);

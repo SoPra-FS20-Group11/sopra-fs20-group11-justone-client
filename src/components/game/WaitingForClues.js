@@ -198,7 +198,7 @@ const ScoreboardButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 153);
   transition: all 0.3s ease;
-  margin-top: -13.4em;
+  margin-top: -1.6em;
   margin-left: 300px;
 `;
 
@@ -245,6 +245,7 @@ class WaitingForClues extends React.Component {
     }
 
     async componentDidMount() {
+        localStorage.setItem('currentPage', 'WaitingForClues');
         this._isMounted = true;
         const GameID = localStorage.getItem('gameID');
         await api.get('/users').then(responseUsers => {
@@ -361,6 +362,7 @@ class WaitingForClues extends React.Component {
     render() {
         return (
             <Container>
+                <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
                 <LabelContainer>
                 &nbsp;
                 {((this.state.wordDecided=="SELECTED" && this.state.changeableWord) || this.state.wordDecided=="REJECTED") &&
@@ -383,7 +385,6 @@ class WaitingForClues extends React.Component {
                 />}
                 {this.state.NoClues && <Label2> No valid clue received! Ending the turn... </Label2>}
                 </LabelContainer>
-                <ScoreboardButton onClick={() => this.setModalIsOpen(true)}>Scoreboard</ScoreboardButton>
                 {!this.state.userIds ? (
                  <Spinner />
                     ) : (
