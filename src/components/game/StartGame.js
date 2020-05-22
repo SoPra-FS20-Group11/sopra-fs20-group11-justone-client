@@ -269,7 +269,7 @@ class StartGame extends React.Component {
     }
 
     async startGame() {
-        localStorage.setItem('userIds', this.state.userIds);
+        localStorage.setItem('currentPage', 'drawphase');
         if (this.state.userIds.length < 3) {
             alert(`Not enough Players! Must be atleast 3 Players to start the game!`);
         } else {
@@ -307,7 +307,7 @@ class StartGame extends React.Component {
               this.props.history.push(`/games/waiting`);
             }
           }
-          if (status == "FINISHED") {
+        if (status == "FINISHED") {
             this.props.history.push(`/lobby`);
           }
     }

@@ -253,7 +253,7 @@ class WaitingForClues extends React.Component {
                 this.setState({allUsers : responseUsers.data});
             }
         })
-        this.state.allUsers.sort(this.sortByScore);
+        this.setState({allUsers: this.state.allUsers.sort((a, b) => (a.score < b.score) ? 1 : -1)});
 
         await api.get(`/games/${GameID}`).then(response => {
             if (this._isMounted) {
@@ -326,7 +326,7 @@ class WaitingForClues extends React.Component {
 
     async redirectToLost(){
         await api.put(`/skip/${this.state.game.id}`);
-        await new Promise(resolve => setTimeout(resolve, 4000))
+        await new Promise(resolve => setTimeout(resolve, 6500))
         this.props.history.push('/games/resultlost');
     }
 
