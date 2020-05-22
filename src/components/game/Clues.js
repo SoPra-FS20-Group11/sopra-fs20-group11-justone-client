@@ -161,7 +161,7 @@ class Clues extends React.Component {
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
           duplicateClues: null,
           currentUserId: null,
-          timeOver: true
+          timeOver: false
         };
     }
 
@@ -214,23 +214,22 @@ class Clues extends React.Component {
       const gameID = localStorage.getItem('gameID')
       localStorage.setItem('threeplayer', this.state.threePlayers)
       if(this.state.threePlayers==0){
-          this.postOvertimed();
+          this.postOvertimed(gameID);
       }else{
           this.postOverTimedThreePlayer();
       }
       this.setState({submitted: true,});    
     }   
 
-    async postOvertimed(){
-      const gameID = localStorage.getItem('gameID')
+    async postOvertimed(gameID){
       const requestBody3 = JSON.stringify({
         clueWord: "OVERTIMED",
         time: -1
         });
       await api.post(`/clues/${gameID}`, requestBody3);
     }
-    
-    async postOverTimedThreePlayer(){
+
+    async postOverTimedThreePlayer(gameID){
       const requestBody4 = JSON.stringify({
         clueWord: "OVERTIMED2",
         time: -1
