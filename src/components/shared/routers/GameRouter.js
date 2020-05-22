@@ -35,9 +35,9 @@ class GameRouter extends React.Component {
         <Route
           path={`${this.props.base}/drawphase`}
           render={() => (
-            <GameGuard>
+            //<GameGuard>
               <DrawCard />
-            </GameGuard>
+            //</GameGuard>
           )}
         />
         <Route
