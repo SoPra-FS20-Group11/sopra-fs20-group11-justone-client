@@ -143,10 +143,12 @@ class DrawCard extends React.Component {
           })
         }
       })
+      this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
     }
 
     componentWillUnmount() {
       this._isMounted = false;
+      clearTimeout(this.timeOut);
     }
 
     async drawNewCard() {

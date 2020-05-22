@@ -195,8 +195,9 @@ class CheckWord extends React.Component {
             this.intervalID = setInterval(
               () => this.checkChosen(),
               1000
-          );
+            );
 
+            this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
         } catch (error) {
             alert(`Something went wrong while fetching the chosen word: \n${handleError(error)}`);
         }
@@ -204,6 +205,7 @@ class CheckWord extends React.Component {
 
     componentWillUnmount() {
       clearInterval(this.intervalID);
+      clearTimeout(this.timeOut);
     }
 
     handleInputChange(key, value) {

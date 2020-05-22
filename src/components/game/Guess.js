@@ -220,7 +220,7 @@ class Guess extends React.Component {
                       }           
             }, 1000)
 
-
+            this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
@@ -234,6 +234,7 @@ class Guess extends React.Component {
 
     async componentWillUnmount(){
         clearInterval(this.myInterval)
+        clearTimeout(this.timeOut);
     }
 
     async checkGuess(){

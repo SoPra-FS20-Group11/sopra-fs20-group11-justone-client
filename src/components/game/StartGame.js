@@ -273,6 +273,9 @@ class StartGame extends React.Component {
         if (this.state.userIds.length < 3) {
             alert(`Not enough Players! Must be atleast 3 Players to start the game!`);
         } else {
+            if (this.state.userIds.length===3){
+              localStorage.setItem('threeplayer', "true");
+            }
             const gameId = localStorage.getItem('gameID');
             const id = localStorage.getItem('id');
             const requestBody = JSON.stringify({

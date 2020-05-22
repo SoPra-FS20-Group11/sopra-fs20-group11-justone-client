@@ -247,7 +247,11 @@ class WaitingForDraw extends React.Component {
     this.setState({
       game: response.data,
       changeableWord: response.data.changeWord});
-
+    if (response.data.usersIds.length===3){
+        localStorage.setItem('threeplayers', "true");
+      }else{
+        localStorage.setItem('threeplayers', "false");
+      }
     var userIdArray = [];
     for (var j = 0; j < this.state.game.usersIds.length; j++){
       for (var i = 0; i < this.state.allUsers.length; i++) {
@@ -271,10 +275,12 @@ class WaitingForDraw extends React.Component {
         () => this.checkChosenWord(),
         1500
     );
+    this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalID);
+    clearTimeout(this.timeOut);
   }
 
   async checkChosenWord(){

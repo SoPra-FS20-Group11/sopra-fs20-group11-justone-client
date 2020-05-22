@@ -289,11 +289,13 @@ class WaitingForClues extends React.Component {
             () => this.checkClues(),
             1500
         );
+        this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
         this._isMounted = false;
+        clearTimeout(this.timeOut);
     }
 
     async checkClues() {

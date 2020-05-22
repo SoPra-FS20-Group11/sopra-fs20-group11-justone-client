@@ -180,7 +180,7 @@ class PostGameCorrect extends React.Component {
         } catch (error) {
             alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
         }
-
+        this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
     }
 
     async endgame(){  
@@ -190,6 +190,7 @@ class PostGameCorrect extends React.Component {
 
     componentWillUnmount() {
       clearInterval(this.intervalID);
+      clearTimeout(this.timeOut);
     }
 
     async checkNextRound(){

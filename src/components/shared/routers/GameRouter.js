@@ -10,13 +10,13 @@ import StartGame from "../../game/StartGame";
 import Guess from "../../game/Guess";
 import {CurrentPlayerGuard} from "../routeProtectors/CurrentPlayerGuard";
 import {GameGuard} from "../routeProtectors/GameGuard";
-import Overview from "../../game/Overview";
 import WaitingForDraw from "../../game/WaitingForDraw";
 import WaitingForGuess from "../../game/WaitingForGuess";
 import WaitingForClues from "../../game/WaitingForClues";
 import PostGameCorrect from "../../game/PostGameCorrect";
 import PostGameWrong from "../../game/PostGameWrong";
 import EndScreen from "../../game/EndScreen";
+import Abort from "../../game/Abort";
 
 
 const Container = styled.div`
@@ -84,9 +84,9 @@ class GameRouter extends React.Component {
         />
         <Route
           exact
-          path={`${this.props.base}/overview`}
+          path={`${this.props.base}/abort`}
           render={() => (
-              <Overview />
+              <Abort />
           )}
         />
         <Route

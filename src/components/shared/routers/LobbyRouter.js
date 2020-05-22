@@ -5,7 +5,6 @@ import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
 import StartGame from "../../game/StartGame";
-import Overview from "../../game/Overview";
 
 const Container = styled.div`
   display: flex;

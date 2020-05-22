@@ -215,6 +215,8 @@ class CheckClues extends React.Component {
                 () => this.checkChosen(),
                 1500
             )
+
+            this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
         } catch (error) {
             alert(`Something went wrong while fetching the clues: \n${handleError(error)}`);
         }
@@ -222,6 +224,7 @@ class CheckClues extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
+        clearTimeout(this.timeOut);
     }
 
     handleInputChange(key, value) {

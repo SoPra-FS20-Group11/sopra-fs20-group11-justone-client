@@ -267,10 +267,12 @@ class WaitingForGuess extends React.Component {
         () => this.checkGuess(),
         1500
     );
+    this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalID);
+    clearTimeout(this.timeOut);
   }
 
   async checkGuess(){

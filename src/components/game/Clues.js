@@ -9,7 +9,6 @@ import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
 import { Spinner } from '../../views/design/Spinner';
-import { css } from "@emotion/core";
 import Timer from '../../Timer.png';
 
 const Container = styled(BaseContainer)`
@@ -61,11 +60,6 @@ const InputField = styled.input`
   color: grey0;
 `;
 
-const RulesButtonContainer = styled.div`
-  display: flex;
-  direction: rtl;
-  margin-top: 4em;
-`;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -100,9 +94,7 @@ const Label4 = styled.h1`
   text-align: center;
   color: rgba(0, 0, 0, 1);
 `;
-const override = css`
-  background: rgb(0,0,0)}
-`;
+
 const TimerContainer = styled.img`
 margin-top: 18px;
 margin-left: -20px;
@@ -145,6 +137,8 @@ const SpinnerCont = styled.div`
 class Clues extends React.Component {
     intervalID;
     myInterval;
+    downloadTimer;
+    isSafed = false;
 
     constructor() {
         super();
@@ -161,7 +155,8 @@ class Clues extends React.Component {
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
           duplicateClues: null,
           currentUserId: null,
-          timeOver: true
+          timeOver: true,
+          timeRunOut: false
         };
     }
 
@@ -173,18 +168,32 @@ class Clues extends React.Component {
       const gameID = localStorage.getItem('gameID')
       localStorage.setItem('currentPage', 'clues');
       const gameResponse = await api.get('/games/'+gameID)
-      if (gameResponse.data.normalMode==false){
+
+      if(gameResponse.data.normalMode == false){
         this.setState({threePlayers: 1})
       }
-
       const response = await api.get(`/chosenword/${this.state.gameID}`);
       this.setState({chosenWord: response.data.chosenWord})
 
       const response2 = await api.get(`/games/${this.state.gameID}`);
       this.setState({currentUserId: response2.data.currentUserId});
 
+      var timeleft = 20;
+      this.downloadTimer = setInterval(() => {
+        this.setState(() => ({
+          seconds: timeleft,
+          time: 20-timeleft}))
+        if (timeleft==10){
+            this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
+          }
+        if(timeleft == 0){
+          clearInterval(this.downloadTimer);
+          this.setState({timeRunOut: true})
+        }
+        timeleft -= 1;
+      }, 1000);
       // This is the timer function
-      if(this.myInterval == undefined) {this.myInterval = setInterval(() => {
+      /*if(this.myInterval == undefined) {this.myInterval = setInterval(() => {
           this.setState(({seconds}) => ({
             seconds: seconds -1,
             time: this.state.time + 1
@@ -201,19 +210,31 @@ class Clues extends React.Component {
             }
           } 
         }, 1000)
-      }
+      }*/
       await new Promise(resolve => setTimeout(resolve, 2000));
       this.intervalID = setInterval(
           () => this.checkAllClues(),
           1500
       );
+
+      this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
     }
 
-    async timeOver(){
-      this.setState({timeOver: false}); 
-      const gameID = localStorage.getItem('gameID')
+    timeOver(){
+      this.setState({
+        timeOver: false,
+        clue: "OVERTIMED",
+        time: -1});
+      if(this.state.threePlayers==1){
+        this.setState({clue2: "OVERTIMED"});
+      }
+      if(this.isSafed==false){
+        this.saveClue();
+      }
+    }
+      /*const gameID = localStorage.getItem('gameID')
       localStorage.setItem('threeplayer', this.state.threePlayers)
-      if(this.state.threePlayers==0){
+      if(localStorage.getItem('threeplayers') != "true"){
           this.postOvertimed(gameID);
       }else{
           this.postOverTimedThreePlayer(gameID);
@@ -231,27 +252,32 @@ class Clues extends React.Component {
 
     async postOverTimedThreePlayer(gameID){
       const requestBody4 = JSON.stringify({
-        clueWord: "OVERTIMED2",
+        clueWord: "OVERTIMED",
         time: -1
         });
         const requestBody5 = JSON.stringify({
-          clueWord: "OVERTIMED3",
+          clueWord: "OVERTIMED",
           time: -1
           });
       await api.post(`/clues/${gameID}`, requestBody4);
       await new Promise(resolve => setTimeout(resolve, 1000));
       await api.post(`/clues/${gameID}`, requestBody5);
-    }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }*/
 
     componentWillUnmount() {
-      clearInterval(this.intervalID, this.myInterval);
+      clearInterval(this.intervalID, this.myInterval, this.downloadTimer);
+      clearTimeout(this.timeOut);
     }
 
     async checkAllClues(){
+      if (this.state.timeRunOut == true && this.state.timeOver == true){
+        this.timeOver();}
+        localStorage.setItem('timeOver', this.state.timeOver)
       const response = await api.get('/clues/'+this.state.gameID)
       this.setState({allCluesBool: response.data.allAutomaticClues});
       if (this.state.allCluesBool == true){
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 2000));
         this.props.history.push(`/games/checkphase`);
       }
     }
@@ -259,6 +285,7 @@ class Clues extends React.Component {
     async saveClue(){ 
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
+      localStorage.setItem('time', this.state.time);
       const requestBody = JSON.stringify({
         clueWord: this.state.clue,
         time: this.state.time
@@ -272,6 +299,7 @@ class Clues extends React.Component {
       }
 
       if(this.state.clue2){
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const requestBody2 = JSON.stringify({
           clueWord: this.state.clue2,
           time: this.state.time
@@ -284,7 +312,7 @@ class Clues extends React.Component {
           await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC2);
         }
       }
-      
+      this.isSafed = true;  
     }
 
     render() {
@@ -310,7 +338,7 @@ class Clues extends React.Component {
                         />}
                         <ButtonContainer>
                             <MainButton
-                                disabled={!this.state.clue ||  (this.state.threePlayers==1 && !this.state.clue2) || this.state.submitted || !this.state.seconds || this.state.seconds === 0  }
+                                disabled={!this.state.clue ||  (this.state.threePlayers==1 && !this.state.clue2) || this.state.submitted }
                                 width="10%"
                                 onClick={() => {
                                     this.saveClue();                                                                      
@@ -320,9 +348,9 @@ class Clues extends React.Component {
                                 </MainButton>
                         </ButtonContainer>
                     
-                        {!this.state.allCluesBool &&  this.state.submitted &&               
+                        {this.state.submitted &&               
                           <Label4 > Wait for all players to submit a clue </Label4>}
-                        {!this.state.allCluesBool && this.state.submitted &&
+                        {this.state.submitted &&
                           <SpinnerCont><Spinner ></Spinner></SpinnerCont>}
                         {!this.state.submitted && 
                         <TimerForm style={{background: this.state.color}}> 
