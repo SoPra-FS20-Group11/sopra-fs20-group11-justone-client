@@ -326,7 +326,7 @@ class WaitingForClues extends React.Component {
 
     async redirectToLost(){
         await api.put(`/skip/${this.state.game.id}`);
-        await new Promise(resolve => setTimeout(resolve, 6500))
+        await new Promise(resolve => setTimeout(resolve, 7500))
         this.props.history.push('/games/resultlost');
     }
 

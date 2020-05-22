@@ -155,7 +155,7 @@ class Clues extends React.Component {
           allCluesBool: null,
           chosenWord: null,
           submitted: false,
-          threePlayers: false,
+          threePlayers: 0,
           seconds: 20,
           time: 0,
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
@@ -170,10 +170,11 @@ class Clues extends React.Component {
     }
 
     async componentDidMount() {
+      const gameID = localStorage.getItem('gameID')
       localStorage.setItem('currentPage', 'clues');
-      const gameResponse = await api.get('/games/'+this.state.gameID)
-      if (!gameResponse.data.normalMode){
-        this.setState({threePlayers: true})
+      const gameResponse = await api.get('/games/'+gameID)
+      if (gameResponse.data.normalMode==false){
+        this.setState({threePlayers: 1})
       }
 
       const response = await api.get(`/chosenword/${this.state.gameID}`);
@@ -183,7 +184,7 @@ class Clues extends React.Component {
       this.setState({currentUserId: response2.data.currentUserId});
 
       // This is the timer function
-      if(this.myInterval !== undefined) {this.myInterval = setInterval(() => {
+      if(this.myInterval == undefined) {this.myInterval = setInterval(() => {
           this.setState(({seconds}) => ({
             seconds: seconds -1,
             time: this.state.time + 1
@@ -191,12 +192,14 @@ class Clues extends React.Component {
           if (this.state.seconds==10){
             this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
           }
-          if (this.state.seconds<=0){
+          if (this.state.seconds<0){
             clearInterval(this.myInterval);
           }
-          if (this.state.seconds===0){
+          if (this.state.seconds<=0){
+            if(this.state.timeOver){
               this.timeOver();
-          }
+            }
+          } 
         }, 1000)
       }
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -207,24 +210,38 @@ class Clues extends React.Component {
     }
 
     async timeOver(){
+      this.setState({timeOver: false}); 
       const gameID = localStorage.getItem('gameID')
       localStorage.setItem('threeplayer', this.state.threePlayers)
-      await new Promise(resolve => setTimeout(resolve, 2500));
+      if(this.state.threePlayers==0){
+          this.postOvertimed();
+      }else{
+          this.postOverTimedThreePlayer();
+      }
+      this.setState({submitted: true,});    
+    }   
+
+    async postOvertimed(){
+      const gameID = localStorage.getItem('gameID')
       const requestBody3 = JSON.stringify({
         clueWord: "OVERTIMED",
         time: -1
         });
-      if(this.state.timeOver){
-        if(this.state.threePlayers==false){
-          await api.post(`/clues/${gameID}`, requestBody3);
-        }else{
-          await api.post(`/clues/${gameID}`, requestBody3);
-          await api.post(`/clues/${gameID}`, requestBody3);
-        }
-        this.setState({
-          submitted: true,
-          timeOver: false});    
-      }   
+      await api.post(`/clues/${gameID}`, requestBody3);
+    }
+    
+    async postOverTimedThreePlayer(){
+      const requestBody4 = JSON.stringify({
+        clueWord: "OVERTIMED2",
+        time: -1
+        });
+        const requestBody5 = JSON.stringify({
+          clueWord: "OVERTIMED3",
+          time: -1
+          });
+      await api.post(`/clues/${gameID}`, requestBody4);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await api.post(`/clues/${gameID}`, requestBody5);
     }
 
     componentWillUnmount() {
@@ -235,6 +252,7 @@ class Clues extends React.Component {
       const response = await api.get('/clues/'+this.state.gameID)
       this.setState({allCluesBool: response.data.allAutomaticClues});
       if (this.state.allCluesBool == true){
+        await new Promise(resolve => setTimeout(resolve, 1500));
         this.props.history.push(`/games/checkphase`);
       }
     }
@@ -276,7 +294,7 @@ class Clues extends React.Component {
                 <FormContainer>
                     <Label2> Give a clue to the following word! </Label2>
                     <Label3> "{this.state.chosenWord}" </Label3>
-                    {this.state.threePlayers && <Label2> This is a 3-Player Game. You can give two clues! </Label2>}
+                    {this.state.threePlayers==1 && <Label2> This is a 3-Player Game. You can give two clues! </Label2>}
                     <Form>
                         <InputField
                             placeholder="Enter your clue... "
@@ -284,7 +302,7 @@ class Clues extends React.Component {
                                 this.handleInputChange('clue', e.target.value);
                             }}
                         />
-                        {this.state.threePlayers &&
+                        {this.state.threePlayers==1 &&
                         <InputField
                         placeholder="Enter your second clue... "
                         onChange={e => {
@@ -293,7 +311,7 @@ class Clues extends React.Component {
                         />}
                         <ButtonContainer>
                             <MainButton
-                                disabled={!this.state.clue ||  this.state.threePlayers && !this.state.clue2 || this.state.submitted || !this.state.seconds || this.state.seconds === 0  }
+                                disabled={!this.state.clue ||  (this.state.threePlayers==1 && !this.state.clue2) || this.state.submitted || !this.state.seconds || this.state.seconds === 0  }
                                 width="10%"
                                 onClick={() => {
                                     this.saveClue();                                                                      
@@ -311,8 +329,8 @@ class Clues extends React.Component {
                         <TimerForm style={{background: this.state.color}}> 
                         <TimerContainer src={Timer} />
                         {this.state.seconds === 0 
-                        ?  <Time>Time's Over!</Time>
-                        : <h1>Time Remaining: </h1>}
+                        ? ( <Time>Time's Over!</Time>)
+                        : (<h1>Time Remaining: </h1>)}
                         {this.state.seconds != 0 && <Time >{this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
                         </TimerForm>  }
                     </Form>
