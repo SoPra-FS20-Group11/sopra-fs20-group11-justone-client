@@ -161,7 +161,7 @@ class Clues extends React.Component {
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
           duplicateClues: null,
           currentUserId: null,
-          timeOver: false
+          timeOver: true
         };
     }
 
@@ -216,7 +216,7 @@ class Clues extends React.Component {
       if(this.state.threePlayers==0){
           this.postOvertimed(gameID);
       }else{
-          this.postOverTimedThreePlayer();
+          this.postOverTimedThreePlayer(gameID);
       }
       this.setState({submitted: true,});    
     }   
