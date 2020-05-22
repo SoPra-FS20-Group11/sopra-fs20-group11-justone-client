@@ -203,13 +203,14 @@ class Clues extends React.Component {
     async timeOver(){
       clearInterval(this.myInterval);
       const gameID = localStorage.getItem('gameID')
+      localStorage.setItem('threeplayer', this.state.threePlayers)
       const requestBody = JSON.stringify({
         clueWord: "OVERTIMED",
         time: -1
         });
       await new Promise(resolve => setTimeout(resolve, 3000));
       if(this.state.timeOver){
-        if(!this.state.threePlayers){
+        if(this.state.threePlayers==false){
           await api.post(`/clues/${gameID}`, requestBody);
         }else{
           await api.post(`/clues/${gameID}`, requestBody);
