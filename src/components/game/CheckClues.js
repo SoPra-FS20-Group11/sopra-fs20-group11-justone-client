@@ -169,7 +169,8 @@ class CheckClues extends React.Component {
             numdecidedClues: null,
             invalidClueList: [],
             allCluesBool: null,
-            submitted: false
+            submitted: false,
+            allCluesArray: null,
         };
     }
 
@@ -183,13 +184,13 @@ class CheckClues extends React.Component {
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             this.setState({ clues: response.data });
-
+            this.setState({allCluesArray: this.state.clues.clues});
             const removeArrayItem = (arr, itemToRemove) => {
                 return arr.filter(item => item !== itemToRemove)
               }
 
             this.state.clues.clues = removeArrayItem(this.state.clues.clues, 'OVERTIMED')
-           
+            const numberOverTimed = this.state.allCluesArray.length-this.state.clues.clues.length;
             const colorArrayAcc = [];
             const colorArrayRej = [];
             for (var i = 0; i < this.state.clues.clues.length; i++) {
@@ -201,7 +202,9 @@ class CheckClues extends React.Component {
             const decidedClueArray = [];
             for (var i = 0; i < this.state.clues.clues.length; i++) {
                 decidedClueArray.push('0');}
-            this.setState({ decidedClues: decidedClueArray });
+            this.setState({ 
+                decidedClues: decidedClueArray,
+                numdecidedClues: numberOverTimed });
 
             await new Promise(resolve => setTimeout(resolve, 2000));
             this.intervalID = setInterval(
