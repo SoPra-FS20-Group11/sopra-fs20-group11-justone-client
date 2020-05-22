@@ -180,7 +180,7 @@ class CheckClues extends React.Component {
             const gameID = localStorage.getItem('gameID');
             this.setState({ gameId: gameID });
             const response = await api.get(`/clues/${gameID}`);
-
+            const responseGame = await api.get(`/games/${gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             this.setState({ clues: response.data });
@@ -190,7 +190,13 @@ class CheckClues extends React.Component {
               }
 
             this.state.clues.clues = removeArrayItem(this.state.clues.clues, 'OVERTIMED')
-            const numberOverTimed = this.state.allCluesArray.length-this.state.clues.clues.length;
+            if(this.state.clues.clues.length<=0){
+                const requestBody = JSON.stringify({
+                    cluesToChange: []
+                });  
+                await api.put(`/clues/${gameID}`, requestBody); 
+                
+            }
             const colorArrayAcc = [];
             const colorArrayRej = [];
             for (var i = 0; i < this.state.clues.clues.length; i++) {
@@ -202,9 +208,7 @@ class CheckClues extends React.Component {
             const decidedClueArray = [];
             for (var i = 0; i < this.state.clues.clues.length; i++) {
                 decidedClueArray.push('0');}
-            this.setState({ 
-                decidedClues: decidedClueArray,
-                numdecidedClues: numberOverTimed });
+            this.setState({ decidedClues: decidedClueArray });
 
             await new Promise(resolve => setTimeout(resolve, 2000));
             this.intervalID = setInterval(
@@ -344,7 +348,7 @@ class CheckClues extends React.Component {
                             <Label2> Wait for all players to check the clues... </Label2>}
                             {(!this.state.allCluesBool && this.state.submitted) &&
                             <Label2><Spinner ></Spinner></Label2>}
-                            {this.state.allCluesBool &&
+                            {(this.state.allCluesBool && this.state.clues.clues.length>0) &&
                             <Label2> Submitting all valid clues. Redirecting... </Label2>}
                         </GameContainer>
                     )}

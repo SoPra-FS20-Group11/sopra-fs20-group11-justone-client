@@ -245,7 +245,7 @@ class WaitingForClues extends React.Component {
     }
 
     async componentDidMount() {
-        localStorage.setItem('currentPage', 'WaitingForClues');
+        localStorage.setItem('currentPage', 'waiting');
         this._isMounted = true;
         const GameID = localStorage.getItem('gameID');
         await api.get('/users').then(responseUsers => {
@@ -253,7 +253,7 @@ class WaitingForClues extends React.Component {
                 this.setState({allUsers : responseUsers.data});
             }
         })
-        this.setState({allUsers: this.state.allUsers.sort((a, b) => (a.score < b.score) ? 1 : -1)});
+        this.state.allUsers.sort(this.sortByScore);
 
         await api.get(`/games/${GameID}`).then(response => {
             if (this._isMounted) {
@@ -300,6 +300,12 @@ class WaitingForClues extends React.Component {
         const GameID = localStorage.getItem('gameID');
         const responseClues = await api.get(`/clues/${GameID}`);
         const responseWord = await api.get(`/chosenword/${GameID}`);
+
+        const removeArrayItem = (arr, itemToRemove) => {
+            return arr.filter(item => item !== itemToRemove)
+          }
+        const clueArray = removeArrayItem(responseClues.data.clues, 'OVERTIMED');
+
         localStorage.setItem('word', this.state.wordDecided);
         this.setState({
             allClues: responseClues.data.allManualClues,
@@ -309,7 +315,7 @@ class WaitingForClues extends React.Component {
             this.redirectToDraw();
         }
         if (this.state.allClues == true) {
-            if (responseClues.data.clues.length<=0){
+            if (clueArray.length<=0){
                 this.setState({NoClues: true});
                 this.redirectToLost();           
             }else{

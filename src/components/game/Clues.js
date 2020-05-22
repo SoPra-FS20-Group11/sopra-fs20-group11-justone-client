@@ -191,6 +191,10 @@ class Clues extends React.Component {
           if (this.state.seconds==10){
             this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
           }
+          if (this.state.seconds===0){
+            clearInterval(this.myInterval);
+            this.timeOver();
+          }
       }, 1000)
 
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -201,20 +205,19 @@ class Clues extends React.Component {
     }
 
     async timeOver(){
-      clearInterval(this.myInterval);
       const gameID = localStorage.getItem('gameID')
       localStorage.setItem('threeplayer', this.state.threePlayers)
-      const requestBody = JSON.stringify({
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      const requestBody3 = JSON.stringify({
         clueWord: "OVERTIMED",
         time: -1
         });
-      await new Promise(resolve => setTimeout(resolve, 3000));
       if(this.state.timeOver){
         if(this.state.threePlayers==false){
-          await api.post(`/clues/${gameID}`, requestBody);
+          await api.post(`/clues/${gameID}`, requestBody3);
         }else{
-          await api.post(`/clues/${gameID}`, requestBody);
-          await api.post(`/clues/${gameID}`, requestBody);
+          await api.post(`/clues/${gameID}`, requestBody3);
+          await api.post(`/clues/${gameID}`, requestBody3);
         }
         this.setState({
           submitted: true,
@@ -306,7 +309,7 @@ class Clues extends React.Component {
                         <TimerForm style={{background: this.state.color}}> 
                         <TimerContainer src={Timer} />
                         {this.state.seconds === 0 
-                        ? this.timeOver() && <Time>Time's Over!</Time>
+                        ?  <Time>Time's Over!</Time>
                         : <h1>Time Remaining: </h1>}
                         {this.state.seconds != 0 && <Time >{this.state.seconds < 10 ? `0${this.state.seconds}` : this.state.seconds}</Time>}               
                         </TimerForm>  }
