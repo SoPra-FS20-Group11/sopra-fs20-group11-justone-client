@@ -183,7 +183,7 @@ class Clues extends React.Component {
       this.setState({currentUserId: response2.data.currentUserId});
 
       // This is the timer function
-      if(intervalId !== undefined) {this.myInterval = setInterval(() => {
+      if(this.myInterval !== undefined) {this.myInterval = setInterval(() => {
           this.setState(({seconds}) => ({
             seconds: seconds -1,
             time: this.state.time + 1
