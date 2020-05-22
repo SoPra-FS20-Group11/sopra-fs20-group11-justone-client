@@ -171,7 +171,8 @@ class Scoreboard extends React.Component {
 
       // Get the returned users and update the state.
       this.setState({ users: response.data });
-      this.state.users.sort(this.sortByScore)
+      this.setState({users: this.state.users.sort((a, b) => (a.score < b.score) ? 1 : -1)});
+      //this.state.users.sort(this.sortByScore)
 
       // This is just some data for you to see what is available.
       // Feel free to remove it.
