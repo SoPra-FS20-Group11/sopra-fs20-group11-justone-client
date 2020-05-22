@@ -160,7 +160,8 @@ class Clues extends React.Component {
           time: 0,
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
           duplicateClues: null,
-          currentUserId: null
+          currentUserId: null,
+          timeOver: true
         };
     }
 
@@ -201,18 +202,23 @@ class Clues extends React.Component {
 
     async timeOver(){
       clearInterval(this.myInterval);
+      const gameID = localStorage.getItem('gameID')
       const requestBody = JSON.stringify({
         clueWord: "OVERTIMED",
         time: -1
         });
       await new Promise(resolve => setTimeout(resolve, 3000));
-      if(!this.state.threePlayers){
-          await api.post(`/clues/${this.state.gameID}`, requestBody);
-      }else{
-        await api.post(`/clues/${this.state.gameID}`, requestBody);
-        await api.post(`/clues/${this.state.gameID}`, requestBody);
-      }
-      this.setState({submitted: true});    
+      if(this.state.timeOver){
+        if(!this.state.threePlayers){
+          await api.post(`/clues/${gameID}`, requestBody);
+        }else{
+          await api.post(`/clues/${gameID}`, requestBody);
+          await api.post(`/clues/${gameID}`, requestBody);
+        }
+        this.setState({
+          submitted: true,
+          timeOver: false});    
+      }   
     }
 
     componentWillUnmount() {
