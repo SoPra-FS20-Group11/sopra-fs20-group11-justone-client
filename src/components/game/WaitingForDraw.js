@@ -165,7 +165,7 @@ const RankingButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(255, 229, 110);
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-right: 20px;
 `;
 
