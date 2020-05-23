@@ -70,6 +70,7 @@ class Abort extends React.Component {
 
 finish() {
   this.props.history.push(`/main`);
+  localStorage.removeItem('gameID');
 } 
 
   render () {
