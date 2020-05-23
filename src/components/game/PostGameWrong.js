@@ -2,14 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Games from '../../views/Games';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-import { Redirect, Route } from "react-router-dom";
-import DrawCard from './DrawCard';
-import Game from '../shared/models/Game';
 import InGamePlayer from '../../views/InGamePlayer';
+
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;
@@ -60,6 +56,7 @@ const Form = styled.div`
   background: linear-gradient(rgb(255, 165, 0), rgb(255, 140, 0));
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
+
 export const CheckButton = styled.button`
   &:hover {
     transform: translateY(-2px);
@@ -79,7 +76,8 @@ export const CheckButton = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(230, 180, 100);
   transition: all 0.3s ease;
-`
+`;
+
 const Label2 = styled.h1`
   font-weight: bold;
   font-family: system-ui;
@@ -88,6 +86,7 @@ const Label2 = styled.h1`
   color: rgba(240, 125, 7, 1);
   text-align: center;
 `;
+
 const Users = styled.div`
   display: flex;
   flex-direction: row;
@@ -95,6 +94,7 @@ const Users = styled.div`
   padding-left: 0;
   justify-content: center;
 `;
+
 const InGamePlayerField = styled.div`
   padding: 0px;
   box-shadow: 3px 3px 5px 4px;
@@ -109,6 +109,7 @@ const InGamePlayerField = styled.div`
   border-radius: 5px;
   background: rgb(255, 229, 210);
 `;
+
 const PlayerContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -163,7 +164,6 @@ class PostGameWrong extends React.Component {
                }
            }
            this.setState({userIds: userIdArray});
-          //const response = await api.get(`/points/${gameID}`);
 
           await new Promise(resolve => setTimeout(resolve, 2000))
           this.intervalID = setInterval(

@@ -10,9 +10,6 @@ const Container = styled.div`
 
 class SearchRouter extends React.Component {
     render() {
-        /**
-         * "this.props.base" is "/profile" because as been passed as a prop in the parent of ProfileRouter
-         */
         return (
             <Container>
                 <Route
@@ -29,7 +26,5 @@ class SearchRouter extends React.Component {
         );
     }
 }
-/*
-* Don't forget to export your component!
- */
+
 export default SearchRouter;

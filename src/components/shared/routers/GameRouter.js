@@ -1,14 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Redirect, Route, Switch } from "react-router-dom";
-import GameLobby from "../../game/GameLobby";
 import DrawCard from "../../game/DrawCard";
 import Clues from "../../game/Clues";
 import CheckClues from "../../game/CheckClues";
 import CheckWord from "../../game/CheckWord";
-import StartGame from "../../game/StartGame";
 import Guess from "../../game/Guess";
-import {CurrentPlayerGuard} from "../routeProtectors/CurrentPlayerGuard";
 import {GameGuard} from "../routeProtectors/GameGuard";
 import WaitingForDraw from "../../game/WaitingForDraw";
 import WaitingForGuess from "../../game/WaitingForGuess";
@@ -26,9 +23,6 @@ const Container = styled.div`
 
 class GameRouter extends React.Component {
   render() {
-    /**
-     * "this.props.base" is "/app" because as been passed as a prop in the parent of GameRouter, i.e., App.js
-     */
     return (
       <Container>
         <Switch>

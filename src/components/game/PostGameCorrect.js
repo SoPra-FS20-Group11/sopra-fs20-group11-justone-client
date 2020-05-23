@@ -2,14 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Games from '../../views/Games';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-import { Redirect, Route } from "react-router-dom";
-import DrawCard from './DrawCard';
-import Game from '../shared/models/Game';
 import InGamePlayer from '../../views/InGamePlayer';
+
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;

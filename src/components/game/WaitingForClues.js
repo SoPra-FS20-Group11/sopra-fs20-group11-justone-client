@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
+import { api } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
-import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
-import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
-import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
 import ScoreboardPlayer from '../../views/ScoreboardPlayer';
 
@@ -48,12 +44,6 @@ const Label = styled.label`
   color: grey0;
   margin-bottom: 10px;
   text-transform: none;
-`;
-
-const RulesButtonContainer = styled.div`
-  display: flex;
-  direction: rtl;
-  margin-top: 4em;
 `;
 
 const ButtonContainer = styled.div`
@@ -230,18 +220,6 @@ class WaitingForClues extends React.Component {
             clickedGamesPlayed: null,
             clickedCorrectlyGuessed: null
         };
-    }
-    sortByScore(a, b) {
-        const user1 = a.score;
-        const user2 = b.score;
-    
-        let comparison = 0;
-        if (user1 < user2) {
-          comparison = 1;
-        } else if (user1 > user2) {
-          comparison = -1;
-        }
-        return comparison;
     }
 
     async componentDidMount() {

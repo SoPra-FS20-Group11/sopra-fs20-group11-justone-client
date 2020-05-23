@@ -4,15 +4,12 @@ import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
-import GameLogo from "../../GameLogo.png";
 import JustOneTitle from "../../JustOneTitle.png";
 import PasswordMask from 'react-password-mask';
 
 
 // for buttons
-
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
@@ -22,7 +19,6 @@ const ButtonContainer = styled.div`
 `;
 
 // for Inputfields
-
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -78,16 +74,6 @@ const Label2 = styled.h1`
   text-align: center;
 `;
 
-const Title = styled.h1`
-  font-weight: bold;
-  font-family: system-ui;
-  font-size: 50px;
-  text-shadow: 0 0 10px black;
-  color: rgba(240, 125, 7, 1);
-  text-align: center;
-`;
-
-
 class Login extends React.Component {
   constructor() {
     super();
@@ -124,24 +110,12 @@ class Login extends React.Component {
     this.props.history.push('/registration');
   }
 
-  /**
-   *  Every time the user enters something in the input field, the state gets updated.
-   * @param key (the key of the state for identifying the field that needs to be updated)
-   * @param value (the value that gets assigned to the identified state key)
-   */
   handleInputChange(key, value) {
     // Example: if the key is username, this statement is the equivalent to the following one:
     // this.setState({'username': value});
     this.setState({ [key]: value });
   }
 
-  /**
-   * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-   * Initialization that requires DOM nodes should go here.
-   * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-   * You may call setState() immediately in componentDidMount().
-   * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-   */
   componentDidMount() {}
 
   render() {

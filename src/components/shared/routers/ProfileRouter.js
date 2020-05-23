@@ -11,9 +11,6 @@ const Container = styled.div`
 class ProfileRouter extends React.Component {
 
   render() {
-    /**
-     * "this.props.base" is "/app" because as been passed as a prop in the parent of GameRouter, i.e., App.js
-     */
     return (
       <Container>
         <Route
@@ -30,7 +27,5 @@ class ProfileRouter extends React.Component {
     );
   }
 }
-/*
-* Don't forget to export your component!
- */
+
 export default ProfileRouter;

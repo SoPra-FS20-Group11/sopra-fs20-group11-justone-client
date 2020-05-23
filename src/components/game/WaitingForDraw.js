@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
+import { api } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
-import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
-import { LogoutButton } from '../../views/design/Buttons/MainScreenButtons';
-import { RulesButton } from '../../views/design/Buttons/MainScreenButtons';
 import { Spinner } from '../../views/design/Spinner';
 import InGamePlayer from '../../views/InGamePlayer';
 import ScoreboardPlayer from '../../views/ScoreboardPlayer';

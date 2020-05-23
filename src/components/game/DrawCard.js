@@ -2,10 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import User from '../shared/models/User';
-import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';
 import JustOneSingle from '../../JustOneSingle.png';
@@ -16,12 +13,6 @@ const Container = styled(BaseContainer)`
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-`;
-
-const RulesButtonContainer = styled.div`
-  display: flex;
-  direction: rtl;
-  margin-top: 4em;
 `;
 
 const ButtonContainer = styled.div`

@@ -2,22 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Games from '../../views/Games';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-import { Redirect, Route } from "react-router-dom";
-import DrawCard from './DrawCard';
-import Game from '../shared/models/Game';
+
 
 const Container = styled(BaseContainer)`
   color: grey0;
   text-align: center;
-`;
-
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
 `;
 
 const GameContainer = styled.li`
@@ -26,57 +17,6 @@ const GameContainer = styled.li`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-const ClueContainer = styled.div`
-  justify-content: center;
-  padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
-  font-family: system-ui;
-  font-weight: 900;
-  font-size: 25px;
-  text-align: center;
-  color: rgba(0, 0, 0, 1);
-  width: 100%;
-  height: 90px;
-  border: none;
-  border-radius: 5px;
-  background: rgb(255, 229, 210);
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const Label2 = styled.h1`
-  font-weight: bold;
-  font-family: system-ui;
-  font-size: 30px;
-  text-shadow: 0 0 10px black;
-  color: rgba(204, 73, 3, 1);
-  text-align: center;
-`;
-
-const GameButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 0px;
-  box-shadow: 3px 3px 5px 4px;
-  font-family: system-ui;
-  font-weight: 900;
-  font-size: 25px;
-  text-align: center;
-  color: rgba(0, 0, 0, 1);
-  width: 600px;
-  height: 90px;
-  border: none;
-  border-radius: 5px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(255, 229, 210);
-  transition: all 0.3s ease;
 `;
 
 const MainButton = styled.button`

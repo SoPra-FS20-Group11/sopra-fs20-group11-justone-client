@@ -5,7 +5,6 @@ import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
 import ScoreboardPlayer from '../../views/ScoreboardPlayer';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import Modal from 'react-modal';
 
@@ -18,13 +17,6 @@ const Container = styled(BaseContainer)`
 const Users = styled.ul`
   list-style: none;
   padding-left: 0;
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -146,42 +138,6 @@ const CloseButton = styled.button`
   margin-top: 10px;
 `;
 
-const InputField = styled.input`
-  &::placeholder {
-    color: grey4;
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: grey0;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: grey0;
-`;
-const SearchFieldContainer = styled.li`
-  display: flex;
-  position: fixed; 
-  margin-left: 50px;
-  right: 10%;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-const SearchButton = styled.button`
-height: 35px;
-font-weight: bold;
-padding-left: 15px;
-margin-left: 4px;
-border: grey0;
-border-radius: 20px;
-font-weight: bold;
-margin-bottom: 20px;
-background: rgba(255, 255, 255, 0.2);
-color: grey0;
-justify-content: center;
-`;
 
 Modal.setAppElement('#root');
 
@@ -202,18 +158,6 @@ class StartGame extends React.Component {
             modalIsOpen: false,
             setModalIsOpen: false
         };
-    }
-    sortByScore(a, b) {
-        const user1 = a.score;
-        const user2 = b.score;
-    
-        let comparison = 0;
-        if (user1 < user2) {
-          comparison = 1;
-        } else if (user1 > user2) {
-          comparison = -1;
-        }
-        return comparison;
     }
 
     async componentDidMount() {
@@ -262,9 +206,7 @@ class StartGame extends React.Component {
         });
         const gameId = localStorage.getItem('gameID');
         await api.put('/games/leave/'+gameId, requestBody);
-        /*if(this.state.lobbyUser == currentId){
-          await api.put(`/games/finish/${gameId}`);
-        }*/
+        
         this.props.history.push('/lobby');
     }
 

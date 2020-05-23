@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
-import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 
 const FormContainer = styled.div`
@@ -26,52 +24,6 @@ const Users = styled.ul`
   list-style: none;
   padding-left: 0;
   margin-top: 50px;
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-const InputField = styled.input`
-  &::placeholder {
-    color: grey4;
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: grey0;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: grey0;
-`;
-const SearchFieldContainer = styled.li`
-  display: flex;
-  position: fixed; 
-  margin-right: 30px;
-  right: 20%;
-  flex-direction: row;
-`;
-
-const SearchButton = styled.button`
-height: 35px;
-padding-left: 15px;
-margin-left: -4px;
-border: grey0;
-border-radius: 20px;
-font-weight: bold;
-margin-bottom: 20px;
-background: rgba(255, 255, 255, 0.2);
-color: grey0;
 `;
 
 const Label2 = styled.h1`
@@ -161,15 +113,6 @@ class Search extends React.Component {
         }
       }
 
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
-      console.log('request to:', response.request.responseURL);
-      console.log('status code:', response.status);
-      console.log('status text:', response.statusText);
-      console.log('requested data:', response.data);
-
-      // See here to get more data.
-      console.log(response);
     } catch (error) {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }

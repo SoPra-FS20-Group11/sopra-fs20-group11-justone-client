@@ -2,12 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import User from '../shared/models/User';
-import Game from '../shared/models/Game';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
-import JustOneCards from '../../JustOneCards.png';
 import { Spinner } from '../../views/design/Spinner';
 import Timer from '../../Timer.png';
 
