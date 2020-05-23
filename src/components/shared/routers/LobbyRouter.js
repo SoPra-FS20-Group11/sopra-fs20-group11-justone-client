@@ -20,7 +20,7 @@ class LobbyRouter extends React.Component {
         <Route
           exact
           path={`${this.props.base}`}
-          render={() => <Redirect to={`${this.props.base}/gameID`} />}
+          render={() => <Redirect to={`/lobby`} />}
         />
        
       </Container>

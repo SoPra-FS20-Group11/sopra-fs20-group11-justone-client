@@ -124,19 +124,21 @@ class GameLobby extends React.Component {
       // Get the returned users and update the state.
       this.setState({ games: response.data });
 
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
-      console.log('request to:', response.request.responseURL);
-      console.log('status code:', response.status);
-      console.log('status text:', response.statusText);
-      console.log('requested data:', response.data);
-
-      // See here to get more data.
-      console.log(response);
+    
+      this.intervalID = setInterval(
+        () => this.checkGames(),
+        1500
+    );
     } catch (error) {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }
   }
+  
+  async checkGames(){
+    const responseGames = await api.get('/games');
+    this.setState({ games: responseGames.data });
+  }
+
   async return() {
     this.props.history.push('/main');
   }
@@ -165,9 +167,7 @@ class GameLobby extends React.Component {
       const currentIndex = 0;
       const currentPlayer = uniqueUsers[currentIndex];
 
-      localStorage.setItem('currentPlayerIndex', currentIndex);
-      localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
-
+  
       // if the game starts ==> everyone who enters the game/lobby, will be redirected to the game.
 
       this.props.history.push(`/game/${response.data.id}`);

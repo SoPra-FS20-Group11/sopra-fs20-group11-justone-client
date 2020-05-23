@@ -91,7 +91,6 @@ class EndScreen extends React.Component {
 
     async componentDidMount() {
         try {
-            localStorage.setItem('currentPage', 'end');
             const gameID = localStorage.getItem('gameID');
             const localUserId = localStorage.getItem('id');
 

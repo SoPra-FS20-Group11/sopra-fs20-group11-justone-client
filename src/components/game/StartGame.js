@@ -211,7 +211,6 @@ class StartGame extends React.Component {
     }
 
     async startGame() {
-        localStorage.setItem('currentPage', 'drawphase');
         if (this.state.userIds.length < 3) {
             alert(`Not enough Players! Must be atleast 3 Players to start the game!`);
         } else {

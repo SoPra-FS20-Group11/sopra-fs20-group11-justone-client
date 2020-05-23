@@ -139,7 +139,9 @@ class MyProfile extends React.Component {
         this.state = {
             users: null,
             updatedUsername: null,
-            updatedName: null
+            updatedName: null,
+            name: null,
+            username: null
         };
     }
 
@@ -154,7 +156,7 @@ class MyProfile extends React.Component {
 
             // HTTP PUT Request to update the user information, found by user ID
             await api.put('/users/' + id, requestBody);
-
+            
             // Reload the page
             window.location.reload();
         } catch (error) {

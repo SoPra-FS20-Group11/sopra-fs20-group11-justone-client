@@ -107,7 +107,7 @@ const ClueLabel = styled.h1`
   text-align: left;
   font-family: system-ui;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 30px;
   margin-left: 30px;
 `;
 
@@ -135,7 +135,16 @@ class CheckClues extends React.Component {
 
     async componentDidMount() {
         try {
-            localStorage.setItem('currentPage', 'checkphase');
+            window.onbeforeunload = async function() {
+                const currentId = localStorage.getItem('id');
+                localStorage.clear();
+                const requestBody = JSON.stringify({
+                id : currentId
+                });
+                await api.put('/logout', requestBody);
+              }
+
+
             const gameID = localStorage.getItem('gameID');
             this.setState({ gameId: gameID });
             const response = await api.get(`/clues/${gameID}`);

@@ -1,10 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-//import { useLocation } from "react-router-dom";
+import { api } from "../../../helpers/api";
 
-
+  
 export const GameGuard = props => {
-
     const LocalPlayerID = localStorage.getItem('id');
     const gameID = localStorage.getItem('gameID');
     const currentPlayer = localStorage.getItem('currentPlayer');

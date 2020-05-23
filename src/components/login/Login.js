@@ -96,7 +96,7 @@ class Login extends React.Component {
       const user = new User(response.data);
 
       // Store the token into the local storage.
-      localStorage.setItem('token', JSON.stringify(user.token));
+      localStorage.setItem('token', user.token);
       localStorage.setItem('id', user.id);
       localStorage.setItem('username', user.username);
 

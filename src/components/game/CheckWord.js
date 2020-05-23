@@ -101,7 +101,16 @@ class CheckWord extends React.Component {
 
     async componentDidMount() {
         try {
-            localStorage.setItem('currentPage', 'checkwordphase');
+            window.onbeforeunload = async function() {
+            const currentId = localStorage.getItem('id');
+            localStorage.clear();
+            const requestBody = JSON.stringify({
+            id : currentId
+            });
+            await api.put('/logout', requestBody);
+            }
+
+
             const response = await api.get(`/chosenword/${this.state.gameID}`);
             await new Promise(resolve => setTimeout(resolve, 1000));
 

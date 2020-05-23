@@ -88,9 +88,8 @@ const InputField = styled.input`
 `;
 const SearchFieldContainer = styled.li`
   display: flex;
-  position: fixed; 
-  margin-left: 50px;
-  right: 10%;
+  position: relative; 
+  margin-left: 1000px;
   flex-direction: row;
   justify-content: center;
 `;

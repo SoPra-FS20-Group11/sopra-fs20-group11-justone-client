@@ -116,8 +116,16 @@ class DrawCard extends React.Component {
         };
     }
     async componentDidMount() {
+      window.onbeforeunload = async function() {
+        const currentId = localStorage.getItem('id');
+        localStorage.clear();
+        const requestBody = JSON.stringify({
+        id : currentId
+        });
+        await api.put('/logout', requestBody);
+      }
+
       
-      localStorage.setItem('currentPage', 7);
       this._isMounted = true;
       const gameID = localStorage.getItem('gameID');
       await api.get(`/games/${gameID}`).then(response => {

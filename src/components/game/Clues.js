@@ -161,8 +161,17 @@ class Clues extends React.Component {
     }
 
     async componentDidMount() {
+      window.onbeforeunload = async function() {
+        const currentId = localStorage.getItem('id');
+        localStorage.clear();
+        const requestBody = JSON.stringify({
+        id : currentId
+        });
+        await api.put('/logout', requestBody);
+      }
+
+
       const gameID = localStorage.getItem('gameID')
-      localStorage.setItem('currentPage', 'clues');
       const gameResponse = await api.get('/games/'+gameID)
 
       if(gameResponse.data.normalMode == false){
@@ -228,38 +237,6 @@ class Clues extends React.Component {
         this.saveClue();
       }
     }
-      /*const gameID = localStorage.getItem('gameID')
-      localStorage.setItem('threeplayer', this.state.threePlayers)
-      if(localStorage.getItem('threeplayers') != "true"){
-          this.postOvertimed(gameID);
-      }else{
-          this.postOverTimedThreePlayer(gameID);
-      }
-      this.setState({submitted: true,});    
-    }   
-
-    async postOvertimed(gameID){
-      const requestBody3 = JSON.stringify({
-        clueWord: "OVERTIMED",
-        time: -1
-        });
-      await api.post(`/clues/${gameID}`, requestBody3);
-    }
-
-    async postOverTimedThreePlayer(gameID){
-      const requestBody4 = JSON.stringify({
-        clueWord: "OVERTIMED",
-        time: -1
-        });
-        const requestBody5 = JSON.stringify({
-          clueWord: "OVERTIMED",
-          time: -1
-          });
-      await api.post(`/clues/${gameID}`, requestBody4);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      await api.post(`/clues/${gameID}`, requestBody5);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }*/
 
     componentWillUnmount() {
       clearInterval(this.intervalID, this.myInterval, this.downloadTimer);
@@ -269,7 +246,6 @@ class Clues extends React.Component {
     async checkAllClues(){
       if (this.state.timeRunOut == true && this.state.timeOver == true){
         this.timeOver();}
-        localStorage.setItem('timeOver', this.state.timeOver)
       const response = await api.get('/clues/'+this.state.gameID)
       this.setState({allCluesBool: response.data.allAutomaticClues});
       if (this.state.allCluesBool == true){
@@ -281,7 +257,6 @@ class Clues extends React.Component {
     async saveClue(){ 
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
-      localStorage.setItem('time', this.state.time);
       const requestBody = JSON.stringify({
         clueWord: this.state.clue,
         time: this.state.time

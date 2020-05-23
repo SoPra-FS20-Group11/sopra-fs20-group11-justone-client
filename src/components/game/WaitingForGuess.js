@@ -218,7 +218,16 @@ class WaitingForGuess extends React.Component {
   }
 
   async componentDidMount() {
-    localStorage.setItem('currentPage', 'WaitingForGuess');
+    window.onbeforeunload = async function() {
+      const currentId = localStorage.getItem('id');
+      localStorage.clear();
+      const requestBody = JSON.stringify({
+      id : currentId
+      });
+      await api.put('/logout', requestBody);
+    }
+
+
     const GameID = localStorage.getItem('gameID');
     const responseUsers = await api.get('/users');
     this.setState({ allUsers : responseUsers.data});

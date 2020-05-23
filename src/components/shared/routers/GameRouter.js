@@ -14,14 +14,15 @@ import PostGameCorrect from "../../game/PostGameCorrect";
 import PostGameWrong from "../../game/PostGameWrong";
 import EndScreen from "../../game/EndScreen";
 import Abort from "../../game/Abort";
-
-
+import { api } from "../../../helpers/api";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
 class GameRouter extends React.Component {
+
+  
   render() {
     return (
       <Container>
@@ -29,9 +30,7 @@ class GameRouter extends React.Component {
         <Route
           path={`${this.props.base}/drawphase`}
           render={() => (
-            //<GameGuard>
               <DrawCard />
-            //</GameGuard>
           )}
         />
         <Route
@@ -42,9 +41,7 @@ class GameRouter extends React.Component {
         <Route 
           path={`${this.props.base}/guessphase`}
           render={() => (
-            //<CurrentPlayerGuard>
               <Guess />
-            //</CurrentPlayerGuard>
           )}
         />
         <Route
