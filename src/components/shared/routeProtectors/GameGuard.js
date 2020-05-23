@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 //import { useLocation } from "react-router-dom";
-import { api } from "../../../helpers/api";
 
 
 export const GameGuard = props => {

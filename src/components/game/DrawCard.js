@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
+import { api } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import { MainButton } from '../../views/design/Buttons/MainScreenButtons';
 import JustOneCards from '../../JustOneCards.png';

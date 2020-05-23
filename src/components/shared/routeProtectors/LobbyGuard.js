@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { api } from "../../../helpers/api";
 
 async function responsefunction(gameId) {
-    const gameID = localStorage.getItem('gameID');
     localStorage.setItem('location', gameId);
     const response = await api.get(`/games/${gameId}`)
     const users = JSON.stringify(response.data.usersIds);
