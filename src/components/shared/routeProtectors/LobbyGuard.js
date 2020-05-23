@@ -6,10 +6,8 @@ export const LobbyGuard = props => {
     const gameID = localStorage.getItem('gameID');
     
     //let location = useLocation();
-    if (gameID) {
-        if (gameID == localStorage.getItem('location')){
+    if (gameID || gameID == null) {
             return props.children;
-        }
     }
     else if(!localStorage.getItem("token")) {
         return <Redirect to={"/login"}/>;
