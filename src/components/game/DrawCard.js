@@ -102,6 +102,7 @@ export const WordButton = styled.button`
 
 class DrawCard extends React.Component {
   _isMounted = false;
+  timeOut;
     constructor() {
         super();
         this.state = {
@@ -125,7 +126,7 @@ class DrawCard extends React.Component {
         await api.put('/logout', requestBody);
       }
 
-      
+
       this._isMounted = true;
       const gameID = localStorage.getItem('gameID');
       await api.get(`/games/${gameID}`).then(response => {

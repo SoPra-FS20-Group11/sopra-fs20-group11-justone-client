@@ -79,7 +79,7 @@ const Word = styled.div`
 `
 
 class CheckWord extends React.Component {
-
+  timeOut;
   intervalID;
 
     constructor() {

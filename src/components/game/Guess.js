@@ -156,6 +156,7 @@ const Time = styled.h1`
 
 class Guess extends React.Component {
     myInterval;
+    timeOut;
 
     constructor() {
         super();

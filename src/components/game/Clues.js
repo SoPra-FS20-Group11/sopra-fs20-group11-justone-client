@@ -132,7 +132,7 @@ const SpinnerCont = styled.div`
 
 class Clues extends React.Component {
     intervalID;
-    myInterval;
+    timeOut;
     downloadTimer;
     isSafed = false;
 
@@ -185,37 +185,20 @@ class Clues extends React.Component {
 
       var timeleft = 20;
       this.downloadTimer = setInterval(() => {
-        this.setState(() => ({
-          seconds: timeleft,
-          time: 20-timeleft}))
+        this.setState(({seconds}) => ({
+          seconds: seconds -1,
+          time: this.state.time + 1
+        }))
         if (timeleft==10){
             this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
           }
-        if(timeleft == 0){
+        if(timeleft <= 0){
           clearInterval(this.downloadTimer);
           this.setState({timeRunOut: true})
         }
         timeleft -= 1;
       }, 1000);
-      // This is the timer function
-      /*if(this.myInterval == undefined) {this.myInterval = setInterval(() => {
-          this.setState(({seconds}) => ({
-            seconds: seconds -1,
-            time: this.state.time + 1
-          }))
-          if (this.state.seconds==10){
-            this.setState({color: 'linear-gradient(rgb(255, 20, 0), rgb(255, 0, 0)'})
-          }
-          if (this.state.seconds<0){
-            clearInterval(this.myInterval);
-          }
-          if (this.state.seconds<=0){
-            if(this.state.timeOver){
-              this.timeOver();
-            }
-          } 
-        }, 1000)
-      }*/
+      
       await new Promise(resolve => setTimeout(resolve, 2000));
       this.intervalID = setInterval(
           () => this.checkAllClues(),
@@ -239,7 +222,8 @@ class Clues extends React.Component {
     }
 
     componentWillUnmount() {
-      clearInterval(this.intervalID, this.myInterval, this.downloadTimer);
+      clearInterval(this.intervalID);
+      clearInterval(this.downloadTimer);
       clearTimeout(this.timeOut);
     }
 

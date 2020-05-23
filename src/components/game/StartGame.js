@@ -162,6 +162,15 @@ class StartGame extends React.Component {
 
     async componentDidMount() {
         try {
+            window.onbeforeunload = async function() {
+              const currentId = localStorage.getItem('id');
+              const requestBody = JSON.stringify({
+              currentUserId: currentId
+              });
+              const gameId = localStorage.getItem('gameID');
+              await api.put('/games/leave/'+gameId, requestBody);
+              localStorage.removeItem('gameID');
+              };
             const GameID = localStorage.getItem('gameID');
             
             const responseUsers = await api.get('/users');

@@ -57,9 +57,15 @@ class Abort extends React.Component {
 
   async componentDidMount() {
     try {
-        const GameID = localStorage.getItem('gameID');     
+        const GameID = localStorage.getItem('gameID');
+        const localUserId = localStorage.getItem('id');       
         const response = await api.get('/games/'+GameID);
-    
+        
+        this.setState({score: response.data.score})
+        const requestBodyScore = JSON.stringify({
+            score: this.state.score
+        });
+        await api.put(`/users/score/${localUserId}`, requestBodyScore);
         if(response.data.status !== "FINISHED"){
           await api.put(`/games/finish/${GameID}`);
         }

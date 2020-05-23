@@ -123,7 +123,7 @@ const PlayerContainer = styled.div`
 
 class PostGameWrong extends React.Component {
     intervalID;
-    
+    timeOut;
     constructor() {
         super();
         this.state = {

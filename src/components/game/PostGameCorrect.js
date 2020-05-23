@@ -117,7 +117,7 @@ const PlayerContainer = styled.div`
 
 class PostGameCorrect extends React.Component {
     intervalID;
-    
+    timeOut;
     constructor() {
         super();
         this.state = {

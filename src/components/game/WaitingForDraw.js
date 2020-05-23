@@ -197,7 +197,7 @@ Modal.setAppElement('#root');
 
 class WaitingForDraw extends React.Component {
   intervalID;
-  
+  timeOut;
   constructor() {
     super();
     this.state = {

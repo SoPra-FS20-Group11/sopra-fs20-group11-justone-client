@@ -114,6 +114,7 @@ const ClueLabel = styled.h1`
 
 class CheckClues extends React.Component {
     intervalID;
+    timeOut;
 
     constructor() {
         super();

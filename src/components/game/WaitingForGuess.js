@@ -195,7 +195,7 @@ Modal.setAppElement('#root');
 
 class WaitingForGuess extends React.Component {
   intervalID;
-  
+  timeOut;
   constructor() {
     super();
     this.state = {

@@ -17,6 +17,7 @@ import GameLobby from "../../game/GameLobby";
 import LobbyRouter from "./LobbyRouter";
 import { GameGuard } from "../routeProtectors/GameGuard";
 import { LobbyGuard } from "../routeProtectors/LobbyGuard";
+import EndScreen from "../../game/EndScreen";
 
 
 class AppRouter extends React.Component {
@@ -108,6 +109,13 @@ class AppRouter extends React.Component {
                 </AppGuard>
               )}
             /> 
+            <Route
+              exact
+              path={`${this.props.base}/end4428`}
+              render={() => (
+            <EndScreen />
+            )}
+            />
             <Route path="/" exact render={() => <Redirect to={"/login"} />} />
           </div>
         </Switch>

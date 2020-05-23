@@ -196,8 +196,9 @@ Modal.setAppElement('#root');
 
 class WaitingForClues extends React.Component {
     _isMounted = false;
+    isRedirected = false;
     intervalID;
-
+    timeOut;
     constructor() {
         super();
         this.state = {
@@ -301,7 +302,7 @@ class WaitingForClues extends React.Component {
         if (this.state.wordDecided=="REJECTEDBYALL"){
             this.redirectToDraw();
         }
-        if (this.state.allClues == true) {
+        if (this.state.allClues == true && this.isRedirected == false) {
             if (clueArray.length<=0){
                 this.setState({NoClues: true});
                 this.redirectToLost();           
@@ -312,9 +313,10 @@ class WaitingForClues extends React.Component {
     }
 
     async redirectToLost(){
+        this.isRedirected = true;
         await api.put(`/skip/${this.state.game.id}`);
         await new Promise(resolve => setTimeout(resolve, 7500))
-        this.props.history.push('/games/resultlost');
+        this.props.history.push('/games/resultlost');    
     }
 
     setModalIsOpen(boolean) {
@@ -389,8 +391,10 @@ class WaitingForClues extends React.Component {
                                     <InGamePlayer user={user} />
                                     {user.username == this.state.activePlayerName && 
                                     <div>Waiting...</div>}
-                                    {user.username != this.state.activePlayerName && 
+                                    {(user.username != this.state.activePlayerName && (this.state.wordDecided == "ACCEPTED" || (this.state.wordDecided == "REJECTED" && !this.state.changeableWord ) || !this.state.changeableWord)) &&
                                     <div>Currently submitting clues...</div>}
+                                    {user.username != this.state.activePlayerName &&  this.state.wordDecided !== "ACCEPTED" && this.state.wordDecided !== "REJECTEDBYALL"  && !(this.state.wordDecided == "SELECTED" && !this.state.changeableWord) &&
+                                    <div>Checking the word...</div>}
                                 </InGamePlayerField>
                             </PlayerContainer>
                         );
