@@ -11,13 +11,9 @@ export const GameGuard = props => {
 
     //let location = useLocation();
     if (gameID) {
-        var currentLocation = window.history.back();
-        localStorage.setItem('siite', currentLocation);
-        if (LocalPlayerID == currentPlayer) {
-            return props.children;
+        return props.children;
     }else if(!localStorage.getItem("token")) {
         return <Redirect to={"/login"}/>;
     }
     return <Redirect to={"/main"}/>;
-    }
 }

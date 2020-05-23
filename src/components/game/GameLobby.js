@@ -165,7 +165,6 @@ class GameLobby extends React.Component {
       const currentIndex = 0;
       const currentPlayer = uniqueUsers[currentIndex];
 
-      localStorage.setItem('currentPlayer', currentPlayer);
       localStorage.setItem('currentPlayerIndex', currentIndex);
       localStorage.setItem('PlayersList', JSON.stringify(uniqueUsers));
 
@@ -205,7 +204,7 @@ class GameLobby extends React.Component {
           <GameContainer>
             <Users>
               {this.state.games.map(game => {
-                if (game.status === 'CREATED'){
+                if (game.status === 'CREATED' && game.usersIds.includes(game.currentUserId)){
                 return (
                   <ButtonContainer key={game.id}>
                     <GameButton

@@ -116,7 +116,8 @@ class DrawCard extends React.Component {
         };
     }
     async componentDidMount() {
-      localStorage.setItem('currentPage', 'drawphase');
+      
+      localStorage.setItem('currentPage', 7);
       this._isMounted = true;
       const gameID = localStorage.getItem('gameID');
       await api.get(`/games/${gameID}`).then(response => {
@@ -125,7 +126,9 @@ class DrawCard extends React.Component {
           round: response.data.round,
           })
         }
+        localStorage.setItem('currentPlayer', response.data.currentUserId);
       })
+
       await api.get(`/chosenword/${gameID}`).then(responseChosenWord => {
         if (this._isMounted) {
           this.setState({

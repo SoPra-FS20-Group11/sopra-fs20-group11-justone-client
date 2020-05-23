@@ -179,7 +179,7 @@ class Guess extends React.Component {
 
     async componentDidMount() {
         try {
-            localStorage.setItem('currentPage', 'guessphase');
+            localStorage.setItem('currentPage', 9);
             const gameID = localStorage.getItem('gameID');
             const response = await api.get(`/clues/${gameID}`);
             const response2 = await api.get(`/games/${gameID}`);
@@ -230,6 +230,7 @@ class Guess extends React.Component {
     async componentWillUnmount(){
         clearInterval(this.myInterval)
         clearTimeout(this.timeOut);
+        localStorage.removeItem('currentPlayer');
     }
 
     async checkGuess(){

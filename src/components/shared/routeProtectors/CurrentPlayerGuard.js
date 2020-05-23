@@ -1,16 +1,27 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-export const CurrentPlayerGuard = props => {
-    const currentPlayerID = localStorage.getItem('id');
+
+/**
+ * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
+ * They are functional components. Based on the props passed, a route gets rendered.
+ * In this case, if the user is authenticated (i.e., a token is stored in the local storage)
+ * {props.children} are rendered --> The content inside the <GameGuard> in the App.js file, i.e. the user is able to access the main app.
+ * If the user isn't authenticated, the components redirects to the /login screen
+ * @Guard
+ * @param props
+ */
+export const DrawGuard = props => {
+    const LocalPlayerID = localStorage.getItem('id');
     const gameID = localStorage.getItem('gameID');
     const currentPlayer = localStorage.getItem('currentPlayer');
 
     //let location = useLocation();
-    var currentLocation = window.history.back();
-    localStorage.setItem('siite', currentLocation);
-    if (currentPlayerID == currentPlayer) {
+    if (LocalPlayerID == currentPlayer) {
         return props.children;
+    }else if(!localStorage.getItem("token")) {
+        return <Redirect to={"/login"}/>;
     }
-    return <Redirect to={currentLocation} />;
+    return <Redirect to={"/main"}/>;
 }
+

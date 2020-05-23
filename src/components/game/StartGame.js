@@ -252,9 +252,9 @@ class StartGame extends React.Component {
               this.props.history.push(`/games/waiting`);
             }
           }
-        if (status == "FINISHED") {
-            this.props.history.push(`/lobby`);
-          }
+        if (!responseGame.data.usersIds.includes(responseGame.data.currentUserId)) {
+            this.return();
+        }
     }
     
 
