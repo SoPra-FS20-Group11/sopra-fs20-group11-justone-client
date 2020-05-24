@@ -84,6 +84,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Illustrations
 
--After running the client, you will be immediately represented with the login screen. From here on you can reach the signup screen or enter your info, to be redirected to the actual game.
--After login, you can either create/join a lobby, view player stats on the scoreboard, look at your own stats or have a quick read through the actual game’s rules. Of course there is the possibility to log out.
--After creating a game, other people will be able to join you and only the host may start the game. The game itself is straightforward and just as written in the rules. The only thing to consider is that we are using separate pages for each aspect of the game (e.g., drawing a card, giving clues, making a guess,...).
+- After running the client, you will be immediately represented with the login screen. From here on you can reach the signup screen or enter your info, to be redirected to the actual game.
+- After login, you can either create/join a lobby, view player stats on the scoreboard, look at your own stats or have a quick read through the actual game’s rules. Of course there is the possibility to log out.
+- After creating a game, other people will be able to join you and only the host may start the game. The game itself is straightforward and just as written in the rules. The only thing to consider is that we are using separate pages for each aspect of the game (e.g., drawing a card, giving clues, making a guess,...).
