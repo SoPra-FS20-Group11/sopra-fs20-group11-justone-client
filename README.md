@@ -36,6 +36,24 @@ Once you have downloaded and installed it, you can add the following WebStorm pl
 * [Material Theme UI](https://plugins.jetbrains.com/plugin/8006-material-theme-ui) (Material Theme for Jetbrains IDEs, allowing a total customization of the IDE including Themes, Color Schemes, Icons and many other features.)
 
 Feel free to use other IDEs (e.g. [VisualStudio](https://code.visualstudio.com/)) if you want.  -->
+## High-level components
+
+The first high level component of our game would be the login component, coded in file Login.js. Before a user can enter any site of this app, the login screen is rendered first to identify a user.
+
+https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/blob/master/src/components/login/Login.js
+
+A second high level component of the project on client side is the main screen of the app. The main file of this component is MainScreen.js. This file renders the first screen a user can see after logging in. It includes buttons that redirect to the game lobbies, a scoreboard, a user’s own profile and a logout button. There is also a popup for the game rules.
+
+https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/tree/master/src/components/mainscreen
+
+Thirdly, the game lobby is an important component of this project. It renders all currently created games a user can join at this moment in time and a return button. When clicking on a game, it redirects to a Pregame-Screen of the clicked game. 
+
+https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/blob/master/src/components/game/GameLobby.js
+
+Lastly, the most important component of the app is the game itself. Since the game works by redirecting to twelve different screens throughout a running game, there is not a single main file for this component. The component is defined by all the files in the package /game except from the files {GameLobby.js, StartGame.js}.
+
+https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/tree/master/src/components/game
+This component renders all game screens and navigates a user through these game screens of this web-based application game of Just One.
 
 ## Launch and Deployment
 
@@ -45,15 +63,15 @@ Before running the npm commands (listed further below) with a terminal of your c
 Changing code within the IDE and then saving it, will immediately affect your local client. So, you won’t have to wait to see what your changes actually do.
 
 
-## Prerequisites and Installation
+### Prerequisites and Installation
 
 For your local development environment you'll need Node.js >= 8.10. You can download it [here](https://nodejs.org). All other dependencies including React get installed with:
 
-### `npm install`
+#### `npm install`
 
 This has to be done before starting the application for the first time (only once).
 
-### `npm run dev`
+#### `npm run dev`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -61,12 +79,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console (use Google Chrome!).
 
-### `npm run test`
+#### `npm run test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -76,11 +94,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
->Thanks to Lucas Pelloni for the template
 
 ## Illustrations
 
