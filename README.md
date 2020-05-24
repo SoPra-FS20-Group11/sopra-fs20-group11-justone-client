@@ -51,6 +51,8 @@ https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/tree/mas
 ### Scoreboard
 Thirdly, this project includes a Scoreboard.js file, where a scoreboard page is rendered. On this page, users can see all users of the app and what their all time scores are. By clicking on a user, it redirects to the user's profile page.
 
+https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/blob/master/src/components/scoreboard/Scoreboard.js
+
 ### Game Lobby
 The game lobby is an important component of this project. The file GameLobby.js renders all currently created games a user can join at this moment in time and a return button. When clicking on a game, it redirects to a Pregame-Screen of the clicked game. 
 
