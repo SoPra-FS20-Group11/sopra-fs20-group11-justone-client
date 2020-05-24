@@ -126,7 +126,7 @@ The following features and design are always welcome as additions to our project
   - Profile pictures
   - Sending invitations to join a game
   - Bots
-  - Refreshing pages in an efficient way
+  - A better solution for refreshing windows
   - Improvements on animations
 
 ## Authors and acknowledgment
