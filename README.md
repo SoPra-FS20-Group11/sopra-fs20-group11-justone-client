@@ -36,7 +36,7 @@ Once you have downloaded and installed it, you can add the following WebStorm pl
 * [Material Theme UI](https://plugins.jetbrains.com/plugin/8006-material-theme-ui) (Material Theme for Jetbrains IDEs, allowing a total customization of the IDE including Themes, Color Schemes, Icons and many other features.)
 
 Feel free to use other IDEs (e.g. [VisualStudio](https://code.visualstudio.com/)) if you want.  -->
-## High-level components
+## High-Level Components
 
 ### Login
 The first high level component of our game would be the login component, coded in file Login.js. Before a user can enter any site of this app, the login screen is rendered first to identify a user.
@@ -120,24 +120,21 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Roadmap
 
-The following features and design are always welcome: 
-  - sound effects or music during the game
-  - chat feature
-  - profile pictures
-  - sending invitations to join a game
-  - bots
-  - refreshing pages in an efficient way
-  - of course some nice and better animations
+The following features and design are always welcome as additions to our project: 
+  - Sound effects or music during the game
+  - Chat feature
+  - Profile pictures
+  - Sending invitations to join a game
+  - Bots
+  - Refreshing pages in an efficient way
+  - Improvements on animations
 
 ## Authors and acknowledgment
-
+Authors:
 Marino Schneider, Md Rezuanual Haque, Michael Brülisauer, Patrick Reich, Vichhay Ok, Venusan Velrajah
 
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
->Thanks to Lucas Pelloni for the template
+Supervisor:
+Alina Marti
 
 ## License
 
