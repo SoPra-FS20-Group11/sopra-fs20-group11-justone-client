@@ -193,7 +193,10 @@ class PostGameWrong extends React.Component {
           this.setState({ending: true});
           this.endgame();
         }
-        this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
+        this.timeOut = setTimeout(() => {  
+          this.props.history.push('/games/abort');    
+          this.timeOut = 0;                  
+        }, 90000);
       } catch (error) {
           alert(`Something went wrong while fetching the points: \n${handleError(error)}`);
       }
@@ -207,6 +210,10 @@ class PostGameWrong extends React.Component {
     componentWillUnmount() {
       clearInterval(this.intervalID);
       clearTimeout(this.timeOut);
+      if (this.timeOut) {                                
+        clearTimeout(this.timeOut);     
+        this.timeOut = 0;                
+      } 
     }
 
     async checkNextRound(){
@@ -226,9 +233,9 @@ class PostGameWrong extends React.Component {
     }
 
     async next() {
-      this.setState({clickedNext: true});
-      await new Promise(resolve => setTimeout(resolve, 2500));
       const gameID = localStorage.getItem('gameID');
+      this.setState({clickedNext: true});
+      await new Promise(resolve => setTimeout(resolve, 3600));
       await api.put(`/games/reset/${gameID}`);
     } 
 
