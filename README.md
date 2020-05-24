@@ -93,5 +93,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ![](Images/GameLobby.png)
 - After creating a game, other people will be able to join you and only the host may start the game. The game itself is straightforward and just as written in the rules.
 
-![](WaitingForDraw.png)
+![](Images/WaitingForDraw.png)
 - The only thing to consider is that we are using separate pages for each aspect of the game (e.g., drawing a card, giving clues, making a guess,...).
