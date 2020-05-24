@@ -102,6 +102,7 @@ The following features and design are always welcome:
   - sound effects or music during the game
   - chat feature
   - profile pictures
+  - sending invitations to join a game
   - bots
   - refreshing pages in an efficient way
   - of course some nice and better animations
