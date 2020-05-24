@@ -38,18 +38,25 @@ Once you have downloaded and installed it, you can add the following WebStorm pl
 Feel free to use other IDEs (e.g. [VisualStudio](https://code.visualstudio.com/)) if you want.  -->
 ## High-level components
 
+### Login
 The first high level component of our game would be the login component, coded in file Login.js. Before a user can enter any site of this app, the login screen is rendered first to identify a user.
 
 https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/blob/master/src/components/login/Login.js
 
-A second high level component of the project on client side is the main screen of the app. The main file of this component is MainScreen.js. This file renders the first screen a user can see after logging in. It includes buttons that redirect to the game lobbies, a scoreboard, a user’s own profile and a logout button. There is also a popup for the game rules.
+### Mainscreen
+A second high level component of the project on client side is the main screen of the app. The main file of this component is MainScreen.js. This file renders the first screen a user can see after logging in. The screen includes buttons that redirect to the game lobbies, a scoreboard, a user’s own profile and a logout button. There is also a popup for the game rules.
 
 https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/tree/master/src/components/mainscreen
 
-Thirdly, the game lobby is an important component of this project. It renders all currently created games a user can join at this moment in time and a return button. When clicking on a game, it redirects to a Pregame-Screen of the clicked game. 
+### Scoreboard
+Thirdly, this project includes a Scoreboard.js file, where a scoreboard page is rendered. On this page, users can see all users of the app and what their all time scores are. By clicking on a user, it redirects to the user's profile page.
+
+### Game Lobby
+The game lobby is an important component of this project. The file GameLobby.js renders all currently created games a user can join at this moment in time and a return button. When clicking on a game, it redirects to a Pregame-Screen of the clicked game. 
 
 https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/blob/master/src/components/game/GameLobby.js
 
+### Game
 Lastly, the most important component of the app is the game itself. Since the game works by redirecting to twelve different screens throughout a running game, there is not a single main file for this component. The component is defined by all the files in the package /game except from the files {GameLobby.js, StartGame.js}.
 
 https://github.com/SoPra-FS20-Group11/sopra-fs20-group11-justone-client/tree/master/src/components/game
