@@ -256,7 +256,7 @@ class Clues extends React.Component {
           correctlyGuessed: 0,
           duplicateClues: 1
         });
-        await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC);
+        await api.put(`/users/gamestats/${localStorage.getItem('id')}`, requestBodyDC);
       }
 
       if(this.state.clue2){
