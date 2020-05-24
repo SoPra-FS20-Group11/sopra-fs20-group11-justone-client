@@ -256,6 +256,7 @@ class Clues extends React.Component {
         time: this.state.time
         });
       const response = await api.post(`/clues/${gameID}`, requestBody);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       if (response.data.valid == "DUPLICATE") {
         const requestBodyDC = JSON.stringify({
           correctlyGuessed: 0,

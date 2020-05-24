@@ -285,7 +285,7 @@ class WaitingForClues extends React.Component {
             () => this.checkClues(),
             1500
         );
-        this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 90000);
+        this.timeOut = setTimeout(() => { this.props.history.push('/games/abort') }, 130000);
     }
 
     componentWillUnmount() {
