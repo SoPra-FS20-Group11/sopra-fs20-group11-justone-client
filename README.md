@@ -95,3 +95,47 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ![](Images/WaitingForDraw.png)
 - The only thing to consider is that we are using separate pages for each aspect of the game (e.g., drawing a card, giving clues, making a guess,...).
+
+## Roadmap
+
+The following features and design are always welcome: 
+  - sound effects or music during the game
+  - chat feature
+  - profile pictures
+  - bots
+  - refreshing pages in an efficient way
+  - of course some nice and better animations
+
+## Authors and acknowledgment
+
+Marino Schneider, Md Rezuanual Haque, Michael Brülisauer, Patrick Reich, Vichhay Ok, Venusan Velrajah
+
+## Learn More
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+>Thanks to Lucas Pelloni for the template
+
+## License
+
+MIT License
+
+Copyright (c) 2020 SoPra-Group-11
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
