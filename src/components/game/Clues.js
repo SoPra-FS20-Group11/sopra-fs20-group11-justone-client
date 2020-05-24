@@ -266,7 +266,7 @@ class Clues extends React.Component {
       }
 
       if(this.state.clue2){
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 200));
         const requestBody2 = JSON.stringify({
           clueWord: this.state.clue2,
           time: this.state.time
