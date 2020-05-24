@@ -8,7 +8,7 @@ The game “Just One” is developed in accordance with the game’s rules, as a
 - A global score system, where users can compare their score over time. It has a search function, wherein users are able to find each other via username.
 - The 550 words from the original game are randomly assigned to a card whenever a new game is created. That way, the game offers more variety and new words can smoothly be added.
 - A time tracker for certain user actions. Faster clue giving and guessing will increase the amount of points all of the users get at the end of the game. This amount will be individually modified by how many correct guesses and duplicate clues each user has submitted.
-- Clues will, in a first step, be automatically checked by a language processing unit or clue checker. This is where the API service of Datamuse https://www.datamuse.com/api/ comes into play. The unit checks for multiple words, duplicates, singular/plural forms, stemming and homophones, as seen in Figure 1.
+- Clues will, in a first step, be automatically checked by a language processing unit or clue checker. This is where the API service of Datamuse https://www.datamuse.com/api/ comes into play. The unit checks for multiple words, duplicates, singular/plural forms, stemming and homophones.
 
 ## Technologies
 
@@ -36,6 +36,14 @@ Once you have downloaded and installed it, you can add the following WebStorm pl
 * [Material Theme UI](https://plugins.jetbrains.com/plugin/8006-material-theme-ui) (Material Theme for Jetbrains IDEs, allowing a total customization of the IDE including Themes, Color Schemes, Icons and many other features.)
 
 Feel free to use other IDEs (e.g. [VisualStudio](https://code.visualstudio.com/)) if you want.  -->
+
+## Launch and Deployment
+
+We used an IDE called [Visual Studio Code](https://code.visualstudio.com/) to develop our project and add further functionality. 
+In order to make it all work, cloning the server is also a necessity. It needs to be run in a separate IDE, in our project we used [IntelliJ](https://www.jetbrains.com/idea/).
+Before running the npm commands (listed further below) with a terminal of your choice, you will need to head to the directory to which you cloned the client code.
+Changing code within the IDE and then saving it, will immediately affect your local client. So, you won’t have to wait to see what your changes actually do.
+
 
 ## Prerequisites and Installation
 
@@ -72,5 +80,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-
 >Thanks to Lucas Pelloni for the template
+
+## Illustrations
+
+-After running the client, you will be immediately represented with the login screen. From here on you can reach the signup screen or enter your info, to be redirected to the actual game.
+-After login, you can either create/join a lobby, view player stats on the scoreboard, look at your own stats or have a quick read through the actual game’s rules. Of course there is the possibility to log out.
+-After creating a game, other people will be able to join you and only the host may start the game. The game itself is straightforward and just as written in the rules. The only thing to consider is that we are using separate pages for each aspect of the game (e.g., drawing a card, giving clues, making a guess,...).
