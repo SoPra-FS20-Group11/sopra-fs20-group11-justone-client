@@ -102,12 +102,17 @@ class CheckWord extends React.Component {
     async componentDidMount() {
         try {
             window.onbeforeunload = async function() {
-            const currentId = localStorage.getItem('id');
-            localStorage.clear();
-            const requestBody = JSON.stringify({
-            id : currentId
-            });
-            await api.put('/logout', requestBody);
+              const GameID = localStorage.getItem('gameID');
+              const response = await api.get('/games/'+GameID);
+              const currentId = localStorage.getItem('id');
+              localStorage.clear();
+              const requestBody = JSON.stringify({
+              id : currentId
+              });
+              await api.put('/logout', requestBody);
+              if(response.data.status !== "FINISHED"){
+                  await api.put(`/games/finish/${GameID}`);
+                }
             }
 
 
