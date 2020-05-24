@@ -1,6 +1,18 @@
-# SoPra FS20 - Client Template
+# SoPra FS20 - Group 11 - Just One (Client)
 
-## Getting started with React
+## Introduction
+
+The game “Just One” is developed in accordance with the game’s rules, as a web application. It will have the following features:
+
+- Users can create accounts, which will be visible to other users. They are also able to change their name and username.
+- A global score system, where users can compare their score over time. It has a search function, wherein users are able to find each other via username.
+- The 550 words from the original game are randomly assigned to a card whenever a new game is created. That way, the game offers more variety and new words can smoothly be added.
+- A time tracker for certain user actions. Faster clue giving and guessing will increase the amount of points all of the users get at the end of the game. This amount will be individually modified by how many correct guesses and duplicate clues each user has submitted.
+- Clues will, in a first step, be automatically checked by a language processing unit or clue checker. This is where the API service of Datamuse https://www.datamuse.com/api/ comes into play. The unit checks for multiple words, duplicates, singular/plural forms, stemming and homophones, as seen in Figure 1.
+
+## Technologies
+
+We used ReactJS to develop our game application.
 
 Read and go through those Tutorials, It will make your life easier!
 
