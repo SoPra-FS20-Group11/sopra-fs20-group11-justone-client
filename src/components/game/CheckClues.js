@@ -145,6 +145,10 @@ class CheckClues extends React.Component {
                 id : currentId
                 });
                 await api.put('/logout', requestBody);
+                const requestBodyScore = JSON.stringify({
+                    score: response.data.score
+                });
+                await api.put(`/users/score/${currentId}`, requestBodyScore);
                 if(response.data.status !== "FINISHED"){
                     await api.put(`/games/finish/${GameID}`);
                   }

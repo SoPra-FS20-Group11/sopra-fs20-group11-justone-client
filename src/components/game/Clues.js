@@ -169,6 +169,10 @@ class Clues extends React.Component {
         id : currentId
         });
         await api.put('/logout', requestBody);
+        const requestBodyScore = JSON.stringify({
+            score: response.data.score
+        });
+        await api.put(`/users/score/${currentId}`, requestBodyScore);
         if(response.data.status !== "FINISHED"){
             await api.put(`/games/finish/${GameID}`);
           }
@@ -246,6 +250,7 @@ class Clues extends React.Component {
       this.isSafed = true;
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
+      const localID = localStorage.getItem('id');
       const requestBody = JSON.stringify({
         clueWord: this.state.clue,
         time: this.state.time
@@ -256,11 +261,11 @@ class Clues extends React.Component {
           correctlyGuessed: 0,
           duplicateClues: 1
         });
-        await api.put(`/users/gamestats/${localStorage.getItem('id')}`, requestBodyDC);
+        await api.put(`/users/gamestats/${localID}`, requestBodyDC);
       }
 
       if(this.state.clue2){
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 500));
         const requestBody2 = JSON.stringify({
           clueWord: this.state.clue2,
           time: this.state.time
@@ -271,7 +276,7 @@ class Clues extends React.Component {
             correctlyGuessed: 0,
             duplicateClues: 1
           });
-          await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC2);
+          await api.put(`/users/gamestats/${localID}`, requestBodyDC2);
         }
       }  
     }
