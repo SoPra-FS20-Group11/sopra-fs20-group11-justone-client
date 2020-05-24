@@ -149,7 +149,6 @@ class Clues extends React.Component {
           seconds: 20,
           time: 0,
           color: 'linear-gradient(rgb(150, 200, 0), rgb(150, 180, 0)',
-          duplicateClues: null,
           currentUserId: null,
           timeOver: true,
           timeRunOut: false
@@ -244,6 +243,7 @@ class Clues extends React.Component {
     }
 
     async saveClue(){ 
+      this.isSafed = true;
       this.setState({submitted: true});
       const gameID = localStorage.getItem('gameID');
       const requestBody = JSON.stringify({
@@ -253,6 +253,7 @@ class Clues extends React.Component {
       const response = await api.post(`/clues/${gameID}`, requestBody);
       if (response.data.valid == "DUPLICATE") {
         const requestBodyDC = JSON.stringify({
+          correctlyGuessed: 0,
           duplicateClues: 1
         });
         await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC);
@@ -267,12 +268,12 @@ class Clues extends React.Component {
         const response2 = await api.post(`/clues/${gameID}`, requestBody2)
         if (response2.data.valid == "DUPLICATE") {
           const requestBodyDC2 = JSON.stringify({
+            correctlyGuessed: 0,
             duplicateClues: 1
           });
           await api.put(`/users/gamestats/${this.state.currentUserId}`, requestBodyDC2);
         }
-      }
-      this.isSafed = true;  
+      }  
     }
 
     render() {
